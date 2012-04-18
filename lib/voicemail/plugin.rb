@@ -18,7 +18,7 @@ module Voicemail
     #
     tasks do
       namespace :voicemail do
-        desc "Prints the PluginTemplate information"
+        desc "Prints the Voicemail information"
         task :info do
           STDOUT.puts "Voicemail plugin v. #{VERSION}"
         end
