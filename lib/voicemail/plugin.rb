@@ -25,5 +25,7 @@ module Voicemail
       end
     end
 
+    generators :"voicemail:install" => Voicemail::InstallGenerator
+
   end
 end
