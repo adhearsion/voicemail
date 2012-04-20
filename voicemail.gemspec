@@ -30,8 +30,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency %q<simplecov-rcov>, [">= 0"]
   s.add_development_dependency %q<yard>, ["~> 0.6.0"]
   s.add_development_dependency %q<rake>, [">= 0"]
-  s.add_development_dependency %q<mocha>, [">= 0"]
   s.add_development_dependency %q<guard-rspec>
   s.add_development_dependency %q<cucumber>
   s.add_development_dependency %q<aruba>
+  s.add_development_dependency %q<flexmock>
  end

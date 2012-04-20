@@ -9,7 +9,8 @@ module Voicemail
     # Basic configuration for the plugin
     #
     config :voicemail do
-      greeting "Hello", :desc => "What to use to greet users"
+      default_greeting "You have reached voicemail", :desc => "What to use to greet users"
+      mailbox_not_found "Mailbox not found", :desc => "Message to use for a missing mailbox"
     end
 
     # Defining a Rake task is easy
