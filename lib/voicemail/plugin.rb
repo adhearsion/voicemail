@@ -11,6 +11,11 @@ module Voicemail
     config :voicemail do
       default_greeting "You have reached voicemail", :desc => "What to use to greet users"
       mailbox_not_found "Mailbox not found", :desc => "Message to use for a missing mailbox"
+      desc "Voicemail recording options"
+      recording {
+        max_duration 5_000, :desc => "Maximum duration for recording in milliseconds"
+        start_beep true, :desc => "Play a beep before recording"
+      }
     end
 
     # Defining a Rake task is easy
