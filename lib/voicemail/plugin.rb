@@ -9,7 +9,13 @@ module Voicemail
     # Basic configuration for the plugin
     #
     config :voicemail do
-      greeting "Hello", :desc => "What to use to greet users"
+      default_greeting "You have reached voicemail", :desc => "What to use to greet users"
+      mailbox_not_found "Mailbox not found", :desc => "Message to use for a missing mailbox"
+      desc "Voicemail recording options"
+      recording {
+        max_duration 5_000, :desc => "Maximum duration for recording in milliseconds"
+        start_beep true, :desc => "Play a beep before recording"
+      }
     end
 
     # Defining a Rake task is easy
@@ -24,6 +30,8 @@ module Voicemail
         end
       end
     end
+
+    generators :"voicemail:install" => Voicemail::InstallGenerator
 
   end
 end
