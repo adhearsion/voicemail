@@ -1,14 +1,7 @@
 module Voicemail
-  class VoicemailController < ::Adhearsion::CallController
-    def init_mailbox()
-      mailbox_id = metadata[:mailbox] || nil
-      raise ArgumentError, "Voicemail needs a mailbox specified in metadata" unless mailbox_id
-      @mailbox = storage.get_mailbox mailbox_id
-    end
-
+  class VoicemailController < ApplicationController
     def run
-      init_mailbox
-      if @mailbox
+      if mailbox
         play_greeting
         handle_recording
       else
@@ -17,13 +10,12 @@ module Voicemail
     end
 
     def play_greeting
-      play @mailbox[:greeting_message] || config[:voicemail].default_greeting
+      play mailbox[:greeting_message] || config[:voicemail].default_greeting
     end
 
     def handle_recording
-      record config[:voicemail].recording.to_hash do |event|
-        save_recording(event.recording.uri)
-      end
+      record_comp = record config[:voicemail].recording.to_hash
+      save_recording record_comp.complete_event.recording.uri
     end
 
     def mailbox_not_found
@@ -32,15 +24,7 @@ module Voicemail
     end
 
     def save_recording(uri)
-      storage.save_recording(@mailbox[:id], call.from, uri)
-    end
-
-    def storage
-      Storage.instance
-    end
-
-    def config
-      Adhearsion.config
+      storage.save_recording(mailbox[:id], call.from, uri)
     end
 
   end
