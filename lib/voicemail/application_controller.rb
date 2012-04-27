@@ -17,5 +17,9 @@ module Voicemail
       raise ArgumentError, "Voicemail needs a mailbox specified in metadata" unless mailbox_id
       storage.get_mailbox mailbox_id
     end
+
+    def main_menu
+      invoke MailboxMainMenuController, :mailbox => mailbox[:id]
+    end
   end
 end

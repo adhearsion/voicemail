@@ -4,6 +4,8 @@ module Voicemail
       if mailbox
         play_greeting
         fail_auth unless authenticate
+        play_number_of_messages
+        main_menu
       else
         mailbox_not_found
       end
@@ -22,7 +24,16 @@ module Voicemail
         play config[:voicemail].mailbox.pin_wrong
         current_tries += 1
       end
-      auth_ok
+      auth_ok 
+    end
+    
+    def play_number_of_messages
+      number = storage.count_new_messages(mailbox[:id])
+      if number > 0
+        play config[:voicemail].mailbox.number_before
+        play number
+        play config[:voicemail].mailbox.number_after
+      end
     end
 
     def mailbox_not_found

@@ -49,6 +49,8 @@ module Voicemail
           it "plays the mailbox greeting message" do
             subject.should_receive(:play).once.with(Adhearsion.config[:voicemail].mailbox.greeting_message)
             subject.should_receive(:authenticate).and_return(true)
+            subject.should_receive(:play_number_of_messages).and_return(true)
+            subject.should_receive(:main_menu).and_return(true)
             controller.run 
           end
         end
@@ -73,9 +75,32 @@ module Voicemail
             subject.should_receive(:play).times(3).with(Adhearsion.config[:voicemail].mailbox.pin_wrong)
             controller.authenticate.should == false
           end
-
       end
-    end
+
+      describe "#play_number_of_messages" do
+        it "plays the number of new messages if there is at least one" do
+          storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
+          subject.should_receive(:play).ordered.with(Adhearsion.config[:voicemail].mailbox.number_before)
+          subject.should_receive(:play).ordered.with(3)
+          subject.should_receive(:play).ordered.with(Adhearsion.config[:voicemail].mailbox.number_after)
+          controller.play_number_of_messages
+        end
+
+        it "does not play anything if there are none" do
+          storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
+          subject.should_receive(:play).never
+          controller.play_number_of_messages
+        end
+      end
+
+      describe "#main_menu" do
+        it "invokes MainMenuController" do
+          subject.should_receive(:invoke).once.with(MailboxMainMenuController, {:mailbox => mailbox[:id]})
+          controller.main_menu
+        end
+      end
+
+    end#valid mailbox context
 
   end
 end
