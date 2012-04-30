@@ -44,5 +44,12 @@ module Voicemail
       end
     end
 
+    describe "#set_pin" do
+      it "invokes MailboxSetGreetingController" do
+        subject.should_receive(:invoke).once.with(MailboxSetPinController, {:mailbox => mailbox[:id]})
+        controller.set_pin
+      end
+    end
+
   end
 end

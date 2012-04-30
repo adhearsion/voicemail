@@ -45,6 +45,16 @@ module Voicemail
           final_timeout 2_000, :desc => "Duration of silence to conclude user has finished speaking."
         }
       }
+      desc "Set PIN configuration"
+      set_pin {
+        menu "Press 1 to change your current PIN, or 9 to go back to the main menu", :desc => "Prompt for the change PIN menu"
+        prompt "Enter your new PIN of at least four digits followed by the pound sign", :desc => "What the user hears before entering the new PIN"
+        repeat_prompt "Please enter your new PIN again, followed by the pound sign", :desc => "Message to ask the user to repeat his PIN"
+        pin_error "Please enter at least four digits followed by the pound sign.", :desc => "Message in case the entered PIN is too short"
+        match_error "The two entered PINs don't match, please try again.", :desc => "Message telling the user his new PINs don't match."
+        change_ok "Your PIN has been successfully changed", :desc => "Message to tell the user his PIN has been changed"
+        pin_minimum_digits 4, :desc => "Minimum number of digits for a PIN"
+      }
     end
 
     # Defining a Rake task is easy

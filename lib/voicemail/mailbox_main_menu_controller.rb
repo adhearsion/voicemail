@@ -14,7 +14,7 @@ module Voicemail
           set_greeting
         end
         match 3 do 
-          change_pin
+          set_pin
         end
    
         timeout do
@@ -33,6 +33,10 @@ module Voicemail
 
     def set_greeting
         invoke MailboxSetGreetingController, :mailbox => mailbox[:id]
+    end
+
+    def set_pin
+        invoke MailboxSetPinController, :mailbox => mailbox[:id]
     end
 
   end
