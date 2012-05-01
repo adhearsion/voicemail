@@ -55,6 +55,13 @@ module Voicemail
         change_ok "Your PIN has been successfully changed", :desc => "Message to tell the user his PIN has been changed"
         pin_minimum_digits 4, :desc => "Minimum number of digits for a PIN"
       }
+      desc "Listen to messages menu configuration"
+      messages {
+        menu "Press 1 to archive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu", :desc => "Menu to use inside messages"
+        no_new_messages "There are no new messages", :desc => "Message to inform the user he has no new messages"
+        message_received_on "Message received on ", :desc => "Prefix to menu intro"
+        from " from ", :desc => "Used in message intro"
+      }
     end
 
     # Defining a Rake task is easy

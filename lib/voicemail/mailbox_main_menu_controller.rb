@@ -39,5 +39,9 @@ module Voicemail
         invoke MailboxSetPinController, :mailbox => mailbox[:id]
     end
 
+    def listen_to_messages
+        invoke MailboxMessagesController, :mailbox => mailbox[:id]
+    end
+
   end
 end

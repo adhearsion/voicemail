@@ -51,5 +51,13 @@ module Voicemail
       end
     end
 
+
+    describe "#listen_to_messages" do
+      it "invokes MailboxMessagesController" do
+        subject.should_receive(:invoke).once.with(MailboxMessagesController, {:mailbox => mailbox[:id]})
+        controller.listen_to_messages
+      end
+    end
+
   end
 end
