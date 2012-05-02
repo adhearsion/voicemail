@@ -67,6 +67,22 @@ module Voicemail
       end
     end
 
+    describe "#archive_message" do
+      it "archives the message" do
+        subject.should_receive(:current_message).once.and_return(message)
+        storage_instance.should_receive(:archive_message).once.with(message[:id])
+        controller.archive_message
+      end
+    end
+
+    describe "#delete_message" do
+      it "deletes the message" do
+        subject.should_receive(:current_message).once.and_return(message)
+        storage_instance.should_receive(:delete_message).once.with(message[:id])
+        controller.delete_message
+      end
+    end
+
     describe "#intro_message" do
       it "plays the message introduction" do
         subject.should_receive(:current_message).and_return(message)

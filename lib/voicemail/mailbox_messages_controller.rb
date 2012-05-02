@@ -15,7 +15,6 @@ module Voicemail
     end
 
     def next_message
-      #this sets the current message and calls handle
       current_message = storage.next_new_message(mailbox[:id])
       handle_message
     end
@@ -26,8 +25,6 @@ module Voicemail
     end
 
     def play_message
-      # here goes the main menu
-      # can also recurse to rewind 
       menu current_message[:uri], config[:voicemail].messages.menu,
          :timeout => config[:voicemail].menu_timeout, :tries => config[:voicemail].menu_tries do
         match 1 do 
@@ -42,7 +39,6 @@ module Voicemail
           rewind_message
         end
         match 9 do
-          archive_message
           main_menu
         end
    
@@ -72,11 +68,11 @@ module Voicemail
     end
 
     def archive_message
-      #archives current message
+      storage.archive_message(current_message[:id])
     end
 
     def delete_message
-      #deletes current message
+      storage.delete_message(current_message[:id])
     end
 
     def bail_out
