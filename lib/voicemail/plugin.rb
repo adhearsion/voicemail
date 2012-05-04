@@ -62,6 +62,11 @@ module Voicemail
         message_received_on "Message received on ", :desc => "Prefix to menu intro"
         from " from ", :desc => "Used in message intro"
       }
+      desc "Storage configuration"
+      storage {
+        pstore_location "voicemail.pstore", :desc => "Where to store the voicemail data"
+        file_location "file_dir", :desc => "Where to store the voicemail files"
+      }
     end
 
     # Defining a Rake task is easy
