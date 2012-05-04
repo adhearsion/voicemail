@@ -14,6 +14,7 @@ module Voicemail
     end
 
     def handle_recording
+      @from = call.from
       record_comp = record config[:voicemail].recording.to_hash
       save_recording record_comp.complete_event.recording.uri
     end
@@ -24,7 +25,7 @@ module Voicemail
     end
 
     def save_recording(uri)
-      storage.save_recording(mailbox[:id], call.from, uri)
+      storage.save_recording(mailbox[:id], @from, uri)
     end
 
   end

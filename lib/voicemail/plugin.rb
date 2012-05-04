@@ -28,7 +28,7 @@ module Voicemail
         could_not_auth "We are sorry, the system could not authenticate you", :desc => "Message for authentication final failure."
         number_before "You have ", :desc => "What to play before the number of new messages"
         number_after " new messages", :desc => "What to play after the number of new messages"
-        menu_greeting "Main menu", :desc => "What to say before the main menu"
+        menu_greeting "Press 1 to listen to new messages, 2 to change your greeting, 3 to change your PIN", :desc => "What to say before the main menu"
         menu_timeout_message "Please enter a digit for the menu", :desc => "Message to play on main menu timeout"
         menu_invalid_message "Please enter valid input", :desc => "Message to play on main menu invalid"
         menu_failure_message "Sorry, unable to understand your input.", :desc => "Message to play on main menu failure"

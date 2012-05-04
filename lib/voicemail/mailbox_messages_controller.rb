@@ -15,7 +15,8 @@ module Voicemail
     end
 
     def next_message
-      current_message = storage.next_new_message(mailbox[:id])
+      @current_message = storage.next_new_message(mailbox[:id])
+      logger.info @current_message
       handle_message
     end
 
@@ -25,7 +26,7 @@ module Voicemail
     end
 
     def play_message
-      menu current_message[:uri], config[:voicemail].messages.menu,
+      menu current_message[:uri].gsub(/\.wav/, ''), config[:voicemail].messages.menu,
          :timeout => config[:voicemail].menu_timeout, :tries => config[:voicemail].menu_tries do
         match 1 do 
           archive_message
@@ -58,9 +59,11 @@ module Voicemail
 
     def intro_message
       play config[:voicemail].messages.message_received_on
-      play current_message[:received]
+      #play @current_message[:received]
+      play_time Time.now
       play config[:voicemail].messages.from
-      play current_message[:from]
+      #play @current_message[:from]
+      execute "SayDigits", "4044754849"
     end
 
     def rewind_message
@@ -68,11 +71,11 @@ module Voicemail
     end
 
     def archive_message
-      storage.archive_message(current_message[:id])
+      storage.archive_message(@current_message[:id])
     end
 
     def delete_message
-      storage.delete_message(current_message[:id])
+      storage.delete_message(@current_message[:id])
     end
 
     def bail_out

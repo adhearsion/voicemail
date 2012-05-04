@@ -20,7 +20,8 @@ module Voicemail
       auth_ok = false
       while current_tries < config[:voicemail].mailbox.pin_tries
         input = ask config[:voicemail].mailbox.please_enter_pin, :terminator => "#", :timeout => config[:voicemail].prompt_timeout
-        break if auth_ok = input == mailbox[:pin]
+        auth_ok = true if input.to_s == mailbox[:pin].to_s
+        break if auth_ok
         play config[:voicemail].mailbox.pin_wrong
         current_tries += 1
       end
@@ -31,8 +32,10 @@ module Voicemail
       number = storage.count_new_messages(mailbox[:id])
       if number > 0
         play config[:voicemail].mailbox.number_before
-        play number
+        play_numeric number
         play config[:voicemail].mailbox.number_after
+      else
+        play config[:voicemail].messages.no_new_messages
       end
     end
 
