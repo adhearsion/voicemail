@@ -37,10 +37,20 @@ module Voicemail
       end
     end
 
-    def archive_message(message_id)
+    def archive_message(mailbox_id, message_id)
+      @store.transaction do
+        item = @store[:recordings][mailbox_id].select {|i| i[:id] == message_id }
+        rec = item.first
+        if rec
+          @store[:archived][mailbox_id] << rec
+          @store[:recordings][mailbox_id].delete(rec)
+        end
+      end
     end
 
-    def delete_message(message_id)
+    def delete_message(mailbox_id, message_id)
+      File.unlink(rec[:uri]) if File.exists?(rec[:uri])
+      @store[:recordings][mailbox_id].delete(rec)
     end
 
     def save_greeting_for_mailbox(mailbox_id, recording_uri)

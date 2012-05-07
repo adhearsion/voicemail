@@ -71,11 +71,11 @@ module Voicemail
     end
 
     def archive_message
-      storage.archive_message(@current_message[:id])
+      storage.archive_message(mailbox[:id], @current_message[:id])
     end
 
     def delete_message
-      storage.delete_message(@current_message[:id])
+      storage.delete_message(mailbox[:id], @current_message[:id])
     end
 
     def bail_out
