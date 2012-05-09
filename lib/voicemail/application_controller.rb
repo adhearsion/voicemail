@@ -19,7 +19,7 @@ module Voicemail
     end
 
     def main_menu
-      invoke MailboxMainMenuController, :mailbox => mailbox[:id]
+      pass MailboxMainMenuController, :mailbox => mailbox[:id]
     end
   end
 end

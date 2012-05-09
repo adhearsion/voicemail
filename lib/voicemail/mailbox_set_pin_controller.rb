@@ -32,15 +32,15 @@ module Voicemail
       pin = ask config[:voicemail].set_pin.prompt, :terminator => "#"
       repeat_pin = ask config[:voicemail].set_pin.repeat_prompt, :terminator => "#"
 
-      if pin.size < config[:voicemail].set_pin.pin_minimum_digits
+      if pin.to_s.size < config[:voicemail].set_pin.pin_minimum_digits
         play config[:voicemail].set_pin.pin_error
         set_pin
-      elsif pin != repeat_pin
+      elsif pin.to_s != repeat_pin.to_s
         play config[:voicemail].set_pin.match_error
         set_pin
       else
         play config[:voicemail].set_pin.change_ok
-        storage.change_pin_for_mailbox(mailbox[:id], pin)
+        storage.change_pin_for_mailbox(mailbox[:id], pin.to_s)
         main_menu
       end
 

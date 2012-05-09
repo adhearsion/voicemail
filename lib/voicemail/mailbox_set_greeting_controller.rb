@@ -9,10 +9,10 @@ module Voicemail
       menu config[:voicemail].set_greeting.prompt, 
          :timeout => config[:voicemail].menu_timeout, :tries => config[:voicemail].menu_tries do
         match 1 do 
-          record_greeting
+          listen_to_current_greeting
         end
         match 2 do 
-          listen_to_current_greeting
+          record_greeting
         end
         match 9 do
           main_menu
@@ -40,8 +40,8 @@ module Voicemail
     def record_greeting
       play config[:voicemail].set_greeting.before_record
       record_comp = record config[:voicemail].set_greeting.recording.to_hash
-      temp_recording = record_comp.complete_event.recording.uri
-      play temp_recording
+      @temp_recording = record_comp.complete_event.recording.uri.gsub(/file:\/\//, '').gsub(/\.wav/, '')
+      play @temp_recording
 
       menu config[:voicemail].set_greeting.after_record, 
          :timeout => config[:voicemail].menu_timeout, :tries => config[:voicemail].menu_tries do
@@ -49,11 +49,11 @@ module Voicemail
           save_greeting
         end
         match 2 do 
-          temp_recording = nil
+          @temp_recording = nil
           record_greeting
         end
         match 9 do
-          temp_recording = nil
+          @temp_recording = nil
           section_menu
         end
    

@@ -54,9 +54,15 @@ module Voicemail
     end
 
     def save_greeting_for_mailbox(mailbox_id, recording_uri)
+      @store.transaction do
+        @store[:mailboxes][mailbox_id][:greeting_message] = recording_uri
+      end
     end
     
     def change_pin_for_mailbox(mailbox_id, new_pin)
+      @store.transaction do
+        @store[:mailboxes][mailbox_id][:pin] = new_pin
+      end
     end
 
     def save_recording(mailbox_id, from, recording_uri)

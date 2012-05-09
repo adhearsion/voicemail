@@ -40,9 +40,9 @@ module Voicemail
         after_record "Press 1 to save your new greeting, 2 to discard it, 9 to go back to the menu", :desc => "Menu to use after recording"
         no_personal_greeting "You do not currently have a personalized greeting.", :desc => "What to play if there is no specific greeting"
         recording {
-          max_duration 15_000, :desc => "Maximum duration for recording in milliseconds"
+          max_duration 5_000, :desc => "Maximum duration for recording in milliseconds"
           start_beep true, :desc => "Play a beep before recording"
-          final_timeout 2_000, :desc => "Duration of silence to conclude user has finished speaking."
+          #final_timeout 2_000, :desc => "Duration of silence to conclude user has finished speaking."
         }
       }
       desc "Set PIN configuration"
