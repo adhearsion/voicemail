@@ -39,7 +39,7 @@ module Voicemail
 
     def record_greeting
       play config[:voicemail].set_greeting.before_record
-      record_comp = record config[:voicemail].set_greeting.recording.to_hash
+      record_comp = record config[:voicemail].set_greeting.recording.to_hash.merge(:interruptible => true, :max_duration => 30_000)
       @temp_recording = record_comp.complete_event.recording.uri.gsub(/file:\/\//, '').gsub(/\.wav/, '')
       play @temp_recording
 

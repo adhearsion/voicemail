@@ -20,6 +20,8 @@ module Voicemail
       auth_ok = false
       while current_tries < config[:voicemail].mailbox.pin_tries
         input = ask config[:voicemail].mailbox.please_enter_pin, :terminator => "#", :timeout => config[:voicemail].prompt_timeout
+        logger.info input.to_s
+        logger.info mailbox[:pin].to_s
         auth_ok = true if input.to_s == mailbox[:pin].to_s
         break if auth_ok
         play config[:voicemail].mailbox.pin_wrong

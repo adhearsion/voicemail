@@ -32,11 +32,11 @@ module Voicemail
           archive_message
           message_loop
         end
-        match 3 do 
+        match 5 do 
           delete_message
           message_loop
         end
-        match 4 do 
+        match 7 do 
           rewind_message
         end
         match 9 do
