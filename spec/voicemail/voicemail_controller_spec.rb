@@ -27,6 +27,7 @@ module Voicemail
     before(:each) do
       storage_instance.should_receive(:get_mailbox).with(metadata[:mailbox]).and_return(mailbox)
       flexmock(Storage).should_receive(:instance).and_return(storage_instance)
+      subject.should_receive(:answer).once
     end
 
     describe "#run" do
@@ -70,7 +71,7 @@ module Voicemail
             let(:file_path) { "/path/to/file" }
             it "saves the recording" do
               recording_component.should_receive("complete_event.recording.uri").and_return(file_path)
-              subject.should_receive(:record).with(Adhearsion.config[:voicemail].recording.to_hash).and_return(recording_component)
+              subject.should_receive(:record).with(Adhearsion.config[:voicemail].recording.to_hash.merge(:interruptible => true, :max_duration => 30_000)).and_return(recording_component)
               storage_instance.should_receive(:save_recording).with(mailbox[:id], call.from, file_path)
               subject.should_receive(:play).once
               controller.run

@@ -15,8 +15,8 @@ module Voicemail
     end
 
     def next_message
-      @current_message = storage.next_new_message(mailbox[:id])
-      logger.info @current_message
+      current_message = storage.next_new_message(mailbox[:id])
+      logger.info current_message
       handle_message
     end
 
@@ -59,11 +59,10 @@ module Voicemail
 
     def intro_message
       play config[:voicemail].messages.message_received_on
-      #play @current_message[:received]
-      play_time Time.now
+      play_time current_message[:received], :format => config[:voicemail].datetime_format
       play config[:voicemail].messages.from
-      #play @current_message[:from]
-      execute "SayDigits", "4044754849"
+      from_digits = current_message[:from].scan(/\d/).join
+      execute "SayDigits", from_digits unless from_digits.empty?
     end
 
     def rewind_message
@@ -71,11 +70,11 @@ module Voicemail
     end
 
     def archive_message
-      storage.archive_message(mailbox[:id], @current_message[:id])
+      storage.archive_message(mailbox[:id], current_message[:id])
     end
 
     def delete_message
-      storage.delete_message(mailbox[:id], @current_message[:id])
+      storage.delete_message(mailbox[:id], current_message[:id])
     end
 
     def bail_out

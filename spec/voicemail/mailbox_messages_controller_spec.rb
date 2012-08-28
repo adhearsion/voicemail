@@ -20,7 +20,7 @@ module Voicemail
     let(:message) do
       {
         :id => 123,
-        :from => "+39335135335",
+        :from => "+39-335135335",
         :received => Time.local(2012, 5, 1, 9, 0, 0),
         :uri => "/path/to/file"
       }
@@ -70,7 +70,7 @@ module Voicemail
     describe "#archive_message" do
       it "archives the message" do
         subject.should_receive(:current_message).once.and_return(message)
-        storage_instance.should_receive(:archive_message).once.with(message[:id])
+        storage_instance.should_receive(:archive_message).once.with(mailbox[:id], message[:id])
         controller.archive_message
       end
     end
@@ -78,7 +78,7 @@ module Voicemail
     describe "#delete_message" do
       it "deletes the message" do
         subject.should_receive(:current_message).once.and_return(message)
-        storage_instance.should_receive(:delete_message).once.with(message[:id])
+        storage_instance.should_receive(:delete_message).once.with(mailbox[:id], message[:id])
         controller.delete_message
       end
     end
@@ -87,9 +87,9 @@ module Voicemail
       it "plays the message introduction" do
         subject.should_receive(:current_message).and_return(message)
         subject.should_receive(:play).once.with(config.messages.message_received_on)
-        subject.should_receive(:play).once.with(message[:received])
+        subject.should_receive(:play_time).once.with(message[:received], :format => config.datetime_format)
         subject.should_receive(:play).once.with(config.messages.from)
-        subject.should_receive(:play).once.with(message[:from])
+        subject.should_receive(:execute).once.with("SayDigits", "39335135335")
         controller.intro_message
       end
     end

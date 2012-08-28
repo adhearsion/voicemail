@@ -81,21 +81,21 @@ module Voicemail
         it "plays the number of new messages if there is at least one" do
           storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
           subject.should_receive(:play).ordered.with(Adhearsion.config[:voicemail].mailbox.number_before)
-          subject.should_receive(:play).ordered.with(3)
+          subject.should_receive(:play_numeric).ordered.with(3)
           subject.should_receive(:play).ordered.with(Adhearsion.config[:voicemail].mailbox.number_after)
           controller.play_number_of_messages
         end
 
-        it "does not play anything if there are none" do
+        it "does play the no messages audio if there are none" do
           storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
-          subject.should_receive(:play).never
+          subject.should_receive(:play).ordered.with(Adhearsion.config[:voicemail].messages.no_new_messages)
           controller.play_number_of_messages
         end
       end
 
       describe "#main_menu" do
-        it "invokes MainMenuController" do
-          subject.should_receive(:invoke).once.with(MailboxMainMenuController, {:mailbox => mailbox[:id]})
+        it "passes to MainMenuController" do
+          subject.should_receive(:pass).once.with(MailboxMainMenuController, {:mailbox => mailbox[:id]})
           controller.main_menu
         end
       end

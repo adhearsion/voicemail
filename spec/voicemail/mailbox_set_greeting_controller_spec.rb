@@ -62,7 +62,7 @@ module Voicemail
       it "plays the appropriate sounds, records, plays back recording, and calls the recording menu" do
         subject.should_receive(:play).once.with(Adhearsion.config[:voicemail].set_greeting.before_record)
         recording_component.should_receive("complete_event.recording.uri").and_return(file_path)
-        subject.should_receive(:record).once.with(Adhearsion.config[:voicemail].set_greeting.recording.to_hash).and_return(recording_component)
+        subject.should_receive(:record).once.with(Adhearsion.config[:voicemail].set_greeting.recording.to_hash.merge(:interruptible => true, :max_duration => 30_000)).and_return(recording_component)
         subject.should_receive(:play).once.with(file_path)
         subject.should_receive(:menu).once.with(Adhearsion.config[:voicemail].set_greeting.after_record,
             {:timeout => Adhearsion.config[:voicemail].menu_timeout,
