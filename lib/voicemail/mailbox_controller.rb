@@ -12,7 +12,7 @@ module Voicemail
     end
     
     def play_greeting
-      play @mailbox[:greeting_message] || config[:voicemail].mailbox.greeting_message
+      play config[:voicemail].mailbox.greeting_message
     end
 
     def authenticate
