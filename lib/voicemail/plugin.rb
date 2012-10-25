@@ -65,6 +65,7 @@ module Voicemail
       }
       desc "Storage configuration"
       storage {
+        storage_class Voicemail::StorageMain, :desc => "Class that implements the Storage specification. An instance will be created."
         pstore_location "voicemail.pstore", :desc => "Where to store the voicemail data"
         file_location "file_dir", :desc => "Where to store the voicemail files"
       }
