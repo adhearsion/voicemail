@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Voicemail
-  describe StorageMain do
+  describe StoragePstore do
     let(:mailbox) do
       {
         :id => 100,
@@ -17,7 +17,7 @@ module Voicemail
       pstore_path = File.join(basedir, 'voicemail.pstore')
       File.unlink(pstore_path) if File.exists?(pstore_path)
       Adhearsion.config[:voicemail].storage.pstore_location = pstore_path
-      @storage = StorageMain.new
+      @storage = StoragePstore.new
       @storage.store.transaction do
         @storage.store[:mailboxes][100] = mailbox
       end

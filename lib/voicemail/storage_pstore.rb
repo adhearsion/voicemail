@@ -1,7 +1,7 @@
 require 'pstore'
 
 module Voicemail
-  class StorageMain
+  class StoragePstore
     attr_accessor :store
     def initialize()
       @store = PStore.new(Adhearsion.config[:voicemail].storage.pstore_location)

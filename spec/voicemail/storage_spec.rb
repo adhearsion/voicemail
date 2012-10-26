@@ -4,7 +4,7 @@ module Voicemail
   describe Storage do
     describe "#instance" do
       it "returns a StorageMain object" do
-        Storage.instance.should be_a StorageMain
+        Storage.instance.should be_a StoragePstore
       end
 
       it "returns the same instance every time" do
