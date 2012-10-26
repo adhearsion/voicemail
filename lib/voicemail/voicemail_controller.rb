@@ -11,23 +11,22 @@ module Voicemail
     end
 
     def play_greeting
-      play mailbox[:greeting_message] || config[:voicemail].default_greeting
+      play mailbox[:greeting_message] || config.default_greeting
     end
 
     def handle_recording
       @from = call.from
-      record_comp = record config[:voicemail].recording.to_hash.merge(:interruptible => true, :max_duration => 30_000)
+      record_comp = record config.recording.to_hash.merge(interruptible: true, max_duration: 30_000)
       save_recording record_comp.complete_event.recording.uri
     end
 
     def mailbox_not_found
-      play config[:voicemail].mailbox_not_found
+      play config.mailbox_not_found
       hangup
     end
 
     def save_recording(uri)
-      storage.save_recording(mailbox[:id], @from, uri)
+      storage.save_recording mailbox[:id], @from, uri
     end
-
   end
 end

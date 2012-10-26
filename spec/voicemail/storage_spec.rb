@@ -1,17 +1,13 @@
 require 'spec_helper'
 
-module Voicemail
-  describe Storage do
-    describe "#instance" do
-      it "returns a StorageMain object" do
-        Storage.instance.should be_a StoragePstore
-      end
+describe Voicemail::Storage do
+  describe "#instance" do
+    it "returns a StorageMain object" do
+      Voicemail::Storage.instance.should be_a Voicemail::StoragePstore
+    end
 
-      it "returns the same instance every time" do
-        instance_a = Storage.instance
-        instance_b = Storage.instance
-        instance_a.object_id.should == instance_b.object_id
-      end
+    it "returns the same instance every time" do
+      Voicemail::Storage.instance.should be Voicemail::Storage.instance
     end
   end
 end
