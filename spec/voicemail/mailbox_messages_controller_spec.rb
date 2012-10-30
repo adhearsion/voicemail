@@ -1,81 +1,71 @@
 require 'spec_helper'
 
-describe Voicemail::MailboxMessagesController do
-  include VoicemailControllerSpecHelper
-
-  let(:message) do
-    {
-      id:       123,
-      from:     "+39-335135335",
-      received: Time.local(2012, 5, 1, 9, 0, 0),
-      uri:      "/path/to/file"
-    }
-  end
-
-  describe "#message_loop" do
-    it "calls #next_message if there are new messages" do
-      storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
-      subject.should_receive(:next_message).once
-      controller.message_loop
+module Voicemail
+  describe MailboxMessagesController do
+    include VoicemailControllerSpecHelper
+    
+    let(:call) { flexmock('Call') }
+    let(:config) { Voicemail::Plugin.config }
+    let(:metadata) do 
+      { :mailbox => '100' }
+    end
+    let(:mailbox) do
+      {
+        :id => 100,
+        :pin => 1234,
+        :greeting_message => nil,
+        :send_email => true,
+        :email_address => "lpradovera@mojolingo.com"
+      }
+    end
+    let(:message) do
+      {
+        :id => 123,
+        :from => "+39-335135335",
+        :received => Time.local(2012, 5, 1, 9, 0, 0),
+        :uri => "/path/to/file"
+      }
     end
 
-    it "plays a message and goes to the main menu if there are no new messages" do
-      storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
-      should_play config.messages.no_new_messages
-      subject.should_receive(:main_menu).once
-      controller.message_loop
-    end
-  end
+    let(:storage_instance) { flexmock('StorageInstance') }
 
-  describe "#next_message" do
-    it "gets the next message and calls #handle_message" do
-      storage_instance.should_receive(:next_new_message).once.with(mailbox[:id]).and_return(message)
-      subject.should_receive(:handle_message).once
-      controller.next_message
+    let(:controller){ Voicemail::MailboxMessagesController.new call, metadata }
+    subject { flexmock controller }
+    
+    before(:each) do
+      storage_instance.should_receive(:get_mailbox).with(metadata[:mailbox]).and_return(mailbox)
+      flexmock(Storage).should_receive(:instance).and_return(storage_instance)
     end
-  end
 
-  describe "#handle_message" do
-    it "calls #intro_message and #play_message" do
-      subject.should_receive(:intro_message).once
-      subject.should_receive(:play_message).once
-      controller.handle_message
+    describe "#message_loop" do
+      it "calls #next_message if there are new messages" do
+        storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
+        subject.should_receive(:next_message).once
+        controller.message_loop
+      end
+
+      it "plays a message and goes to the main menu if there are no new messages" do
+        storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
+        subject.should_receive(:play).with(config.messages.no_new_messages).once
+        subject.should_receive(:main_menu).once
+        controller.message_loop
+      end
     end
-  end
 
-  describe "#archive_message" do
-    it "archives the message" do
-      subject.should_receive(:current_message).once.and_return(message)
-      storage_instance.should_receive(:archive_message).once.with(mailbox[:id], message[:id])
-      controller.archive_message
+    describe "#next_message" do
+      it "gets the next message and calls #handle_message" do
+        storage_instance.should_receive(:next_new_message).once.with(mailbox[:id]).and_return(message)
+        subject.should_receive(:handle_message).once.with(message)
+        subject.should_receive(:message_loop).once
+        controller.next_message
+      end
     end
-  end
 
-  describe "#delete_message" do
-    it "deletes the message" do
-      subject.should_receive(:current_message).once.and_return(message)
-      storage_instance.should_receive(:delete_message).once.with(mailbox[:id], message[:id])
-      controller.delete_message
-    end
-  end
-
-  describe "#intro_message" do
-    it "plays the message introduction" do
-      subject.should_receive(:current_message).and_return(message)
-      should_play config.messages.message_received_on
-      subject.should_receive(:play_time).once.with(message[:received], format: config.datetime_format)
-      should_play config.messages.from
-      subject.should_receive(:execute).once.with("SayDigits", "39335135335")
-      controller.intro_message
-    end
-  end
-
-  describe "#play_message" do
-    it "plays the message, followed by the menu" do
-      subject.should_receive(:current_message).once.and_return(message)
-      subject.should_receive(:menu).once.with(message[:uri], config.messages.menu,
-        { timeout: config.menu_timeout, tries: config.menu_tries }, Proc)
-      subject.play_message
+    describe "#handle_message" do
+      it "invokes MailboxPlayMessageController" do
+        should_invoke Voicemail::MailboxPlayMessageController, message: message
+        controller.handle_message message
+      end
     end
   end
 end
