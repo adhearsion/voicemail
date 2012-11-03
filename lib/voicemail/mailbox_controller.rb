@@ -30,7 +30,12 @@ module Voicemail
       number = storage.count_new_messages(mailbox[:id])
       if number > 0
         play config.mailbox.number_before
-        play_numeric number
+        if Adhearsion.config.punchblock.platform == :asterisk
+          play_numeric number
+        else
+          logger.info "play_numeric is unsupported on platform #{Adhearsion.config.punchblock.platform}"
+        end
+
         play config.mailbox.number_after
       else
         play config.messages.no_new_messages

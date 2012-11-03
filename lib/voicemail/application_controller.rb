@@ -23,5 +23,6 @@ module Voicemail
       raise ArgumentError, "Voicemail needs a mailbox specified in metadata" unless mailbox_id
       storage.get_mailbox mailbox_id
     end
+      
   end
 end
