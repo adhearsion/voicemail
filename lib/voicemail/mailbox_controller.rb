@@ -33,7 +33,7 @@ module Voicemail
         if Adhearsion.config.punchblock.platform == :asterisk
           play_numeric number
         else
-          logger.info "play_numeric is unsupported on platform #{Adhearsion.config.punchblock.platform}"
+          play *sounds_for_number(number)
         end
 
         play config.mailbox.number_after

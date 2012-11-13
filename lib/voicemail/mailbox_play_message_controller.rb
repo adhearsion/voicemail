@@ -41,7 +41,7 @@ module Voicemail
       if Adhearsion.config.punchblock.platform == :asterisk
         play_time current_message[:received], format: config.datetime_format
       else
-        logger.info "play_time is unsupported on platform #{Adhearsion.config.punchblock.platform}"
+        play *sounds_for_time(current_message[:received])
       end
       
       play config.messages.from
@@ -50,7 +50,7 @@ module Voicemail
       if Adhearsion.config.punchblock.platform == :asterisk
         execute "SayDigits", from_digits unless from_digits.empty?
       else
-        logger.info "execute is unsupported on platform #{Adhearsion.config.punchblock.platform}"
+        play *sounds_for_digits(from_digits)
       end
     end
 
