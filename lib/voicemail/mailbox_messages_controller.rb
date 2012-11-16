@@ -20,7 +20,7 @@ module Voicemail
     end
 
     def handle_message(message)
-      invoke MailboxPlayMessageController, message: message
+      invoke MailboxPlayMessageController, message: message, mailbox: mailbox[:id]
     end
 
     private

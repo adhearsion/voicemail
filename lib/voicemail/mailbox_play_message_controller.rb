@@ -7,16 +7,14 @@ module Voicemail
     end
 
     def play_message
-      menu current_message[:uri].gsub(/\.wav/, ''), config.messages.menu,
+      menu current_message[:uri], config.messages.menu,
          timeout: config.menu_timeout, tries: config.menu_tries do
         match 1 do
           archive_message
-          message_loop
         end
 
         match 5 do
           delete_message
-          message_loop
         end
 
         match(7) { rewind_message }
@@ -40,18 +38,19 @@ module Voicemail
     def intro_message
       play config.messages.message_received_on
       if Adhearsion.config.punchblock.platform == :asterisk
-        play_time current_message[:received], format: config.datetime_format
+        play_time current_message[:received_at], format: config.datetime_format
       else
-        play *sounds_for_time(current_message[:received])
+        datetime = DateTime.parse(current_message[:received_at]).to_time rescue nil
+        play *sounds_for_time(datetime, {}) if datetime
       end
       
       play config.messages.from
-      from_digits = current_message[:from].scan(/\d/).join
+      from_digits = current_message[:from].scan(/\d{10,18}/).join
 
       if Adhearsion.config.punchblock.platform == :asterisk
         execute "SayDigits", from_digits unless from_digits.empty?
       else
-        play *sounds_for_digits(from_digits)
+        play *sounds_for_digits(from_digits) unless from_digits.empty?
       end
     end
 
@@ -73,6 +72,7 @@ module Voicemail
 
     def load_message
       @message = metadata[:message] || nil
+      logger.info "MESSAGE: #{@message}"
       raise ArgumentError, "MailboxPlayMessageController needs a valid message passed to it" unless @message
     end
   end
