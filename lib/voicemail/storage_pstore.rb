@@ -61,7 +61,7 @@ module Voicemail
           id:       SecureRandom.uuid,
           from:     from,
           received: Time.now,
-          uri:      recording_uri.gsub(/file:\/\//, '')
+          uri:      recording_uri
         }
         store[:recordings][mailbox_id] << recording
         logger.info "Saving recording: #{recording.inspect}"
