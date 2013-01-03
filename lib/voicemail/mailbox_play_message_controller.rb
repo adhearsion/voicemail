@@ -61,7 +61,7 @@ module Voicemail
     end
 
     def load_message
-      @essage = metadata[:message] || nil
+      @message = metadata[:message] || nil
       raise ArgumentError, "MailboxPlayMessageController needs a valid message passed to it" unless @message
     end
   end
