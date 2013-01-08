@@ -40,12 +40,13 @@ module Voicemail
       if Adhearsion.config.punchblock.platform == :asterisk
         play_time current_message[:received_at], format: config.datetime_format
       else
-        datetime = DateTime.parse(current_message[:received_at]).to_time rescue nil
-        play *sounds_for_time(datetime, {}) if datetime
+        datetime = DateTime.parse(current_message[:received_at]).to_time
+        play *sounds_for_time(datetime, {})
       end
       
       play config.messages.from
-      from_digits = current_message[:from].scan(/\d{10,18}/).join
+      from_digits = current_message[:from].scan(/\d{10,18}/).first
+      #from_digits = current_message[:from].scan(/\d/).join
 
       if Adhearsion.config.punchblock.platform == :asterisk
         execute "SayDigits", from_digits unless from_digits.empty?
