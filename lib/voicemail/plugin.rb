@@ -12,6 +12,7 @@ module Voicemail
       menu_timeout 15.seconds, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
       datetime_format "Q 'digits/at' IMp", desc: "Fromat to use for message date and time TTS"
+      beep nil, desc: "Audio file to use for beeps"
 
       desc "Voicemail recording options"
       recording {
