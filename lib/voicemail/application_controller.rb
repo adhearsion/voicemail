@@ -7,7 +7,7 @@ module Voicemail
     private
 
     def storage
-      Storage.instance
+      metadata[:storage] || Storage.instance
     end
 
     def config
