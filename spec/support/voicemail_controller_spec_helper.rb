@@ -3,9 +3,6 @@ module VoicemailControllerSpecHelper
     test_case.let(:from)    { "sip:user@server.com" }
     test_case.let(:call)    { flexmock 'Call', from: from }
     test_case.let(:config)  { Voicemail::Plugin.config }
-    test_case.let(:metadata) do
-      { :mailbox => '100' }
-    end
     test_case.let(:greeting_message) { nil }
     test_case.let(:mailbox) do
       {
@@ -17,12 +14,14 @@ module VoicemailControllerSpecHelper
       }
     end
     test_case.let(:storage_instance) { flexmock 'StorageInstance' }
+    test_case.let(:metadata) do
+      { :mailbox => '100', :storage => storage_instance }
+    end
 
     test_case.subject(:controller) { flexmock test_case.described_class.new(call, metadata) }
 
     test_case.before(:each) do
       storage_instance.should_receive(:get_mailbox).with(metadata[:mailbox]).and_return(mailbox)
-      flexmock(Voicemail::Storage).should_receive(:instance).and_return(storage_instance)
     end
   end
 
