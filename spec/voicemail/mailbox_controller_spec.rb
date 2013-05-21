@@ -55,6 +55,7 @@ describe Voicemail::MailboxController do
 
     describe "#play_number_of_messages" do
       it "plays the number of new messages if there is at least one" do
+        flexmock(Adhearsion).should_receive("config.punchblock.platform" => :asterisk).once
         storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
         should_play(config.mailbox.number_before).ordered
         subject.should_receive(:play_numeric).ordered.with(3)

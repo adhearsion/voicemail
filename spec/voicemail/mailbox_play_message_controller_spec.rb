@@ -30,6 +30,7 @@ describe Voicemail::MailboxPlayMessageController do
 
   describe "#intro_message" do
     it "plays the message introduction" do
+      flexmock(Adhearsion).should_receive("config.punchblock.platform" => :asterisk)
       subject.should_receive(:current_message).and_return(message)
       should_play config.messages.message_received_on
       subject.should_receive(:play_time).once.with(message[:received], format: config.datetime_format)

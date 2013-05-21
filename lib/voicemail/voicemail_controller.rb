@@ -16,6 +16,7 @@ module Voicemail
 
     def handle_recording
       @from = call.from
+      play config.beep
       record_comp = record config.recording.to_hash.merge(interruptible: true, max_duration: 30_000)
       save_recording record_comp.complete_event.recording.uri
     end
