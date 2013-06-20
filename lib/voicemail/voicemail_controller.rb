@@ -1,9 +1,9 @@
 module Voicemail
   class VoicemailController < ApplicationController
     def run
-      answer
       if mailbox
         play_greeting
+	answer
         handle_recording
       else
         mailbox_not_found
