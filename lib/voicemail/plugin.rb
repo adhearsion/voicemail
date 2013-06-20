@@ -6,7 +6,7 @@ module Voicemail
     end
 
     config :voicemail do
-      default_greeting "You have reached voicemail", desc: "What to use to greet users"
+      default_greeting "You have reached a voicemail box. Please leave a message.", desc: "What to use to greet users"
       mailbox_not_found "Mailbox not found", desc: "Message to use for a missing mailbox"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15.seconds, desc: "Timeout for all menus"
