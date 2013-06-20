@@ -45,7 +45,7 @@ module Voicemail
       end
       
       play config.messages.from
-      from_digits = current_message[:from].scan(/\d{10,18}/).first
+      from_digits = current_message[:from].scan(/\d+/).first
       #from_digits = current_message[:from].scan(/\d/).join
 
       if Adhearsion.config.punchblock.platform == :asterisk
