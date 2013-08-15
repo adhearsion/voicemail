@@ -17,7 +17,7 @@ module Voicemail
       desc "Voicemail recording options"
       recording {
         max_duration 5_000, desc: "Maximum duration for recording in milliseconds"
-        start_beep true, desc: "Play a beep before recording"
+        start_beep false, desc: "Play a beep before recording - default to false for FreeSWITCH"
       }
 
       desc "Configuration for registered users"
@@ -43,7 +43,7 @@ module Voicemail
         no_personal_greeting "You do not currently have a personalized greeting.", desc: "What to play if there is no specific greeting"
         recording {
           max_duration 5_000, desc: "Maximum duration for recording in milliseconds"
-          start_beep true, desc: "Play a beep before recording"
+          start_beep false, desc: "Play a beep before recording. Set to false for FreeSWITCH."
         }
       }
 
