@@ -3,10 +3,10 @@ require 'spec_helper'
 module Voicemail
   describe MailboxMessagesController do
     include VoicemailControllerSpecHelper
-    
+
     let(:call) { flexmock('Call') }
     let(:config) { Voicemail::Plugin.config }
-    let(:metadata) do 
+    let(:metadata) do
       { :mailbox => '100' }
     end
     let(:mailbox) do
@@ -31,7 +31,7 @@ module Voicemail
 
     let(:controller){ Voicemail::MailboxMessagesController.new call, metadata }
     subject { flexmock controller }
-    
+
     before(:each) do
       storage_instance.should_receive(:get_mailbox).with(metadata[:mailbox]).and_return(mailbox)
       flexmock(Storage).should_receive(:instance).and_return(storage_instance)
@@ -63,7 +63,7 @@ module Voicemail
 
     describe "#handle_message" do
       it "invokes MailboxPlayMessageController" do
-        should_invoke Voicemail::MailboxPlayMessageController, message: message
+        should_invoke Voicemail::MailboxPlayMessageController, message: message, mailbox: mailbox[:id]
         controller.handle_message message
       end
     end
