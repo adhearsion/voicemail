@@ -1,6 +1,8 @@
 module Voicemail
   class MailboxPlayMessageController < ApplicationController
+
     def run
+      load_message
       intro_message
       play_message
     end

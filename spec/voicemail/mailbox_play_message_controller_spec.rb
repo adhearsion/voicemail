@@ -47,4 +47,24 @@ describe Voicemail::MailboxPlayMessageController do
       subject.play_message
     end
   end
+
+  describe "#load_message" do
+
+    context "with a message" do
+      let(:metadata) { {message: "foo"} }
+
+      it "loads the messge" do
+        subject.load_message
+        subject.current_message.should == "foo"
+      end
+    end
+
+    context "with no message passed" do
+      let(:metadata) { {message: nil} }
+
+      it "raises an error" do
+        expect { subject.load_message }.to raise_error ArgumentError
+      end
+    end
+  end
 end
