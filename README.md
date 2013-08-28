@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/adhearsion/voicemail.png?branch=develop)](http://travis-ci.org/adhearsion/voicemail)
+
 # Voicemail
 
 This plugin aims to provide a basic voicemail implementation, complete with a voicemail system that allows user to listen to messages and manage them. It is currently only compatible with Asterisk, and you will need to provide the audio files and their path in the configuration. The configuration also contains many other options.
