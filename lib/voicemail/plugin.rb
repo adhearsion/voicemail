@@ -6,18 +6,17 @@ module Voicemail
     end
 
     config :voicemail do
-      default_greeting "You have reached a voicemail box. Please leave a message.", desc: "What to use to greet users"
+      default_greeting "You have reached voicemail", desc: "What to use to greet users"
       mailbox_not_found "Mailbox not found", desc: "Message to use for a missing mailbox"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15.seconds, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
       datetime_format "Q 'digits/at' IMp", desc: "Fromat to use for message date and time TTS"
-      beep nil, desc: "Audio file to use for beeps"
 
       desc "Voicemail recording options"
       recording {
         max_duration 5_000, desc: "Maximum duration for recording in milliseconds"
-        start_beep false, desc: "Play a beep before recording - default to false for FreeSWITCH"
+        start_beep true, desc: "Play a beep before recording"
       }
 
       desc "Configuration for registered users"
@@ -43,7 +42,7 @@ module Voicemail
         no_personal_greeting "You do not currently have a personalized greeting.", desc: "What to play if there is no specific greeting"
         recording {
           max_duration 5_000, desc: "Maximum duration for recording in milliseconds"
-          start_beep false, desc: "Play a beep before recording. Set to false for FreeSWITCH."
+          start_beep true, desc: "Play a beep before recording"
         }
       }
 

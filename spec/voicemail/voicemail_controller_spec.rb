@@ -52,7 +52,7 @@ describe Voicemail::VoicemailController do
 
           it "saves the recording" do
             recording_component.should_receive("complete_event.recording.uri").and_return(file_path)
-            subject.should_receive(:record).with(config.recording.to_hash.merge(interruptible: true, max_duration: 59_000, direction: :recv)).and_return(recording_component)
+            subject.should_receive(:record).with(config.recording.to_hash.merge(interruptible: true, max_duration: 30_000)).and_return(recording_component)
             storage_instance.should_receive(:save_recording).with(mailbox[:id], call.from, file_path)
             should_play
             controller.run

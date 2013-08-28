@@ -1,13 +1,13 @@
 module Voicemail
   class ApplicationController < ::Adhearsion::CallController
     def main_menu
-      pass MailboxMainMenuController, mailbox: mailbox[:id], storage: storage
+      pass MailboxMainMenuController, mailbox: mailbox[:id]
     end
 
     private
 
     def storage
-      metadata[:storage] || Storage.instance
+      Storage.instance
     end
 
     def config
@@ -23,6 +23,5 @@ module Voicemail
       raise ArgumentError, "Voicemail needs a mailbox specified in metadata" unless mailbox_id
       storage.get_mailbox mailbox_id
     end
-      
   end
 end

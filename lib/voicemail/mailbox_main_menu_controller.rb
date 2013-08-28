@@ -27,15 +27,15 @@ module Voicemail
     end
 
     def set_greeting
-      invoke MailboxSetGreetingController, mailbox: mailbox[:id], storage: storage
+      invoke MailboxSetGreetingController, mailbox: mailbox[:id]
     end
 
     def set_pin
-      invoke MailboxSetPinController, mailbox: mailbox[:id], storage: storage
+      invoke MailboxSetPinController, mailbox: mailbox[:id]
     end
 
     def listen_to_messages
-      invoke MailboxMessagesController, mailbox: mailbox[:id], storage: storage
+      invoke MailboxMessagesController, mailbox: mailbox[:id]
     end
   end
 end

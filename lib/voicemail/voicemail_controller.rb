@@ -1,9 +1,9 @@
 module Voicemail
   class VoicemailController < ApplicationController
     def run
+      answer
       if mailbox
         play_greeting
-	answer
         handle_recording
       else
         mailbox_not_found
@@ -15,9 +15,8 @@ module Voicemail
     end
 
     def handle_recording
-      @from = call.from.scan(/\d+/).first 
-      play config.beep
-      record_comp = record config.recording.to_hash.merge(interruptible: true, max_duration: 59_000, direction: :recv)
+      @from = call.from
+      record_comp = record config.recording.to_hash.merge(interruptible: true, max_duration: 30_000)
       save_recording record_comp.complete_event.recording.uri
     end
 
