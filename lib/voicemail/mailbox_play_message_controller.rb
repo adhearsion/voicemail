@@ -12,12 +12,10 @@ module Voicemail
          timeout: config.menu_timeout, tries: config.menu_tries do
         match 1 do
           archive_message
-          message_loop
         end
 
         match 5 do
           delete_message
-          message_loop
         end
 
         match(7) { rewind_message }
