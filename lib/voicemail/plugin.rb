@@ -15,8 +15,10 @@ module Voicemail
 
       desc "Voicemail recording options"
       recording {
-        max_duration 5_000, desc: "Maximum duration for recording in milliseconds"
+        final_timeout 2, desc: "Maximum duration to run after recording in seconds"
+        max_duration 30, desc: "Maximum duration for recording in seconds"
         start_beep true, desc: "Play a beep before recording"
+        stop_beep false, desc: "Play a beep after recording"
       }
 
       desc "Configuration for registered users"
