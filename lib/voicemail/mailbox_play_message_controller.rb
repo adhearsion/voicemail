@@ -8,8 +8,7 @@ module Voicemail
     end
 
     def play_message
-      menu current_message[:uri].gsub(/\.wav/, ''), config.messages.menu,
-         timeout: config.menu_timeout, tries: config.menu_tries do
+      menu message_uri, config.messages.menu, timeout: config.menu_timeout, tries: config.menu_tries do
         match 1 do
           archive_message
         end
@@ -63,6 +62,10 @@ module Voicemail
     def load_message
       @message = metadata[:message] || nil
       raise ArgumentError, "MailboxPlayMessageController needs a valid message passed to it" unless @message
+    end
+
+    def message_uri
+      current_message[:uri].gsub(/\.wav/, '')
     end
   end
 end
