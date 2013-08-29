@@ -41,7 +41,7 @@ module Voicemail
       play_time current_message[:received], format: config.datetime_format
       play config.messages.from
       from_digits = current_message[:from].scan(/\d/).join
-      execute "SayDigits", from_digits unless from_digits.empty?
+      say_characters from_digits unless from_digits.empty?
     end
 
     def rewind_message
