@@ -37,7 +37,7 @@ module Voicemail
       play config.set_greeting.before_record
       record_comp = record config.set_greeting.recording.to_hash.merge(interruptible: true, max_duration: 30_000)
       @temp_recording = record_comp.complete_event.recording.uri.gsub(/file:\/\//, '').gsub(/\.wav/, '')
-      play @temp_recording
+      play_audio @temp_recording
 
       menu config.set_greeting.after_record,
          timeout: config.menu_timeout, tries: config.menu_tries do

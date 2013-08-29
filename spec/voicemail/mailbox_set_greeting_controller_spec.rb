@@ -40,7 +40,7 @@ describe Voicemail::MailboxSetGreetingController do
       should_play config.set_greeting.before_record
       recording_component.should_receive("complete_event.recording.uri").and_return(file_path)
       subject.should_receive(:record).once.with(config.set_greeting.recording.to_hash.merge(interruptible: true, max_duration: 30_000)).and_return(recording_component)
-      should_play file_path
+      subject.should_receive(:play_audio).with file_path
       subject.should_receive(:menu).once.with(config.set_greeting.after_record,
           { timeout: config.menu_timeout,
             tries: config.menu_tries }, Proc)
