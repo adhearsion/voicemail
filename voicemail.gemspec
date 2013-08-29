@@ -17,12 +17,10 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency %q<adhearsion>, [">= 2.0.0"]
-  s.add_runtime_dependency %q<adhearsion-asterisk>
-  s.add_runtime_dependency %q<activesupport>, [">= 3.0.10"]
+  s.add_runtime_dependency %q<adhearsion>, ["~> 2.4"]
 
   s.add_development_dependency %q<bundler>
-  s.add_development_dependency %q<rspec>, [">= 2.5.0"]
+  s.add_development_dependency %q<rspec>, ["~> 2.14.0"]
   s.add_development_dependency %q<yard>, ["~> 0.6.0"]
   s.add_development_dependency %q<rake>, [">= 0"]
   s.add_development_dependency %q<guard-rspec>
