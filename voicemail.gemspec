@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Voicemail::VERSION
   s.authors     = ["Luca Pradovera"]
   s.email       = ["lpradovera@mojolingo.com"]
+  s.license     = 'MIT'
   s.homepage    = "http://github.com/adhearsion/voicemail"
   s.summary     = %q{Voicemail for Adhearsion}
   s.description = %q{A simple, extensible voicemail implementation}
