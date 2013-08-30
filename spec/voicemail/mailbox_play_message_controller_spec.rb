@@ -34,7 +34,7 @@ describe Voicemail::MailboxPlayMessageController do
       should_play config.messages.message_received_on
       subject.should_receive(:play_time).once.with(message[:received], format: config.datetime_format)
       should_play config.messages.from
-      subject.should_receive(:execute).once.with("SayDigits", "39335135335")
+      subject.should_receive(:say_characters).once.with "39335135335"
       controller.intro_message
     end
   end

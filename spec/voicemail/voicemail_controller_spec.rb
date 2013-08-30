@@ -3,20 +3,32 @@ require 'spec_helper'
 describe Voicemail::VoicemailController do
   include VoicemailControllerSpecHelper
 
-  before do
-    subject.should_receive(:answer).once
-  end
-
   describe "#run" do
     context "with a missing mailbox parameter in metadata" do
       let(:metadata) { Hash.new }
 
       it "should raise an error if there is no mailbox in the metadata" do
+        subject.should_receive(:answer).once
         expect { controller.run }.to raise_error ArgumentError
       end
     end
 
+    context "When force_183 is set and there's no mailbox" do
+      let(:mailbox) { nil }
+
+      before { config.force_183 = true  }
+      after  { config.force_183 = false }
+
+      it "should not answer" do
+        should_play config.mailbox_not_found
+        subject.should_receive(:hangup).once
+        controller.run
+      end
+    end
+
     context "with a present mailbox parameter in metadata" do
+      before { subject.should_receive(:answer).once }
+
       context "with an invalid mailbox" do
         let(:mailbox) { nil }
 
@@ -52,14 +64,13 @@ describe Voicemail::VoicemailController do
 
           it "saves the recording" do
             recording_component.should_receive("complete_event.recording.uri").and_return(file_path)
-            subject.should_receive(:record).with(config.recording.to_hash.merge(interruptible: true, max_duration: 30_000, direction: :recv)).and_return(recording_component)
+            subject.should_receive(:record).with(config.recording.to_hash.merge(interruptible: true, direction: :recv)).and_return(recording_component)
             storage_instance.should_receive(:save_recording).with(mailbox[:id], call.from, file_path)
             should_play
             controller.run
           end
         end
       end
-
     end
   end
 end

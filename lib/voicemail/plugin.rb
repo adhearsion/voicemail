@@ -13,10 +13,14 @@ module Voicemail
       menu_tries 3, desc: "Tries to get matching input for all menus"
       datetime_format "Q 'digits/at' IMp", desc: "Fromat to use for message date and time TTS"
 
+      force_183 false, desc: "Only #answer if the mailbox is found"
+
       desc "Voicemail recording options"
       recording {
-        max_duration 5_000, desc: "Maximum duration for recording in milliseconds"
+        final_timeout 2, desc: "Maximum duration to run after recording in seconds"
+        max_duration 30, desc: "Maximum duration for recording in seconds"
         start_beep true, desc: "Play a beep before recording"
+        stop_beep false, desc: "Play a beep after recording"
       }
 
       desc "Configuration for registered users"
