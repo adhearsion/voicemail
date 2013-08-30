@@ -89,8 +89,17 @@ module Voicemail
         task :info do
           STDOUT.puts "Voicemail plugin v. #{VERSION}"
         end
+
+        desc "Copy an initial translation file (en) to your adhearsion project (ahn_root/config/locales/en.yml)"
+        task :i18n_init do
+          current_path  = File.expand_path(File.dirname(__FILE__))
+          template_file = "#{current_path}/../../templates/en.yml"
+          new_location  = "#{Dir.pwd}/config/locales/"
+
+          FileUtils.mkdir_p(new_location) unless File.directory?(new_location)
+          FileUtils.copy template_file, "#{new_location}en.yml"
+        end
       end
     end
-
   end
 end
