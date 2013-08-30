@@ -2,18 +2,24 @@ module Voicemail
   class Plugin < Adhearsion::Plugin
 
     init :voicemail do
-      logger.info "Voicemail has been loaded"
+      if config.use_i18n
+        LocalizationLoader.replace_config
+        logger.info "Voicemail has been loaded with i18n support"
+      else
+        logger.info "Voicemail has been loaded"
+      end
     end
 
     config :voicemail do
-      default_greeting "You have reached voicemail", desc: "What to use to greet users"
-      mailbox_not_found "Mailbox not found", desc: "Message to use for a missing mailbox"
+      use_i18n false, desc: "Whether to use i18n for voice prompts"
+      force_183 false, desc: "Only #answer if the mailbox is found"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15.seconds, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
       datetime_format "Q 'digits/at' IMp", desc: "Fromat to use for message date and time TTS"
 
-      force_183 false, desc: "Only #answer if the mailbox is found"
+      default_greeting "You have reached voicemail", desc: "What to use to greet users"
+      mailbox_not_found "Mailbox not found", desc: "Message to use for a missing mailbox"
 
       desc "Voicemail recording options"
       recording {
