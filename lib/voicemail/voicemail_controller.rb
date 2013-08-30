@@ -1,8 +1,9 @@
 module Voicemail
   class VoicemailController < ApplicationController
     def run
-      answer
+      answer unless config.force_183
       if mailbox
+        answer if config.force_183
         play_greeting
         handle_recording
       else
