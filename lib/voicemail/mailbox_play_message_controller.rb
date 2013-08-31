@@ -65,7 +65,7 @@ module Voicemail
     end
 
     def message_uri
-      current_message[:uri].gsub(/\.wav/, '')
+      current_message[:uri]
     end
   end
 end
