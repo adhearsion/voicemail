@@ -8,7 +8,7 @@ describe Voicemail::MailboxPlayMessageController do
       id:       123,
       from:     "+39-335135335",
       received: Time.local(2012, 5, 1, 9, 0, 0),
-      uri:      "/path/to/file"
+      uri:      "file:///path/to/file.mp3"
     }
   end
 
