@@ -13,7 +13,7 @@ module Voicemail
       menu_tries 3, desc: "Tries to get matching input for all menus"
       datetime_format "Q 'digits/at' IMp", desc: "Fromat to use for message date and time TTS"
 
-      force_183 false, desc: "Only #answer if the mailbox is found"
+      when_to_answer :before_greeting, desc: "#answer :before_greeting or :after_greeting"
 
       desc "Voicemail recording options"
       recording {

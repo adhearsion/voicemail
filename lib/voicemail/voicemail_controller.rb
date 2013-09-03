@@ -1,10 +1,10 @@
 module Voicemail
   class VoicemailController < ApplicationController
     def run
-      answer unless config.force_183
+      answer if config.when_to_answer == :before_greeting
       if mailbox
-        answer if config.force_183
         play_greeting
+        answer if config.when_to_answer == :after_greeting
         handle_recording
       else
         mailbox_not_found

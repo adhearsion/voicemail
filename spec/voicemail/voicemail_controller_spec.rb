@@ -13,11 +13,11 @@ describe Voicemail::VoicemailController do
       end
     end
 
-    context "When force_183 is set and there's no mailbox" do
+    context "When when_to_answer is :after_greeting and there's no mailbox" do
       let(:mailbox) { nil }
 
-      before { config.force_183 = true  }
-      after  { config.force_183 = false }
+      before { config.when_to_answer = :after_greeting  }
+      after  { config.when_to_answer = :before_greeting }
 
       it "should not answer" do
         should_play config.mailbox_not_found
