@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Voicemail::MailboxController do
+describe Voicemail::AuthenticationController do
   include VoicemailControllerSpecHelper
 
   describe "#run" do
@@ -25,26 +25,30 @@ describe Voicemail::MailboxController do
 
       context "with an existing mailbox" do
         it "plays the mailbox greeting message" do
-          subject.should_receive(:play_number_of_messages).and_return(true)
-          subject.should_receive(:main_menu).and_return(true)
+          should_play config.mailbox.greeting_message
+          subject.should_receive(:authenticate).and_return(true)
+          subject.should_receive(:pass).with Voicemail::MailboxController, mailbox: 100
           controller.run
         end
       end
     end
 
-    describe "#play_number_of_messages" do
-      it "plays the number of new messages if there is at least one" do
-        storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
-        should_play(config.mailbox.number_before).ordered
-        subject.should_receive(:play_numeric).ordered.with(3)
-        should_play(config.mailbox.number_after).ordered
-        controller.play_number_of_messages
+    describe "#authenticate" do
+      it "authenticates an user that enters the correct pin" do
+        should_ask(config.mailbox.please_enter_pin, terminator: "#", timeout: config.prompt_timeout).once.and_return(1234)
+        controller.authenticate.should == true
       end
 
-      it "does play the no messages audio if there are none" do
-        storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
-        should_play(config.messages.no_new_messages).ordered
-        controller.play_number_of_messages
+      it "tell a user his pin is wrong and retries" do
+        subject.should_receive(:ask).times(2).and_return(1111, 1234)
+        should_play config.mailbox.pin_wrong
+        controller.authenticate.should == true
+      end
+
+      it "fails with a message if the user enters a wrong PIN the set number of times" do
+        subject.should_receive(:ask).times(3).and_return(1111, 2222, 3333)
+        subject.should_receive(:play).with(config.mailbox.pin_wrong).times(3)
+        controller.authenticate.should == false
       end
     end
 

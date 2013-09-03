@@ -20,6 +20,12 @@ To allow access by users to the mailboxes, `invoke MailboxController`. You will 
   invoke Voicemail::MailboxController, mailbox: mailbox_id
 ```
 
+If you want the users to go through pin-based authentication first, pass to the `AuthenticationController` instead:
+```ruby
+  # inside a CallController method
+  invoke Voicemail::AuthenticationController, mailbox: mailbox_id
+```
+
 ## Storage
 
 Mailbox metadata is stored in a PStore hash on disk for easy drop-in functionality.
