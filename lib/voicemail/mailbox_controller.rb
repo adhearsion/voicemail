@@ -43,11 +43,6 @@ module Voicemail
       play config.mailbox.greeting_message
     end
 
-    def mailbox_not_found
-      play config.mailbox_not_found
-      hangup
-    end
-
     def fail_auth
       play config.mailbox.could_not_auth
       hangup

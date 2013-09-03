@@ -23,5 +23,10 @@ module Voicemail
       raise ArgumentError, "Voicemail needs a mailbox specified in metadata" unless mailbox_id
       storage.get_mailbox mailbox_id
     end
+
+    def mailbox_not_found
+      play config.mailbox_not_found
+      hangup
+    end
   end
 end

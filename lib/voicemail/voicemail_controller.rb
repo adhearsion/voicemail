@@ -21,11 +21,6 @@ module Voicemail
       save_recording record_comp.complete_event.recording.uri
     end
 
-    def mailbox_not_found
-      play config.mailbox_not_found
-      hangup
-    end
-
     def save_recording(uri)
       storage.save_recording mailbox[:id], @from, uri
     end
