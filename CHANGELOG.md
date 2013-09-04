@@ -5,6 +5,7 @@
   * FEATURE - Seperate weclome/authentication from `MailboxController`, for those that wish to use their own.
   * CS - Rename config option for when to answer
   * CS - DRY up duplicated `#mailbox_not_found` method
+  * BUGFIX - Calls passed to `VoicemailController` were never formally hungup
   * BUGFIX - Don't strip extensions or `file://'` - punchblock will do that if needed
 
 # v0.2.0 - 2012-08-30

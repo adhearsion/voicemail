@@ -6,6 +6,7 @@ module Voicemail
         play_greeting
         answer if config.when_to_answer == :after_greeting
         handle_recording
+        hangup
       else
         mailbox_not_found
       end

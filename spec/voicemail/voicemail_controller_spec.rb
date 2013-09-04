@@ -40,6 +40,8 @@ describe Voicemail::VoicemailController do
       end
 
       context "with an existing mailbox" do
+        before { subject.should_receive(:hangup).once }
+
         context "without a greeting message" do
           it "plays the default greeting if one is not specified" do
             should_play config.default_greeting
