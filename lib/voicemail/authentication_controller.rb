@@ -1,10 +1,20 @@
 module Voicemail
   class AuthenticationController < ApplicationController
 
+    attr_accessor :tries, :auth_ok, :input
+
+    def initialize(call, metadata={})
+      @tries   = 0
+      @auth_ok = false
+
+      super call, metadata
+    end
+
     def run
       if mailbox
         play_greeting
-        fail_auth unless authenticate
+        authenticate
+        fail_auth unless auth_ok
         pass MailboxController, mailbox: mailbox[:id]
       else
         mailbox_not_found
@@ -12,21 +22,31 @@ module Voicemail
     end
 
     def authenticate
-      current_tries = 0
-      auth_ok = false
-      while current_tries < config.mailbox.pin_tries
-        input = ask config.mailbox.please_enter_pin, terminator: "#", timeout: config.prompt_timeout
-        logger.info input.to_s
-        logger.info mailbox[:pin].to_s
-        auth_ok = true if input.to_s == mailbox[:pin].to_s
-        break if auth_ok
-        play config.mailbox.pin_wrong
-        current_tries += 1
+      while still_going?
+        @tries += 1
+        get_input
+        if matches?
+          @auth_ok = true
+        else
+          play config.mailbox.pin_wrong
+        end
       end
-      auth_ok
     end
 
     private
+
+    def still_going?
+      return false if auth_ok
+      config.mailbox.pin_tries == 0 || tries < config.mailbox.pin_tries
+    end
+
+    def matches?
+      config.matcher_class.new(input, mailbox[:pin]).matches?
+    end
+
+    def get_input
+      @input = ask config.mailbox.please_enter_pin, terminator: "#", timeout: config.prompt_timeout
+    end
 
     def play_greeting
       play config.mailbox.greeting_message

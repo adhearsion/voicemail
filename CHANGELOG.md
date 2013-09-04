@@ -1,4 +1,6 @@
 # develop
+  * FEATURE - Seperate pin_checking into seperate matcher class, so that it can be overriden if desired
+  * FEATURE - Allow `pin_tries` to be set to 0 for infinite loop
   * FEATURE - Pass the complete recording complete object to `#save_recording`, giving the storage more information; `PStore` only uses the uri, but now you have access to more information (such as duration) if desired for your own storage adapter
   * FEATURE - Seperate weclome/authentication from `MailboxController`, for those that wish to use their own.
   * CS - Rename config option for when to answer

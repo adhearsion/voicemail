@@ -2,6 +2,7 @@ module Voicemail; end
 require "voicemail/version"
 require "voicemail/storage_pstore"
 require "voicemail/storage"
+require "voicemail/matcher"
 require "voicemail/application_controller"
 require "voicemail/voicemail_controller"
 require "voicemail/mailbox_controller"

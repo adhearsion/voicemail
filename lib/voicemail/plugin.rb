@@ -15,6 +15,8 @@ module Voicemail
 
       when_to_answer :before_greeting, desc: "#answer :before_greeting or :after_greeting"
 
+      matcher_class Voicemail::Matcher, desc: "Class that checks for a match in pin authentication"
+
       desc "Voicemail recording options"
       recording {
         final_timeout 2, desc: "Maximum duration to run after recording in seconds"
@@ -27,7 +29,7 @@ module Voicemail
       mailbox {
         greeting_message "Welcome to the mailbox system.", desc: "Message to greet voicemail users"
         please_enter_pin "Please enter your PIN.", desc: "Message asking to enter PIN."
-        pin_tries 3, desc: "Number of tries to authenticate before failure"
+        pin_tries 3, desc: "Number of tries to authenticate before failure - set to 0 for infinite"
         pin_wrong "The PIN you entered does not match. Please try again.", desc: "Message for an user that enters the wrong PIN"
         could_not_auth "We are sorry, the system could not authenticate you", desc: "Message for authentication final failure."
         number_before "You have ", desc: "What to play before the number of new messages"
