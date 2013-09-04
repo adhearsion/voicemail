@@ -20,8 +20,9 @@ module Voicemail
       File.unlink(pstore_path) if File.exists?(pstore_path)
       config.storage.pstore_location = pstore_path
       StoragePstore.new.tap do |storage|
-        storage.store.transaction do
-          storage.store[:mailboxes][100] = mailbox
+        storage.store.transaction do |store|
+          store[:recordings][100] = []
+          store[:mailboxes][100]  = mailbox
         end
         flexmock storage
       end
@@ -41,5 +42,17 @@ module Voicemail
       end
     end
 
+    describe "#save_recording" do
+      let(:recording_object) { flexmock 'recording_object', uri: "file://somewav.wav" }
+
+      it "saves the recording" do
+        storage.save_recording(100, "foo", recording_object)
+        storage.store.transaction do |store|
+          store[:recordings][100][0][:uri].should  == "file://somewav.wav"
+          store[:recordings][100][0][:from].should == "foo"
+          store[:recordings][100][0][:id].should_not be_nil
+        end
+      end
+    end
   end
 end

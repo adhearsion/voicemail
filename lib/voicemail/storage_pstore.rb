@@ -55,13 +55,13 @@ module Voicemail
       end
     end
 
-    def save_recording(mailbox_id, from, recording_uri)
+    def save_recording(mailbox_id, from, recording_object)
       store.transaction do
         recording = {
           id:       SecureRandom.uuid,
           from:     from,
           received: Time.now,
-          uri:      recording_uri
+          uri:      recording_object.uri
         }
         store[:recordings][mailbox_id] << recording
         logger.info "Saving recording: #{recording.inspect}"

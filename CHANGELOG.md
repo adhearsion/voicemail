@@ -1,4 +1,5 @@
 # develop
+  * FEATURE - Pass the complete recording complete object to `#save_recording`, giving the storage more information; `PStore` only uses the uri, but now you have access to more information (such as duration) if desired for your own storage adapter
   * FEATURE - Seperate weclome/authentication from `MailboxController`, for those that wish to use their own.
   * CS - Rename config option for when to answer
   * CS - DRY up duplicated `#mailbox_not_found` method

@@ -18,11 +18,11 @@ module Voicemail
     def handle_recording
       @from = call.from
       record_comp = record config.recording.to_hash.merge(interruptible: true, direction: :recv)
-      save_recording record_comp.complete_event.recording.uri
+      save_recording record_comp.complete_event.recording
     end
 
-    def save_recording(uri)
-      storage.save_recording mailbox[:id], @from, uri
+    def save_recording(recording_object)
+      storage.save_recording mailbox[:id], @from, recording_object
     end
   end
 end
