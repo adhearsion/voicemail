@@ -7,6 +7,7 @@
   * FEATURE - Allow overriding `MailboxMainMenuController` with your own custom menu class
   * CS - Rename config option for when to answer
   * CS - DRY up duplicated `#mailbox_not_found` method
+  * CS - Move all the call controllers to their own call_controller directory, to avoid clutter
   * BUGFIX - Calls passed to `VoicemailController` were never formally hungup
   * BUGFIX - Don't strip extensions or `file://'` - punchblock will do that if needed
 
