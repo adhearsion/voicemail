@@ -4,11 +4,10 @@ module Voicemail
   describe MailboxMessagesController do
     include VoicemailControllerSpecHelper
 
-    let(:call) { flexmock('Call') }
-    let(:config) { Voicemail::Plugin.config }
-    let(:metadata) do
-      { :mailbox => '100' }
-    end
+    let(:call)     { flexmock('Call') }
+    let(:config)   { Voicemail::Plugin.config }
+    let(:metadata) { {mailbox: '100', new_or_saved: message_type} }
+
     let(:mailbox) do
       {
         :id => 100,
@@ -37,34 +36,74 @@ module Voicemail
       flexmock(Storage).should_receive(:instance).and_return(storage_instance)
     end
 
-    describe "#message_loop" do
-      it "calls #next_message if there are new messages" do
-        storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
-        subject.should_receive(:next_message).once
-        controller.message_loop
+
+    context "with new messages" do
+      let(:message_type) { :new }
+
+      describe "#message_loop" do
+        after { controller.message_loop }
+
+        it "calls #next_message if there are new messages" do
+          storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
+          subject.should_receive(:next_message).once
+        end
+
+        it "plays a message and goes to the main menu if there are no new messages" do
+          storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
+          subject.should_receive(:play).with(config.messages.no_new_messages).once
+          subject.should_receive(:main_menu).once
+        end
       end
 
-      it "plays a message and goes to the main menu if there are no new messages" do
-        storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
-        subject.should_receive(:play).with(config.messages.no_new_messages).once
-        subject.should_receive(:main_menu).once
-        controller.message_loop
+      describe "#next_message" do
+        it "gets the next message and calls #handle_message" do
+          storage_instance.should_receive(:next_new_message).once.with(mailbox[:id]).and_return(message)
+          subject.should_receive(:handle_message).once.with(message)
+          subject.should_receive(:message_loop).once
+          controller.next_message
+        end
+      end
+
+      describe "#handle_message" do
+        it "invokes MailboxPlayMessageController" do
+          should_invoke Voicemail::MailboxPlayMessageController, message: message, mailbox: mailbox[:id]
+          controller.handle_message message
+        end
       end
     end
 
-    describe "#next_message" do
-      it "gets the next message and calls #handle_message" do
-        storage_instance.should_receive(:next_new_message).once.with(mailbox[:id]).and_return(message)
-        subject.should_receive(:handle_message).once.with(message)
-        subject.should_receive(:message_loop).once
-        controller.next_message
-      end
-    end
+    context "with saved messages" do
+      let(:message_type) { :saved }
 
-    describe "#handle_message" do
-      it "invokes MailboxPlayMessageController" do
-        should_invoke Voicemail::MailboxPlayMessageController, message: message, mailbox: mailbox[:id]
-        controller.handle_message message
+      describe "#message_loop" do
+        after { controller.message_loop }
+
+        it "calls #next_message if there are saved messages" do
+          storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(3)
+          subject.should_receive(:next_message).once
+        end
+
+        it "plays a message and goes to the main menu if there are no saved messages" do
+          storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(0)
+          subject.should_receive(:play).with(config.messages.no_saved_messages).once
+          subject.should_receive(:main_menu).once
+        end
+      end
+
+      describe "#next_message" do
+        it "gets the next message and calls #handle_message" do
+          storage_instance.should_receive(:next_saved_message).once.with(mailbox[:id]).and_return(message)
+          subject.should_receive(:handle_message).once.with(message)
+          subject.should_receive(:message_loop).once
+          controller.next_message
+        end
+      end
+
+      describe "#handle_message" do
+        it "invokes MailboxPlayMessageController" do
+          should_invoke Voicemail::MailboxPlayMessageController, message: message, mailbox: mailbox[:id]
+          controller.handle_message message
+        end
       end
     end
   end

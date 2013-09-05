@@ -1,12 +1,20 @@
 module Voicemail
   class MailboxMessagesController < ApplicationController
+
+    attr_accessor :new_or_saved
+
+    def initialize(call, metadata={})
+      @new_or_saved = metadata[:new_or_saved] || :new
+
+      super call, metadata
+    end
+
     def run
       message_loop
     end
 
     def message_loop
-      number = storage.count_new_messages(mailbox[:id])
-      if number > 0
+      if messages_remaining > 0
         next_message
       else
         bail_out
@@ -14,7 +22,6 @@ module Voicemail
     end
 
     def next_message
-      current_message = storage.next_new_message(mailbox[:id])
       handle_message current_message
       message_loop
     end
@@ -25,8 +32,16 @@ module Voicemail
 
     private
 
+    def messages_remaining
+      storage.send "count_#{new_or_saved}_messages", mailbox[:id]
+    end
+
+    def current_message
+      storage.send "next_#{new_or_saved}_message", mailbox[:id]
+    end
+
     def bail_out
-      play config.messages.no_new_messages
+      play config.messages["no_#{new_or_saved}_messages"]
       main_menu
     end
   end
