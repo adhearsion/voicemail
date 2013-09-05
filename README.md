@@ -45,10 +45,10 @@ Alternatively, you can pass in a storage layer dynamically when invoking the con
   # etc.
 ```
 
-## Author
+## Authors
 
-Original author: [Luca Pradovera](https://github.com/polysics)
-Also contributed: [Justin Aiken](https://github.com/JustinAiken)
+* Original author: [Luca Pradovera](https://github.com/polysics)
+* Also contributed: [Justin Aiken](https://github.com/JustinAiken)
 
 ## Links
 
