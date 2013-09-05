@@ -5,8 +5,8 @@ require "voicemail/version"
 Gem::Specification.new do |s|
   s.name        = "voicemail"
   s.version     = Voicemail::VERSION
-  s.authors     = ["Luca Pradovera"]
-  s.email       = ["lpradovera@mojolingo.com"]
+  s.authors     = ["Luca Pradovera", "Justin Aiken"]
+  s.email       = ["lpradovera@mojolingo.com", "jaiken@mojolingo.com"]
   s.license     = 'MIT'
   s.homepage    = "http://github.com/adhearsion/voicemail"
   s.summary     = %q{Voicemail for Adhearsion}

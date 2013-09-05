@@ -48,6 +48,7 @@ Alternatively, you can pass in a storage layer dynamically when invoking the con
 ## Author
 
 Original author: [Luca Pradovera](https://github.com/polysics)
+Also contributed: [Justin Aiken](https://github.com/JustinAiken)
 
 ## Links
 
