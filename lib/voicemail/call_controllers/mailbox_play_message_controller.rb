@@ -1,6 +1,14 @@
 module Voicemail
   class MailboxPlayMessageController < ApplicationController
 
+    attr_accessor :new_or_saved
+
+    def initialize(call, metadata={})
+      @new_or_saved = metadata[:new_or_saved] || :new
+
+      super call, metadata
+    end
+
     def run
       load_message
       intro_message
@@ -8,9 +16,9 @@ module Voicemail
     end
 
     def play_message
-      menu message_uri, config.messages.menu, timeout: config.menu_timeout, tries: config.menu_tries do
+      menu message_uri, play_message_menu, timeout: config.menu_timeout, tries: config.menu_tries do
         match 1 do
-          archive_message
+          archive_or_unarchive_message
         end
 
         match 5 do
@@ -43,12 +51,24 @@ module Voicemail
       say_characters from_digits unless from_digits.empty?
     end
 
+    def play_message_menu
+      if new_or_saved == :new
+        config.messages.menu_new
+      else
+        config.messages.menu_saved
+      end
+    end
+
     def rewind_message
       play_message
     end
 
-    def archive_message
-      storage.archive_message mailbox[:id], current_message[:id]
+    def archive_or_unarchive_message
+      if new_or_saved == :new
+        storage.archive_message mailbox[:id], current_message[:id]
+      else
+        storage.unarchive_message mailbox[:id], current_message[:id]
+      end
     end
 
     def delete_message

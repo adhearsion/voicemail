@@ -14,6 +14,10 @@ module Voicemail
 
     let(:config) { Voicemail::Plugin.config }
 
+    let(:message_1) { {id: :foo} }
+    let(:message_2) { {id: :bar} }
+    let(:message_3) { {id: :biz} }
+
     subject :storage do
       basedir = File.expand_path("../../../tmp/", __FILE__)
       pstore_path = File.join(basedir, 'voicemail.pstore')
@@ -21,8 +25,8 @@ module Voicemail
       config.storage.pstore_location = pstore_path
       StoragePstore.new.tap do |storage|
         storage.store.transaction do |store|
-          store[:recordings][100] = [:foo]
-          store[:archived][100]   = [:bar, :biz]
+          store[:recordings][100] = [message_1]
+          store[:archived][100]   = [message_2, message_3]
           store[:mailboxes][100]  = mailbox
         end
         flexmock storage
@@ -65,6 +69,38 @@ module Voicemail
     describe "#count_saved_messages" do
       it "returns the saved message count" do
         storage.count_saved_messages(100).should == 2
+      end
+    end
+
+    describe "#next_new_message" do
+      it "returns the next new messaged" do
+        storage.next_new_message(100).should == {id: :foo}
+      end
+    end
+
+    describe "#next_saved_message" do
+      it "returns the next saved messaged" do
+        storage.next_saved_message(100).should == {id: :bar}
+      end
+    end
+
+    describe "#archive_message" do
+      it "archives the message" do
+        storage.archive_message 100, :foo
+        storage.store.transaction do |store|
+          store[:recordings][100].should == []
+          store[:archived][100].should   == [message_2, message_3, message_1]
+        end
+      end
+    end
+
+    describe "#unarchive_message" do
+      it "unarchives the message" do
+        storage.unarchive_message 100, :bar
+        storage.store.transaction do |store|
+          store[:recordings][100].should == [message_1, message_2]
+          store[:archived][100].should   == [message_3]
+        end
       end
     end
   end

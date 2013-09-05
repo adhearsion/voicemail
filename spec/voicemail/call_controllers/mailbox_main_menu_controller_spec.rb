@@ -26,10 +26,17 @@ describe Voicemail::MailboxMainMenuController do
     end
   end
 
-  describe "#listen_to_messages" do
+  describe "#listen_to_new_messages" do
     it "invokes MailboxMessagesController" do
       should_invoke Voicemail::MailboxMessagesController, mailbox: mailbox[:id]
-      controller.listen_to_messages
+      controller.listen_to_new_messages
+    end
+  end
+
+  describe "#listen_to_saved_messages" do
+    it "invokes MailboxMessagesController" do
+      should_invoke Voicemail::MailboxMessagesController, mailbox: mailbox[:id], new_or_saved: :saved
+      controller.listen_to_saved_messages
     end
   end
 end

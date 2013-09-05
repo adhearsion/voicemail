@@ -5,6 +5,7 @@
   * FEATURE - Seperate weclome/authentication from `MailboxController`, for those that wish to use their own.
   * FEATURE - Add saved count to `MailboxController`
   * FEATURE - Allow overriding `MailboxMainMenuController` with your own custom menu class
+  * FEATURE - Ability to listen to new OR saved messages, and archive/unarchive at will.
   * CS - Rename config option for when to answer
   * CS - DRY up duplicated `#mailbox_not_found` method
   * CS - Move all the call controllers to their own call_controller directory, to avoid clutter

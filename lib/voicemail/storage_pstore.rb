@@ -33,6 +33,12 @@ module Voicemail
       end
     end
 
+    def next_saved_message(mailbox_id)
+      store.transaction true do
+        store[:archived][mailbox_id].first
+      end
+    end
+
     def archive_message(mailbox_id, message_id)
       store.transaction do
         item = store[:recordings][mailbox_id].select { |i| i[:id] == message_id }
@@ -40,6 +46,17 @@ module Voicemail
         if rec
           store[:archived][mailbox_id] << rec
           store[:recordings][mailbox_id].delete(rec)
+        end
+      end
+    end
+
+    def unarchive_message(mailbox_id, message_id)
+      store.transaction do
+        item = store[:archived][mailbox_id].select { |i| i[:id] == message_id }
+        rec  = item.first
+        if rec
+          store[:recordings][mailbox_id] << rec
+          store[:archived][mailbox_id].delete(rec)
         end
       end
     end

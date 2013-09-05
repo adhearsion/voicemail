@@ -12,11 +12,26 @@ describe Voicemail::MailboxPlayMessageController do
     }
   end
 
-  describe "#archive_message" do
-    it "archives the message" do
-      subject.should_receive(:current_message).once.and_return(message)
-      storage_instance.should_receive(:archive_message).once.with(mailbox[:id], message[:id])
-      controller.archive_message
+  describe "#archive_or_unarchive_message" do
+
+    after { controller.archive_or_unarchive_message }
+
+    context "with a new message" do
+      before { subject.new_or_saved = :new }
+
+      it "archives the message" do
+        subject.should_receive(:current_message).once.and_return message
+        storage_instance.should_receive(:archive_message).once.with mailbox[:id], message[:id]
+      end
+    end
+
+    context "with a saved message" do
+      before { subject.new_or_saved = :saved }
+
+      it "unarchives the message" do
+        subject.should_receive(:current_message).once.and_return message
+        storage_instance.should_receive(:unarchive_message).once.with mailbox[:id], message[:id]
+      end
     end
   end
 
@@ -40,11 +55,26 @@ describe Voicemail::MailboxPlayMessageController do
   end
 
   describe "#play_message" do
-    it "plays the message, followed by the menu" do
-      subject.should_receive(:current_message).once.and_return(message)
-      subject.should_receive(:menu).once.with(message[:uri], config.messages.menu,
-        { timeout: config.menu_timeout, tries: config.menu_tries }, Proc)
-      subject.play_message
+    after { subject.play_message }
+
+    context "with a new message" do
+      before { subject.new_or_saved = :new }
+
+      it "plays the message, followed by the new message menu" do
+        subject.should_receive(:current_message).once.and_return message
+        subject.should_receive(:menu).once.with message[:uri], config.messages.menu_new,
+          { timeout: config.menu_timeout, tries: config.menu_tries }, Proc
+      end
+    end
+
+    context "with a saved message" do
+      before { subject.new_or_saved = :saved }
+
+      it "plays the message, followed by the saved message menu" do
+        subject.should_receive(:current_message).once.and_return message
+        subject.should_receive(:menu).once.with message[:uri], config.messages.menu_saved,
+          { timeout: config.menu_timeout, tries: config.menu_tries }, Proc
+      end
     end
   end
 
