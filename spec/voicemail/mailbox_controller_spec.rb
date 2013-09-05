@@ -31,28 +31,49 @@ describe Voicemail::MailboxController do
         end
       end
     end
+  end
 
-    describe "#play_number_of_messages" do
+  describe "#play_number_of_messages" do
+
+    after { controller.play_number_of_messages type }
+
+    context ":new" do
+      let(:type) { :new }
+
       it "plays the number of new messages if there is at least one" do
         storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
         should_play(config.mailbox.number_before).ordered
         subject.should_receive(:play_numeric).ordered.with(3)
-        should_play(config.mailbox.number_after).ordered
-        controller.play_number_of_messages
+        should_play(config.mailbox.number_after_new).ordered
       end
 
-      it "does play the no messages audio if there are none" do
+      it "does play the no new messages audio if there are none" do
         storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
         should_play(config.messages.no_new_messages).ordered
-        controller.play_number_of_messages
       end
     end
 
-    describe "#main_menu" do
-      it "passes to MainMenuController" do
-        subject.should_receive(:pass).once.with(Voicemail::MailboxMainMenuController, mailbox: mailbox[:id])
-        controller.main_menu
+    context ":saved" do
+      let(:type) { :saved }
+
+      it "plays the number of saved messages if there is at least one" do
+        storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(3)
+        should_play(config.mailbox.number_before).ordered
+        subject.should_receive(:play_numeric).ordered.with(3)
+        should_play(config.mailbox.number_after_saved).ordered
       end
+
+      it "does play the no saved messages audio if there are none" do
+        storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(0)
+        should_play(config.messages.no_saved_messages).ordered
+      end
+    end
+  end
+
+  describe "#main_menu" do
+    it "passes to MainMenuController" do
+      subject.should_receive(:pass).once.with(Voicemail::MailboxMainMenuController, mailbox: mailbox[:id])
+      controller.main_menu
     end
   end
 end

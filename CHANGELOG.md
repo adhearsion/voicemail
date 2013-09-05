@@ -3,6 +3,7 @@
   * FEATURE - Allow `pin_tries` to be set to 0 for infinite loop
   * FEATURE - Pass the complete recording complete object to `#save_recording`, giving the storage more information; `PStore` only uses the uri, but now you have access to more information (such as duration) if desired for your own storage adapter
   * FEATURE - Seperate weclome/authentication from `MailboxController`, for those that wish to use their own.
+  * FEATURE - Add saved count to `MailboxController`
   * CS - Rename config option for when to answer
   * CS - DRY up duplicated `#mailbox_not_found` method
   * BUGFIX - Calls passed to `VoicemailController` were never formally hungup

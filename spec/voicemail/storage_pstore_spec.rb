@@ -21,7 +21,8 @@ module Voicemail
       config.storage.pstore_location = pstore_path
       StoragePstore.new.tap do |storage|
         storage.store.transaction do |store|
-          store[:recordings][100] = []
+          store[:recordings][100] = [:foo]
+          store[:archived][100]   = [:bar, :biz]
           store[:mailboxes][100]  = mailbox
         end
         flexmock storage
@@ -48,10 +49,22 @@ module Voicemail
       it "saves the recording" do
         storage.save_recording(100, "foo", recording_object)
         storage.store.transaction do |store|
-          store[:recordings][100][0][:uri].should  == "file://somewav.wav"
-          store[:recordings][100][0][:from].should == "foo"
-          store[:recordings][100][0][:id].should_not be_nil
+          store[:recordings][100].last[:uri].should  == "file://somewav.wav"
+          store[:recordings][100].last[:from].should == "foo"
+          store[:recordings][100].last[:id].should_not be_nil
         end
+      end
+    end
+
+    describe "#count_new_messages" do
+      it "returns the new message count" do
+        storage.count_new_messages(100).should == 1
+      end
+    end
+
+    describe "#count_saved_messages" do
+      it "returns the saved message count" do
+        storage.count_saved_messages(100).should == 2
       end
     end
   end

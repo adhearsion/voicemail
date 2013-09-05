@@ -21,6 +21,12 @@ module Voicemail
       end
     end
 
+    def count_saved_messages(mailbox_id)
+      store.transaction true do
+        store[:archived][mailbox_id].size
+      end
+    end
+
     def next_new_message(mailbox_id)
       store.transaction true do
         store[:recordings][mailbox_id].first
