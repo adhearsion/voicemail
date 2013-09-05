@@ -15,7 +15,8 @@ module Voicemail
 
       when_to_answer :before_greeting, desc: "#answer :before_greeting or :after_greeting"
 
-      matcher_class Voicemail::Matcher, desc: "Class that checks for a match in pin authentication"
+      matcher_class   Voicemail::Matcher, desc: "Class that checks for a match in pin authentication"
+      main_menu_class Voicemail::MailboxMainMenuController, desc: "Class runs the main menu prompts"
 
       desc "Voicemail recording options"
       recording {

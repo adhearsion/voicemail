@@ -1,7 +1,7 @@
 module Voicemail
   class ApplicationController < ::Adhearsion::CallController
     def main_menu
-      pass MailboxMainMenuController, mailbox: mailbox[:id]
+      pass config.main_menu_class, mailbox: mailbox[:id]
     end
 
     private
