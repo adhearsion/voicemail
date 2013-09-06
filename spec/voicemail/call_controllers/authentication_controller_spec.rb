@@ -56,11 +56,4 @@ describe Voicemail::AuthenticationController do
       controller.auth_ok.should == false
     end
   end
-
-  describe "#main_menu" do
-    it "passes to MainMenuController" do
-      subject.should_receive(:pass).once.with(Voicemail::MailboxMainMenuController, mailbox: mailbox[:id])
-      controller.main_menu
-    end
-  end
 end
