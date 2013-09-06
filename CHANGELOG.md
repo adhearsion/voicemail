@@ -6,10 +6,12 @@
   * FEATURE - Add saved count to `MailboxController`
   * FEATURE - Allow overriding `MailboxMainMenuController` with your own custom menu class
   * FEATURE - Ability to listen to new OR saved messages, and archive/unarchive at will.
+  * FEATURE - Improved passing of a storage mechanism between controllers
   * CS - Rename config option for when to answer
   * CS - DRY up duplicated `#mailbox_not_found` method
   * CS - Move all the call controllers to their own call_controller directory, to avoid clutter
   * CS - Remove unused `#section_menu` in `MailboxMessagesController`
+  * CS - Remove specs for `#main_menu` in `AuthenticationController` since that controller never calls it
   * BUGFIX - Calls passed to `VoicemailController` were never formally hungup
   * BUGFIX - Don't strip extensions or `file://'` - punchblock will do that if needed
   * DOC - Add Justin Aiken to authors

@@ -6,7 +6,7 @@ describe Voicemail::ApplicationController do
   describe "#main_menu" do
     context "with the defaults" do
       it "passes to MainMenuController" do
-        subject.should_receive(:pass).once.with Voicemail::MailboxMainMenuController, mailbox: mailbox[:id]
+        subject.should_receive(:pass).once.with Voicemail::MailboxMainMenuController, mailbox: mailbox[:id], storage: storage_instance
         controller.main_menu
       end
     end
@@ -23,7 +23,7 @@ describe Voicemail::ApplicationController do
       after { config.main_menu_class = @saved_option }
 
       it "passes to custom controller class" do
-        subject.should_receive(:pass).once.with Foo, mailbox: mailbox[:id]
+        subject.should_receive(:pass).once.with Foo, mailbox: mailbox[:id], storage: storage_instance
         controller.main_menu
       end
     end

@@ -72,7 +72,7 @@ describe Voicemail::MailboxController do
 
   describe "#main_menu" do
     it "passes to MainMenuController" do
-      subject.should_receive(:pass).once.with(Voicemail::MailboxMainMenuController, mailbox: mailbox[:id])
+      subject.should_receive(:pass).once.with Voicemail::MailboxMainMenuController, mailbox: mailbox[:id], storage: storage_instance
       controller.main_menu
     end
   end

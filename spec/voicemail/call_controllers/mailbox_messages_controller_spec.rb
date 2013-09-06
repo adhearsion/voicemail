@@ -66,7 +66,7 @@ module Voicemail
 
       describe "#handle_message" do
         it "invokes MailboxPlayMessageController" do
-          should_invoke Voicemail::MailboxPlayMessageController, message: message, mailbox: mailbox[:id], new_or_saved: :new
+          should_invoke Voicemail::MailboxPlayMessageController, message: message, mailbox: mailbox[:id], new_or_saved: :new, storage: storage_instance
           controller.handle_message message
         end
       end
@@ -101,7 +101,7 @@ module Voicemail
 
       describe "#handle_message" do
         it "invokes MailboxPlayMessageController" do
-          should_invoke Voicemail::MailboxPlayMessageController, message: message, mailbox: mailbox[:id], new_or_saved: :saved
+          should_invoke Voicemail::MailboxPlayMessageController, message: message, mailbox: mailbox[:id], new_or_saved: :saved, storage: storage_instance
           controller.handle_message message
         end
       end
