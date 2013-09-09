@@ -45,6 +45,18 @@ Alternatively, you can pass in a storage layer dynamically when invoking the con
   # etc.
 ```
 
+## Method Overrides
+
+If you prefer to use your own main menu instead of the [one provided](https://github.com/adhearsion/voicemail/blob/develop/lib/voicemail/call_controllers/mailbox_main_menu_controller.rb#L10-L13), you can set the class to use like so:
+```ruby
+config.voicemail.main_menu_class = MyMenuController
+```
+
+Another override provided is the [pin matcher](https://github.com/adhearsion/voicemail/blob/develop/lib/voicemail/call_controllers/authentication_controller.rb#L43-L45) used to verify authentication - if you want to use your own match-checker (to check against an API or some use), you can also override it:
+```ruby
+config.voicemail.matcher_class = MyMatcher
+```
+
 ## Numeric Methods
 
 When you have something like `You have -x- new messages` or `message received on -x-` you can either use the default setting, which will fill the x with TTS, or to use [ahnsay](https://www.github.com/polysics/ahnsay) to use audio files for each digit.
