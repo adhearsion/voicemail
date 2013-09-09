@@ -44,11 +44,7 @@ module Voicemail
     end
 
     def intro_message
-      play config.messages.message_received_on
-      play_time current_message[:received], format: config.datetime_format
-      play config.messages.from
-      from_digits = current_message[:from].scan(/\d/).join
-      say_characters from_digits unless from_digits.empty?
+      invoke MailboxPlayMessageIntroController, message: current_message, mailbox: mailbox[:id], storage: storage
     end
 
     def play_message_menu

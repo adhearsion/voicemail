@@ -45,6 +45,17 @@ Alternatively, you can pass in a storage layer dynamically when invoking the con
   # etc.
 ```
 
+## Numeric Methods
+
+When you have something like `You have -x- new messages` or `message received on -x-` you can either use the default setting, which will fill the x with TTS, or to use [ahnsay](https://www.github.com/polysics/ahnsay) to use audio files for each digit.
+```ruby
+config.voicemail.numberic_method = :play_numeric #default
+"You have two new messages"
+
+config.voicemail.numberic_method = :ahn_say
+"You have" + "file://...two.ul" + "new messages"
+```
+
 ## Authors
 
 * Original author: [Luca Pradovera](https://github.com/polysics)

@@ -35,21 +35,41 @@ describe Voicemail::MailboxController do
 
   describe "#play_number_of_messages" do
 
-    after { controller.play_number_of_messages type }
+    after do
+      controller.play_number_of_messages type
+      config.numberic_method = :play_numeric
+    end
 
     context ":new" do
       let(:type) { :new }
 
-      it "plays the number of new messages if there is at least one" do
-        storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
-        should_play(config.mailbox.number_before).ordered
-        subject.should_receive(:play_numeric).ordered.with(3)
-        should_play(config.mailbox.number_after_new).ordered
+      context "with at least one new message" do
+        before { storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return 3 }
+
+        it "plays the number of new messages" do
+          should_play(config.mailbox.number_before).ordered
+          subject.should_receive(:play_numeric).ordered.with(3)
+          should_play(config.mailbox.number_after_new).ordered
+        end
+
+        context "when it's set to use ahnsay" do
+          before { config.numberic_method = :ahn_say }
+
+          it "plays the number of messages using ahn say" do
+            should_play(config.mailbox.number_before).ordered
+            subject.should_receive(:sounds_for_number).with(3).and_return "3.ul"
+            subject.should_receive(:play).ordered.with "3.ul"
+            should_play(config.mailbox.number_after_new).ordered
+          end
+        end
       end
 
-      it "does play the no new messages audio if there are none" do
-        storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
-        should_play(config.messages.no_new_messages).ordered
+      context "with no new message" do
+        before { storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return 0 }
+
+        it "plays the no new messages audio" do
+          should_play(config.messages.no_new_messages).ordered
+        end
       end
     end
 
