@@ -12,7 +12,7 @@ module Voicemail
     end
 
     def play_time_message
-      case config.numberic_method
+      case config.numeric_method
       when :play_numeric
         play config.messages.message_received_on
         play_time current_message[:received], format: config.datetime_format
@@ -23,7 +23,7 @@ module Voicemail
     end
 
     def play_from_message
-      case config.numberic_method
+      case config.numeric_method
       when :play_numeric
         play config.messages.from
         say_characters from_digits unless from_digits.empty?

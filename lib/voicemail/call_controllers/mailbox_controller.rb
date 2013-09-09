@@ -25,7 +25,7 @@ module Voicemail
     end
 
     def play_message_count
-      case config.numberic_method
+      case config.numeric_method
       when :play_numeric
         play config.mailbox.number_before
         play_numeric @number

@@ -30,8 +30,8 @@ describe Voicemail::MailboxPlayMessageIntroController do
     end
 
     context "with ahnsay" do
-      before { config.numberic_method = :ahn_say      }
-      after  { config.numberic_method = :play_numeric }
+      before { config.numeric_method = :ahn_say      }
+      after  { config.numeric_method = :play_numeric }
 
       it "plays the message introduction" do
         should_play config.messages.message_received_on

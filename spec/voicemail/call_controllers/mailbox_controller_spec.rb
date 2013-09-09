@@ -37,7 +37,7 @@ describe Voicemail::MailboxController do
 
     after do
       controller.play_number_of_messages type
-      config.numberic_method = :play_numeric
+      config.numeric_method = :play_numeric
     end
 
     context ":new" do
@@ -53,7 +53,7 @@ describe Voicemail::MailboxController do
         end
 
         context "when it's set to use ahnsay" do
-          before { config.numberic_method = :ahn_say }
+          before { config.numeric_method = :ahn_say }
 
           it "plays the number of messages using ahn say" do
             should_play(config.mailbox.number_before).ordered
