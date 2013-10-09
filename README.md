@@ -68,6 +68,31 @@ config.voicemail.numeric_method = :ahn_say
 "You have" + "file://...two.ul" + "new messages"
 ```
 
+## Internationalization
+
+This plugin also provides support for internationalization:
+
+```ruby
+# Enable I18n support in the plugin
+config.voicemail.use_i18n = true
+
+# Tell your application where your local files are, and set a default
+I18n.load_path += Dir[File.join(config.platform.root, 'config', 'locales', '*.{rb,yml}').to_s]
+I18n.default_locale = :en
+```
+
+Either run `rake voicemail:i18n_init` to copy a starting `en.yml` file from the plugin into your application (default location is `#{ahn_root}/config/locales/en.yml`), or [look at the template](https://github.com/adhearsion/voicemail/blob/develop/templates/en.yml) to get an idea of what translation keys to add to your app's existing localization files.
+
+You can also use I18n to handle the numeric methods:
+
+```ruby
+config.voicemail.numeric_method = :i18n_string
+"You have two new messages"
+"You have one new message"
+```
+
+Using I18n for the numeric method will nicely handle pluralizing message counts and formating the datetime messages were received on.
+
 ## Authors
 
 * Original author: [Luca Pradovera](https://github.com/polysics)
