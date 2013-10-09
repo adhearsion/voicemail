@@ -13,9 +13,14 @@ describe Voicemail::MailboxPlayMessageIntroController do
     }
   end
 
+  before { config.numeric_method = numeric_method }
+
+  let(:numeric_method) { :play_numeric}
+
   describe "#intro_message" do
 
     before { subject.should_receive(:current_message).and_return message }
+    after  { subject.intro_message }
 
     context "with the default mode" do
       it "plays the message introduction" do
@@ -24,14 +29,11 @@ describe Voicemail::MailboxPlayMessageIntroController do
 
         should_play config.messages.from
         subject.should_receive(:say_characters).with "39335135335"
-
-        controller.intro_message
       end
     end
 
     context "with ahnsay" do
-      before { config.numeric_method = :ahn_say      }
-      after  { config.numeric_method = :play_numeric }
+      let(:numeric_method) {:ahn_say }
 
       it "plays the message introduction" do
         should_play config.messages.message_received_on
@@ -41,8 +43,19 @@ describe Voicemail::MailboxPlayMessageIntroController do
         should_play config.messages.from
         subject.should_receive(:sounds_for_digits).with("39335135335").and_return ["digit1.wav", "digit2.wav"]
         should_play "digit1.wav", "digit2.wav"
+      end
+    end
 
-        controller.intro_message
+    context "with i18n_string" do
+      let(:numeric_method) {:i18n_string }
+
+      it "plays the message introduction" do
+        flexmock(I18n).should_receive(:localize).with(some_time).and_return "some time"
+        flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_on_x", received_on: "some time").and_return "Message received on some time. "
+        flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_from_x", from: "39335135335").and_return "Message received from 39335135335. "
+
+        should_play "Message received on some time. "
+        should_play "Message received from 39335135335. "
       end
     end
   end
