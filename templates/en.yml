@@ -11,6 +11,12 @@ en:
       number_before: "You have "
       number_after: " new messages"
       number_after_saved: " saved messages"
+      x_new_messages:
+        one: "You have one new message. "
+        other: "You have %{count} new messages. "
+      x_saved_messages:
+        one: "You have one saved message. "
+        other: "You have %{count} saved messages. "
       menu_greeting: "Press 1 to listen to new messages, 2 to change your greeting, 3 to change your PIN"
       menu_timeout_message: "Please enter a digit for the menu"
       menu_invalid_message: "Please enter valid input"

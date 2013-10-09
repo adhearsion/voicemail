@@ -34,10 +34,9 @@ describe Voicemail::MailboxController do
   end
 
   describe "#play_number_of_messages" do
-
+    before { config.numeric_method = :play_numeric }
     after do
       controller.play_number_of_messages type
-      config.numeric_method = :play_numeric
     end
 
     context ":new" do
@@ -60,6 +59,15 @@ describe Voicemail::MailboxController do
             subject.should_receive(:sounds_for_number).with(3).and_return "3.ul"
             subject.should_receive(:play).ordered.with "3.ul"
             should_play(config.mailbox.number_after_new).ordered
+          end
+        end
+
+        context "when it's set to use I18n" do
+          before { config.numeric_method = :i18n_string }
+
+          it "plays the number of messages using i18n's pluralization" do
+            flexmock(I18n).should_receive(:t).with("voicemail.mailbox.x_new_messages", count: 3).and_return "You have 3 new messages"
+            should_play "You have 3 new messages"
           end
         end
       end

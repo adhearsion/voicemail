@@ -26,6 +26,8 @@ module Voicemail
 
     def play_message_count
       case config.numeric_method
+      when :i18n_string
+        play I18n.t("voicemail.mailbox.x_#{new_or_saved}_messages", count: @number)
       when :play_numeric
         play config.mailbox.number_before
         play_numeric @number
