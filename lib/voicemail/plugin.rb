@@ -12,7 +12,6 @@ module Voicemail
 
     config :voicemail do
       use_i18n false, desc: "Whether to use i18n for voice prompts"
-      force_183 false, desc: "Only #answer if the mailbox is found"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15.seconds, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
