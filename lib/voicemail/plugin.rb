@@ -2,12 +2,17 @@ module Voicemail
   class Plugin < Adhearsion::Plugin
 
     init :voicemail do
-      logger.info "Voicemail has been loaded"
+      if config.use_i18n
+        LocalizationLoader.replace_config
+        logger.info "Voicemail has been loaded with i18n support"
+      else
+        logger.info "Voicemail has been loaded"
+      end
     end
 
     config :voicemail do
-      default_greeting "You have reached voicemail", desc: "What to use to greet users"
-      mailbox_not_found "Mailbox not found", desc: "Message to use for a missing mailbox"
+      use_i18n false, desc: "Whether to use i18n for voice prompts"
+      force_183 false, desc: "Only #answer if the mailbox is found"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15.seconds, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
@@ -18,6 +23,9 @@ module Voicemail
 
       matcher_class   Voicemail::Matcher, desc: "Class that checks for a match in pin authentication"
       main_menu_class Voicemail::MailboxMainMenuController, desc: "Class runs the main menu prompts"
+
+      default_greeting "You have reached voicemail", desc: "What to use to greet users"
+      mailbox_not_found "Mailbox not found", desc: "Message to use for a missing mailbox"
 
       desc "Voicemail recording options"
       recording {
@@ -90,8 +98,17 @@ module Voicemail
         task :info do
           STDOUT.puts "Voicemail plugin v. #{VERSION}"
         end
+
+        desc "Copy an initial translation file (en) to your adhearsion project (ahn_root/config/locales/en.yml)"
+        task :i18n_init do
+          current_path  = File.expand_path(File.dirname(__FILE__))
+          template_file = "#{current_path}/../../templates/en.yml"
+          new_location  = "#{Dir.pwd}/config/locales/"
+
+          FileUtils.mkdir_p(new_location) unless File.directory?(new_location)
+          FileUtils.copy template_file, "#{new_location}en.yml"
+        end
       end
     end
-
   end
 end
