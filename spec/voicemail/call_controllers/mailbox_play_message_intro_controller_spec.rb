@@ -33,7 +33,7 @@ describe Voicemail::MailboxPlayMessageIntroController do
     end
 
     context "with ahnsay" do
-      let(:numeric_method) {:ahn_say }
+      let(:numeric_method) { :ahn_say }
 
       it "plays the message introduction" do
         should_play config.messages.message_received_on
@@ -47,7 +47,7 @@ describe Voicemail::MailboxPlayMessageIntroController do
     end
 
     context "with i18n_string" do
-      let(:numeric_method) {:i18n_string }
+      let(:numeric_method) { :i18n_string }
 
       it "plays the message introduction" do
         flexmock(I18n).should_receive(:localize).with(some_time).and_return "some time"
