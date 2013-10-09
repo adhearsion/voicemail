@@ -7,7 +7,7 @@ describe Voicemail::MailboxPlayMessageIntroController do
   let(:message) do
     {
       id:       123,
-      from:     "+39-335135335",
+      from:     "+123",
       received: some_time,
       uri:      "file:///path/to/file.mp3"
     }
@@ -28,7 +28,7 @@ describe Voicemail::MailboxPlayMessageIntroController do
         subject.should_receive(:play_time).with some_time, format: config.datetime_format
 
         should_play config.messages.from
-        subject.should_receive(:say_characters).with "39335135335"
+        subject.should_receive(:say_characters).with "123"
       end
     end
 
@@ -41,7 +41,7 @@ describe Voicemail::MailboxPlayMessageIntroController do
         should_play "timesounds", ".wav"
 
         should_play config.messages.from
-        subject.should_receive(:sounds_for_digits).with("39335135335").and_return ["digit1.wav", "digit2.wav"]
+        subject.should_receive(:sounds_for_digits).with("123").and_return ["digit1.wav", "digit2.wav"]
         should_play "digit1.wav", "digit2.wav"
       end
     end
@@ -52,10 +52,13 @@ describe Voicemail::MailboxPlayMessageIntroController do
       it "plays the message introduction" do
         flexmock(I18n).should_receive(:localize).with(some_time).and_return "some time"
         flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_on_x", received_on: "some time").and_return "Message received on some time. "
-        flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_from_x", from: "39335135335").and_return "Message received from 39335135335. "
+        flexmock(I18n).should_receive(:t).with("numbers.1").and_return "one "
+        flexmock(I18n).should_receive(:t).with("numbers.2").and_return "two "
+        flexmock(I18n).should_receive(:t).with("numbers.3").and_return "three"
+        flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_from_x", from: "one two three").and_return "Message received from one two three"
 
         should_play "Message received on some time. "
-        should_play "Message received from 39335135335. "
+        should_play "Message received from one two three"
       end
     end
   end

@@ -27,7 +27,7 @@ module Voicemail
     def play_from_message
       case config.numeric_method
       when :i18n_string
-        play I18n.t("voicemail.messages.message_received_from_x", from: from_digits)
+        play I18n.t("voicemail.messages.message_received_from_x", from: from_string)
       when :play_numeric
         play config.messages.from
         say_characters from_digits unless from_digits.empty?
@@ -37,8 +37,19 @@ module Voicemail
       end
     end
 
+private
+
     def from_digits
       current_message[:from].scan(/\d/).join
+    end
+
+    def from_string
+      "".tap do |string|
+        from_digits.each_char do |char|
+          digit_word = I18n.t "numbers.#{char}"
+          string << digit_word unless digit_word =~ /missing/
+        end
+      end
     end
 
     def current_message
