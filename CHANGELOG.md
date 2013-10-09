@@ -1,4 +1,6 @@
-# develop
+#v1.0.0..
+  * FEATURE - I18n numeric methods
+  * FEATURE - I18n support for keys
   * FEATURE - Seperate pin_checking into seperate matcher class, so that it can be overriden if desired
   * FEATURE - Allow `pin_tries` to be set to 0 for infinite loop
   * FEATURE - Pass the complete recording complete object to `#save_recording`, giving the storage more information; `PStore` only uses the uri, but now you have access to more information (such as duration) if desired for your own storage adapter
