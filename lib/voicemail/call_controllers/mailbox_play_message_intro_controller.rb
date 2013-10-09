@@ -47,7 +47,11 @@ private
       "".tap do |string|
         from_digits.each_char do |char|
           digit_word = I18n.t "numbers.#{char}"
-          string << digit_word unless digit_word =~ /missing/
+          if digit_word =~ /missing/
+            string << char
+          else
+            string << digit_word
+          end
         end
       end
     end
