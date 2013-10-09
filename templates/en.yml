@@ -3,7 +3,7 @@ en:
     am: am
     pm: pm
     formats:
-      default: '%A, %B %d at %H:%M %p'
+      default: '%A, %B %d at %-l:%M %p'
 
   voicemail:
     default_greeting: "You have reached voicemail"
