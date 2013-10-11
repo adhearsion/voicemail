@@ -20,7 +20,7 @@ module Voicemail
         play_time current_message[:received], format: config.datetime_format
       when :ahn_say
         play config.messages.message_received_on
-        play *sounds_for_time(current_message[:received], {})
+        play *sounds_for_time(current_message[:received], format: config.datetime_format)
       end
     end
 

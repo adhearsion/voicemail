@@ -15,7 +15,7 @@ module Voicemail
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15.seconds, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
-      datetime_format "Q 'digits/at' IMp", desc: "Fromat to use for message date and time TTS"
+      datetime_format "Q 'digits/at' IMp", desc: "Format to use for message date and time formatting"
 
       when_to_answer :before_greeting, desc: "#answer :before_greeting or :after_greeting"
       numeric_method :play_numeric, desc: "Whether to use #play_numeric type methods, AhnSay, or a single I18n string"

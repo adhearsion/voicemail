@@ -17,6 +17,7 @@
   * CS - Remove specs for `#main_menu` in `AuthenticationController` since that controller never calls it
   * BUGFIX - Calls passed to `VoicemailController` were never formally hungup
   * BUGFIX - Don't strip extensions or `file://'` - punchblock will do that if needed
+  * BUGFIX - Apply datetime formatting to ahnsaid dates
   * DOC - Add Justin Aiken to authors
 
 # v0.2.0 - 2012-08-30

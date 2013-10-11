@@ -39,7 +39,7 @@ describe Voicemail::MailboxPlayMessageIntroController do
 
       it "plays the message introduction" do
         should_play config.messages.message_received_on
-        subject.should_receive(:sounds_for_time).with(some_time, {}).and_return ["timesounds", ".wav"]
+        subject.should_receive(:sounds_for_time).with(some_time, format: config.datetime_format).and_return ["timesounds", ".wav"]
         should_play "timesounds", ".wav"
 
         should_play config.messages.from
