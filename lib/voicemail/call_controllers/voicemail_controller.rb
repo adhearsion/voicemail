@@ -18,7 +18,7 @@ module Voicemail
 
     def handle_recording
       @from = call.from
-      record_comp = record config.recording.to_hash.merge(interruptible: true, direction: :recv)
+      record_comp = record config.recording.to_hash
       save_recording record_comp.complete_event.recording
     end
 
