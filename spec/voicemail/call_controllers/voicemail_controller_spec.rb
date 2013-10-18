@@ -45,7 +45,7 @@ describe Voicemail::VoicemailController do
         context "without a greeting message" do
           it "plays the default greeting if one is not specified" do
             should_play config.default_greeting
-            subject.should_receive(:handle_recording).and_return(true)
+            subject.should_receive :record_message
             controller.run
           end
         end
@@ -55,22 +55,41 @@ describe Voicemail::VoicemailController do
 
           it "plays the specific greeting message" do
             should_play greeting_message
-            subject.should_receive(:handle_recording).and_return(true)
+            subject.should_receive :record_message
             controller.run
           end
         end
+      end
+    end
+  end
 
-        context "handling a recording" do
-          let(:recording_component) { flexmock 'Record' }
-          let(:recording_object)    { flexmock 'complete_event.recording' }
+  describe "#record_message" do
+    context "handling a recording" do
+      let(:recording_component) { flexmock 'Record' }
+      let(:recording_object)    { flexmock 'complete_event.recording', uri: "http://some_file.wav" }
 
-          it "saves the recording" do
-            recording_component.should_receive("complete_event.recording").and_return recording_object
-            subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
-            storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
-            should_play
-            controller.run
-          end
+      after { subject.record_message }
+
+      context "without allow_rerecording" do
+        before { config.allow_rerecording = false }
+
+        it "saves the recording" do
+          recording_component.should_receive("complete_event.recording").and_return recording_object
+          subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
+          storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
+        end
+      end
+
+      context "without allow_rerecording" do
+        before { config.allow_rerecording = true }
+
+        it "sets up a callback, plays a menu, and eventually saves the message" do
+          call.should_receive :on_end
+          recording_object.should_receive :uri
+          subject.should_receive(:menu)
+          recording_component.should_receive("complete_event.recording").and_return recording_object
+          subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
+          storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
         end
       end
     end

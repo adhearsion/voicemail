@@ -39,6 +39,8 @@ en:
       menu_invalid_message: "Please enter valid input"
       menu_failure_message: "Sorry, unable to understand your input."
 
+    after_record: "Press 1 to save your voicemail.  Press 2 to rerecord."
+
     set_greeting:
       prompt: "Press 1 to listen to your current greeting, 2 to record a new greeting, 9 to return to the main menu"
       before_record: "Please speak after the beep. The prompt will be played back after."

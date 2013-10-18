@@ -1,4 +1,5 @@
 #v1.0.0..
+  * FEATURE - Optional rerecording of voicemail messages
   * FEATURE - I18n numeric methods
   * FEATURE - I18n support for keys
   * FEATURE - Seperate pin_checking into seperate matcher class, so that it can be overriden if desired

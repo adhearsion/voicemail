@@ -26,6 +26,9 @@ module Voicemail
       default_greeting "You have reached voicemail", desc: "What to use to greet users"
       mailbox_not_found "Mailbox not found", desc: "Message to use for a missing mailbox"
 
+      allow_rerecording true, desc: "Allow caller to rerecord their voicemail"
+      after_record "Press 1 to save your voicemail.  Press 2 to rerecord.", desc: "Message to play if allow_rerecording is set"
+
       desc "Voicemail recording options"
       recording {
         interruptible true, desc: "Whether you can stop the recording with a DTMF input"
