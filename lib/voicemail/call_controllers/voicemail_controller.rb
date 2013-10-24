@@ -20,7 +20,7 @@ module Voicemail
     end
 
     def record_message
-      @recording = record config.recording.to_hash
+      @recording = record record_options
 
       config.allow_rerecording ? recording_menu : save_recording
     end

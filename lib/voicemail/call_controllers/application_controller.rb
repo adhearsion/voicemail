@@ -24,6 +24,14 @@ module Voicemail
       storage.get_mailbox mailbox_id
     end
 
+    def record_options
+      if config.use_mailbox_opts_for_recording
+        config.recording.to_hash.merge mailbox[:record_options]
+      else
+        config.recording.to_hash
+      end
+    end
+
     def mailbox_not_found
       play config.mailbox_not_found
       hangup

@@ -1,4 +1,5 @@
 #v1.0.0..
+  * FEATURE - Optional per-mailbox override of default recording hash
   * FEATURE - Optional rerecording of voicemail messages
   * FEATURE - I18n numeric methods
   * FEATURE - I18n support for keys

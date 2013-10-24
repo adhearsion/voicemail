@@ -36,15 +36,33 @@ describe Voicemail::MailboxSetGreetingController do
     let(:recording_component) { flexmock 'Record' }
     let(:file_path) { "/path/to/file" }
 
-    it "plays the appropriate sounds, records, plays back recording, and calls the recording menu" do
+    before do
       should_play config.set_greeting.before_record
-      recording_component.should_receive("complete_event.recording.uri").and_return(file_path)
-      subject.should_receive(:record).once.with(config.set_greeting.recording.to_hash).and_return recording_component
+      recording_component.should_receive("complete_event.recording.uri").and_return file_path
       subject.should_receive(:play_audio).with file_path
-      subject.should_receive(:menu).once.with(config.set_greeting.after_record,
-          { timeout: config.menu_timeout,
-            tries: config.menu_tries }, Proc)
+      subject.should_receive(:menu).once.with config.set_greeting.after_record, {timeout: config.menu_timeout, tries: config.menu_tries}, Proc
+    end
+
+    after do
       controller.record_greeting
+      config.use_mailbox_opts_for_recording = false
+    end
+
+    context "without mailbox settings" do
+      it "plays the appropriate sounds, records, plays back recording, and calls the recording menu" do
+        subject.should_receive(:record).once.with(config.recording.to_hash).and_return recording_component
+      end
+    end
+
+    context "with mailbox settings" do
+      let(:mailbox) { {id: 100, record_options: {final_timeout: 31}} }
+
+      before { config.use_mailbox_opts_for_recording = true }
+
+      it "records using the mailbox's record options" do
+        expected_options = {direction: :send, final_timeout: 31, interruptible: true, max_duration: 30, start_beep: true, stop_beep: false}
+        subject.should_receive(:record).once.with(expected_options).and_return recording_component
+      end
     end
   end
 

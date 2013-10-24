@@ -29,7 +29,7 @@ module Voicemail
       allow_rerecording true, desc: "Allow caller to rerecord their voicemail"
       after_record "Press 1 to save your voicemail.  Press 2 to rerecord.", desc: "Message to play if allow_rerecording is set"
 
-      desc "Voicemail recording options"
+      desc "Default recording options"
       recording {
         interruptible true, desc: "Whether you can stop the recording with a DTMF input"
         direction :send, desc: "The direction to record; you probably want :send"
@@ -38,6 +38,7 @@ module Voicemail
         start_beep true, desc: "Play a beep before recording"
         stop_beep false, desc: "Play a beep after recording"
       }
+      use_mailbox_opts_for_recording false, desc: "Whether per-mailbox settings can override defaults"
 
       desc "Configuration for registered users"
       mailbox {
@@ -61,10 +62,6 @@ module Voicemail
         before_record "Please speak after the beep. The prompt will be played back after.", desc: "Recording instructions"
         after_record "Press 1 to save your new greeting, 2 to discard it, 9 to go back to the menu", desc: "Menu to use after recording"
         no_personal_greeting "You do not currently have a personalized greeting.", desc: "What to play if there is no specific greeting"
-        recording {
-          max_duration 5_000, desc: "Maximum duration for recording in milliseconds"
-          start_beep true, desc: "Play a beep before recording"
-        }
       }
 
       desc "Set PIN configuration"
