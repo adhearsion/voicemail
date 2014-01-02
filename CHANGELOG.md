@@ -1,3 +1,6 @@
+#develop
+  * CHANGE - Menu intros are one message, making them skippable.
+
 #v1.0.0 - 2014-01-02
   * FEATURE - Optional per-mailbox override of default recording hash
   * FEATURE - Optional rerecording of voicemail messages
