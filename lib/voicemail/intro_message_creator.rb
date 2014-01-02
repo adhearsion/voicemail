@@ -1,6 +1,10 @@
 module Voicemail
   class IntroMessageCreator
-    require 'ahnsay' rescue false
+
+    begin
+      require 'ahnsay'
+    rescue LoadError
+    end
 
     attr_accessor :current_message
 
