@@ -1,5 +1,6 @@
 module Voicemail
   class IntroMessageCreator
+    require 'ahnsay' rescue false
 
     attr_accessor :current_message
 
@@ -19,7 +20,10 @@ module Voicemail
       when :play_numeric
         [config.messages.message_received_on, time_ssml]
       when :ahn_say
-        [config.messages.message_received_on, Ahnsay.sounds_for_time(current_message[:received], format: config.datetime_format)]
+        [
+          config.messages.message_received_on,
+          Ahnsay.sounds_for_time(current_message[:received], format: config.datetime_format)
+        ]
       end
     end
 
