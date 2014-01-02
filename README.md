@@ -20,6 +20,12 @@ To allow access by users to the mailboxes, `invoke MailboxController`. You will 
   invoke Voicemail::MailboxController, mailbox: mailbox_id
 ```
 
+If you want the users to go through pin-based authentication first, pass to the `AuthenticationController` instead:
+```ruby
+  # inside a CallController method
+  invoke Voicemail::AuthenticationController, mailbox: mailbox_id
+```
+
 ## Storage
 
 Mailbox metadata is stored in a PStore hash on disk for easy drop-in functionality.
@@ -39,9 +45,58 @@ Alternatively, you can pass in a storage layer dynamically when invoking the con
   # etc.
 ```
 
-## Author
+## Method Overrides
 
-Original author: [Luca Pradovera](https://github.com/polysics)
+If you prefer to use your own main menu instead of the [one provided](https://github.com/adhearsion/voicemail/blob/develop/lib/voicemail/call_controllers/mailbox_main_menu_controller.rb#L10-L13), you can set the class to use like so:
+```ruby
+config.voicemail.main_menu_class = MyMenuController
+```
+
+Another override provided is the [pin matcher](https://github.com/adhearsion/voicemail/blob/develop/lib/voicemail/call_controllers/authentication_controller.rb#L43-L45) used to verify authentication - if you want to use your own match-checker (to check against an API or some use), you can also override it:
+```ruby
+config.voicemail.matcher_class = MyMatcher
+```
+
+## Numeric Methods
+
+When you have something like `You have -x- new messages` or `message received on -x-` you can either use the default setting, which will fill the x with TTS, or to use [ahnsay](https://www.github.com/polysics/ahnsay) to use audio files for each digit.
+```ruby
+config.voicemail.numeric_method = :play_numeric #default
+"You have two new messages"
+
+config.voicemail.numeric_method = :ahn_say
+"You have" + "file://...two.ul" + "new messages"
+```
+
+## Internationalization
+
+This plugin also provides support for internationalization:
+
+```ruby
+# Enable I18n support in the plugin
+config.voicemail.use_i18n = true
+
+# Tell your application where your local files are, and set a default
+I18n.load_path += Dir[File.join(config.platform.root, 'config', 'locales', '*.{rb,yml}').to_s]
+I18n.default_locale = :en
+```
+
+Either run `rake voicemail:i18n_init` to copy a starting `en.yml` file from the plugin into your application (default location is `#{ahn_root}/config/locales/en.yml`), or [look at the template](https://github.com/adhearsion/voicemail/blob/develop/templates/en.yml) to get an idea of what translation keys to add to your app's existing localization files.
+
+You can also use I18n to handle the numeric methods:
+
+```ruby
+config.voicemail.numeric_method = :i18n_string
+"You have two new messages"
+"You have one new message"
+```
+
+Using I18n for the numeric method will nicely handle pluralizing message counts and formating the datetime messages were received on.
+
+## Authors
+
+* Original author: [Luca Pradovera](https://github.com/polysics)
+* Also contributed: [Justin Aiken](https://github.com/JustinAiken)
 
 ## Links
 

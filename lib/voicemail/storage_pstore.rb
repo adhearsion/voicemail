@@ -21,9 +21,21 @@ module Voicemail
       end
     end
 
+    def count_saved_messages(mailbox_id)
+      store.transaction true do
+        store[:archived][mailbox_id].size
+      end
+    end
+
     def next_new_message(mailbox_id)
       store.transaction true do
         store[:recordings][mailbox_id].first
+      end
+    end
+
+    def next_saved_message(mailbox_id)
+      store.transaction true do
+        store[:archived][mailbox_id].first
       end
     end
 
@@ -34,6 +46,17 @@ module Voicemail
         if rec
           store[:archived][mailbox_id] << rec
           store[:recordings][mailbox_id].delete(rec)
+        end
+      end
+    end
+
+    def unarchive_message(mailbox_id, message_id)
+      store.transaction do
+        item = store[:archived][mailbox_id].select { |i| i[:id] == message_id }
+        rec  = item.first
+        if rec
+          store[:recordings][mailbox_id] << rec
+          store[:archived][mailbox_id].delete(rec)
         end
       end
     end
@@ -55,13 +78,13 @@ module Voicemail
       end
     end
 
-    def save_recording(mailbox_id, from, recording_uri)
+    def save_recording(mailbox_id, from, recording_object)
       store.transaction do
         recording = {
           id:       SecureRandom.uuid,
           from:     from,
           received: Time.now,
-          uri:      recording_uri.gsub(/file:\/\//, '')
+          uri:      recording_object.uri
         }
         store[:recordings][mailbox_id] << recording
         logger.info "Saving recording: #{recording.inspect}"
