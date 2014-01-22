@@ -66,6 +66,24 @@ describe Voicemail::MailboxSetGreetingController do
     end
   end
 
+  describe "#delete_greeting_menu" do
+    it "calls #menu with proper parameters" do
+      subject.should_receive(:menu).once.with(config.set_greeting.delete_confirmation,
+         {timeout: config.menu_timeout,
+          tries: config.menu_tries}, Proc)
+      subject.delete_greeting_menu
+    end
+  end
+
+  describe "#delete_greeting" do
+    it "sets the greeting to nil" do
+      storage_instance.should_receive(:save_greeting_for_mailbox).with(mailbox[:id], nil)
+      subject.should_receive(:play).with(config.set_greeting.greeting_deleted)
+      subject.should_receive(:main_menu)
+      subject.delete_greeting
+    end
+  end
+
   describe "#save_greeting" do
     let(:file_path) { "/path/to/file" }
 

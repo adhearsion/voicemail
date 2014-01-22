@@ -11,6 +11,7 @@ module Voicemail
          timeout: config.menu_timeout, tries: config.menu_tries do
         match(1) { listen_to_current_greeting }
         match(2) { record_greeting }
+        match(3) { delete_greeting_menu }
         match(9) { main_menu }
 
         timeout do
@@ -65,6 +66,33 @@ module Voicemail
           hangup
         end
       end
+    end
+
+    def delete_greeting_menu
+      menu config.set_greeting.delete_confirmation,
+         timeout: config.menu_timeout, tries: config.menu_tries do
+        match(1) { delete_greeting }
+        match(9) { section_menu }
+        timeout do
+          play config.mailbox.menu_timeout_message
+        end
+
+        invalid do
+          play config.mailbox.menu_invalid_message
+        end
+
+        failure do
+          play config.mailbox.menu_failure_message
+          hangup
+        end
+      end
+    end
+
+    def delete_greeting
+      File.unlink mailbox[:greeting_message] if mailbox[:greeting_message]
+      storage.save_greeting_for_mailbox mailbox[:id], nil
+      play config.set_greeting.greeting_deleted
+      main_menu
     end
 
     def save_greeting
