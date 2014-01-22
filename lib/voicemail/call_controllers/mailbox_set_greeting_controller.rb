@@ -89,8 +89,7 @@ module Voicemail
     end
 
     def delete_greeting
-      File.unlink mailbox[:greeting_message] if mailbox[:greeting_message]
-      storage.save_greeting_for_mailbox mailbox[:id], nil
+      storage.delete_greeting_from_mailbox mailbox[:id]
       play config.set_greeting.greeting_deleted
       main_menu
     end

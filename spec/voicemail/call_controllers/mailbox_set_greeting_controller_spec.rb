@@ -76,8 +76,8 @@ describe Voicemail::MailboxSetGreetingController do
   end
 
   describe "#delete_greeting" do
-    it "sets the greeting to nil" do
-      storage_instance.should_receive(:save_greeting_for_mailbox).with(mailbox[:id], nil)
+    it "deletes the greeting and plays a confirmation" do
+      storage_instance.should_receive(:delete_greeting_from_mailbox).with(mailbox[:id])
       subject.should_receive(:play).with(config.set_greeting.greeting_deleted)
       subject.should_receive(:main_menu)
       subject.delete_greeting
