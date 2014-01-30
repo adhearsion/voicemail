@@ -72,6 +72,14 @@ module Voicemail
       end
     end
 
+    def delete_greeting_from_mailbox(mailbox_id)
+      store.transaction do
+        rec = store[:mailboxes][mailbox_id][:greeting_message]
+        File.unlink rec if File.exists? rec
+        store[:mailboxes][mailbox_id][:greeting_message] = nil
+      end
+    end
+
     def change_pin_for_mailbox(mailbox_id, new_pin)
       store.transaction do
         store[:mailboxes][mailbox_id][:pin] = new_pin

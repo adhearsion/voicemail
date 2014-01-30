@@ -103,5 +103,20 @@ module Voicemail
         end
       end
     end
+
+    describe "#delete_greeting_from_mailbox" do
+      before do
+        storage.store.transaction do |store|
+          store[:mailboxes][100][:greeting_message] = "/some/path"
+        end
+      end
+
+      it "deletes the greeting message" do
+        storage.delete_greeting_from_mailbox 100
+        storage.store.transaction do |store|
+          store[:mailboxes][100][:greeting_message].should be_nil
+        end
+      end
+    end
   end
 end

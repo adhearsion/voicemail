@@ -58,10 +58,12 @@ module Voicemail
 
       desc "Set greeting configuration"
       set_greeting {
-        prompt "Press 1 to listen to your current greeting, 2 to record a new greeting, 9 to return to the main menu", desc: "Main prompt for setting greeting"
+        prompt "Press 1 to listen to your current greeting, 2 to record a new greeting, 3 to delete your personalized greeting, 9 to return to the main menu", desc: "Main prompt for setting greeting"
         before_record "Please speak after the beep. The prompt will be played back after.", desc: "Recording instructions"
         after_record "Press 1 to save your new greeting, 2 to discard it, 9 to go back to the menu", desc: "Menu to use after recording"
         no_personal_greeting "You do not currently have a personalized greeting.", desc: "What to play if there is no specific greeting"
+        delete_confirmation "Your personlized greeting will be deleted. Press 1 to confirm, 9 to return to the main menu.", desc: "Ask the user to confirm removal of personalized greeting"
+        greeting_deleted "Your personalized greeting was deleted.", desc: "What to play after a greeting has been deleted"
       }
 
       desc "Set PIN configuration"
