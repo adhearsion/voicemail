@@ -20,7 +20,6 @@ module Voicemail
    
     def erase_all(type)
       method = "next_#{type}_message"
-      mailbox = fetch_mailbox
    
       while message = storage.send(method, mailbox[:id])
         storage.delete_message mailbox[:id], message[:id]
