@@ -11,8 +11,8 @@ module Voicemail
         match(2) { listen_to_saved_messages }
         match(3) { set_greeting }
         match(4) { set_pin }
-        match(5) { clear_new_messages }
-        match(6) { clear_saved_messages }
+        match(7) { clear_new_messages }
+        match(9) { clear_saved_messages }
 
         timeout do
           play config.mailbox.menu_timeout_message
