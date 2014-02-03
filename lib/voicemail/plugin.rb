@@ -54,6 +54,9 @@ module Voicemail
         menu_timeout_message "Please enter a digit for the menu", desc: "Message to play on main menu timeout"
         menu_invalid_message "Please enter valid input", desc: "Message to play on main menu invalid"
         menu_failure_message "Sorry, unable to understand your input.", desc: "Message to play on main menu failure"
+        clear_new_messages "Are you sure you want to permanently erase all new messages? Press 1 to delete, or any other key to cancel", desc: "New message clearing confirmation"
+        clear_saved_messages "Are you sure you want to permanently erase all saved messages? Press 1 to delete, or any other key to cancel", desc: "Saved message clearing confirmation"
+        no_messages_deleted "Your messages will not be deleted. Returning to main menu."
       }
 
       desc "Set greeting configuration"
