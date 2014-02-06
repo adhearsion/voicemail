@@ -88,6 +88,7 @@ module Voicemail
         no_saved_messages "There are no saved messages", desc: "Message to inform the user he has no saved messages"
         message_received_on "Message received on ", desc: "Prefix to menu intro"
         from " from ", desc: "Used in message intro"
+        message_deleted "Message deleted.", desc: "Confirmation that a message has been deleted"
       }
 
       desc "Storage configuration"
