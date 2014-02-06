@@ -18,8 +18,8 @@ describe Voicemail::MailboxSetPinController do
     let(:short_pin)         { "9" }
 
     it "makes the user enter a PIN and repeat it" do
-      should_ask(config.set_pin.prompt, terminator: "#").and_return(pin).ordered
-      should_ask(config.set_pin.repeat_prompt, terminator: "#").and_return(pin).ordered
+      should_ask(config.set_pin.prompt, terminator: "#", timeout: 5).and_return(pin).ordered
+      should_ask(config.set_pin.repeat_prompt, terminator: "#", timeout: 5).and_return(pin).ordered
       should_play(config.set_pin.change_ok).ordered
       storage_instance.should_receive(:change_pin_for_mailbox).with(mailbox[:id], pin).once.ordered
       subject.should_receive(:main_menu).once
@@ -27,11 +27,11 @@ describe Voicemail::MailboxSetPinController do
     end
 
     it "makes the user start over if the PIN is too short" do
-      should_ask(config.set_pin.prompt, terminator: "#").and_return(short_pin).ordered
-      should_ask(config.set_pin.repeat_prompt, terminator: "#").and_return(short_pin).ordered
+      should_ask(config.set_pin.prompt, terminator: "#", timeout: 5).and_return(short_pin).ordered
+      should_ask(config.set_pin.repeat_prompt, terminator: "#", timeout: 5).and_return(short_pin).ordered
       should_play(config.set_pin.pin_error).ordered
-      should_ask(config.set_pin.prompt, terminator: "#").and_return(pin).ordered
-      should_ask(config.set_pin.repeat_prompt, terminator: "#").and_return(pin).ordered
+      should_ask(config.set_pin.prompt, terminator: "#", timeout: 5).and_return(pin).ordered
+      should_ask(config.set_pin.repeat_prompt, terminator: "#", timeout: 5).and_return(pin).ordered
       should_play(config.set_pin.change_ok).ordered
       storage_instance.should_receive(:change_pin_for_mailbox).with(mailbox[:id], pin).once.ordered
       subject.should_receive(:main_menu).once
@@ -39,11 +39,11 @@ describe Voicemail::MailboxSetPinController do
     end
 
     it "makes the user start over if the PIN does not match confirmation" do
-      should_ask(config.set_pin.prompt, terminator: "#").and_return(pin).ordered
-      should_ask(config.set_pin.repeat_prompt, terminator: "#").and_return(not_matching_pin).ordered
+      should_ask(config.set_pin.prompt, terminator: "#", timeout: 5).and_return(pin).ordered
+      should_ask(config.set_pin.repeat_prompt, terminator: "#", timeout: 5).and_return(not_matching_pin).ordered
       should_play(config.set_pin.match_error).ordered
-      should_ask(config.set_pin.prompt, terminator: "#").and_return(pin).ordered
-      should_ask(config.set_pin.repeat_prompt, terminator: "#").and_return(pin).ordered
+      should_ask(config.set_pin.prompt, terminator: "#", timeout: 5).and_return(pin).ordered
+      should_ask(config.set_pin.repeat_prompt, terminator: "#", timeout: 5).and_return(pin).ordered
       should_play(config.set_pin.change_ok).ordered
       storage_instance.should_receive(:change_pin_for_mailbox).with(mailbox[:id], pin).once.ordered
       subject.should_receive(:main_menu).once
