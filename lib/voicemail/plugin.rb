@@ -82,8 +82,8 @@ module Voicemail
 
       desc "Listen to messages menu configuration"
       messages {
-        menu_new "Press 1 to archive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu", desc: "Menu to use inside new messages"
-        menu_saved "Press 1 to unarchive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu", desc: "Menu to use inside saved messages"
+        menu_new "Press 1 to archive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 8 to skip the message, press 9 for the main menu", desc: "Menu to use inside new messages"
+        menu_saved "Press 1 to unarchive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 8 to skip the message, press 9 for the main menu", desc: "Menu to use inside saved messages"
         no_new_messages "There are no new messages", desc: "Message to inform the user he has no new messages"
         no_saved_messages "There are no saved messages", desc: "Message to inform the user he has no saved messages"
         message_received_on "Message received on ", desc: "Prefix to menu intro"

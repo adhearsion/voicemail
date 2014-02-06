@@ -24,6 +24,7 @@ module Voicemail
         end
 
         match(7) { rewind_message }
+        match(8) { skip_message }
         match(9) { main_menu }
 
         timeout do
@@ -55,6 +56,10 @@ module Voicemail
 
     def rewind_message
       play_message
+    end
+
+    def skip_message
+      # This method intentionally left blank
     end
 
     def archive_or_unarchive_message
