@@ -14,7 +14,7 @@ module Voicemail
     end
    
     def confirm_no_action_taken
-      say config.mailbox.no_messages_deleted
+      play config.mailbox.no_messages_deleted
       main_menu
     end
    
