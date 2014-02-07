@@ -20,9 +20,15 @@ module Voicemail
    
     def erase_all(type)
       method = "next_#{type}_message"
-   
-      while message = storage.send(method, mailbox[:id])
+
+      messages_count = storage.send "count_#{type}_messages", mailbox[:id]   
+      
+      messages_count.times do
+        message = storage.send(method, mailbox[:id])
         storage.delete_message mailbox[:id], message[:id]
+        
+        all_messages_deleted = metadata[:new_or_saved].to_s == "new" ? config.mailbox.all_new_messages_deleted : config.mailbox.all_saved_messages_deleted
+        play all_messages_deleted
       end
 
       main_menu
