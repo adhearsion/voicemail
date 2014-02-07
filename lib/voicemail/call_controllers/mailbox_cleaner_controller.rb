@@ -24,6 +24,8 @@ module Voicemail
       while message = storage.send(method, mailbox[:id])
         storage.delete_message mailbox[:id], message[:id]
       end
+
+      main_menu
     end
   end
 end
