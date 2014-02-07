@@ -72,7 +72,7 @@ module Voicemail
 
     def delete_message
       storage.delete_message mailbox[:id], current_message[:id]
-      say config.messages.message_deleted
+      play config.messages.message_deleted
     end
 
     def current_message
