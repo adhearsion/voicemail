@@ -57,6 +57,8 @@ module Voicemail
         clear_new_messages "Are you sure you want to permanently erase all new messages? Press 1 to delete, or any other key to cancel", desc: "New message clearing confirmation"
         clear_saved_messages "Are you sure you want to permanently erase all saved messages? Press 1 to delete, or any other key to cancel", desc: "Saved message clearing confirmation"
         no_messages_deleted "Your messages will not be deleted. Returning to main menu."
+        all_new_messages_deleted "All of your new messages have been successfully deleted."
+        all_saved_messages_deleted "All of your saved messages have been successfully deleted."
       }
 
       desc "Set greeting configuration"
