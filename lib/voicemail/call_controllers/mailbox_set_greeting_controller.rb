@@ -24,7 +24,7 @@ module Voicemail
 
         failure do
           play config.mailbox.menu_failure_message
-          hangup
+          main_menu
         end
       end
     end
@@ -63,7 +63,7 @@ module Voicemail
 
         failure do
           play config.mailbox.menu_failure_message
-          hangup
+          section_menu
         end
       end
     end
@@ -83,7 +83,7 @@ module Voicemail
 
         failure do
           play config.mailbox.menu_failure_message
-          hangup
+          section_menu
         end
       end
     end
