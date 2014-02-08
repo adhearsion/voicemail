@@ -26,10 +26,10 @@ module Voicemail
       messages_count.times do
         message = storage.send(method, mailbox[:id])
         storage.delete_message mailbox[:id], message[:id]
-        
-        all_messages_deleted = metadata[:new_or_saved].to_s == "new" ? config.mailbox.all_new_messages_deleted : config.mailbox.all_saved_messages_deleted
-        play all_messages_deleted
       end
+        
+      all_messages_deleted = metadata[:new_or_saved].to_s == "new" ? config.mailbox.all_new_messages_deleted : config.mailbox.all_saved_messages_deleted
+      play all_messages_deleted
 
       main_menu
     end
