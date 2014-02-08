@@ -22,7 +22,10 @@ module Voicemail
       method = "next_#{type}_message"
 
       messages_count = storage.send "count_#{type}_messages", mailbox[:id]   
-      
+
+      deleting_all_messages = metadata[:new_or_saved].to_s == "new" ? config.mailbox.deleting_all_new_messages : config.mailbox.deleting_all_saved_messages
+      play deleting_all_messages
+
       messages_count.times do
         message = storage.send(method, mailbox[:id])
         storage.delete_message mailbox[:id], message[:id]
