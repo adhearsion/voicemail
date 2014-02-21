@@ -9,6 +9,7 @@ module Voicemail
         play_greeting
         answer if config.when_to_answer == :after_greeting
         record_message
+        play_recording_confirmation
         hangup
       else
         mailbox_not_found
@@ -17,6 +18,10 @@ module Voicemail
 
     def play_greeting
       play mailbox[:greeting_message] || config.default_greeting
+    end
+
+    def play_recording_confirmation
+      play config.recording_confirmation
     end
 
     def record_message
