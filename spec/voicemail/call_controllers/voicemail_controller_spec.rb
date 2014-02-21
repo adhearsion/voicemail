@@ -46,6 +46,7 @@ describe Voicemail::VoicemailController do
           it "plays the default greeting if one is not specified" do
             should_play config.default_greeting
             subject.should_receive :record_message
+            should_play config.recording_confirmation
             controller.run
           end
         end
@@ -56,6 +57,7 @@ describe Voicemail::VoicemailController do
           it "plays the specific greeting message" do
             should_play greeting_message
             subject.should_receive :record_message
+            should_play config.recording_confirmation
             controller.run
           end
         end

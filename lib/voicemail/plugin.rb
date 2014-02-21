@@ -28,6 +28,7 @@ module Voicemail
 
       allow_rerecording true, desc: "Allow caller to rerecord their voicemail"
       after_record "Press 1 to save your voicemail.  Press 2 to rerecord.", desc: "Message to play if allow_rerecording is set"
+      recording_confirmation "Your message has been saved. Thank you.", desc: "Message to play after the voicemail has been saved"
 
       desc "Default recording options"
       recording {
