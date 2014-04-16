@@ -12,6 +12,7 @@ module Voicemail
 
     config :voicemail do
       use_i18n false, desc: "Whether to use i18n for voice prompts"
+      i18n_provider I18n, desc: "I18n provider"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15.seconds, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
@@ -28,6 +29,7 @@ module Voicemail
 
       allow_rerecording true, desc: "Allow caller to rerecord their voicemail"
       after_record "Press 1 to save your voicemail.  Press 2 to rerecord.", desc: "Message to play if allow_rerecording is set"
+      recording_confirmation "Your message has been saved. Thank you.", desc: "Message to play after the voicemail has been saved"
 
       desc "Default recording options"
       recording {

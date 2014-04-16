@@ -14,7 +14,8 @@ module Voicemail
     def play_time_message
       case config.numeric_method
       when :i18n_string
-        play I18n.t("voicemail.messages.message_received_on_x", received_on: I18n.localize(current_message[:received]))
+        play Voicemail::Plugin.config.i18n_provider.t("voicemail.messages.message_received_on_x",
+                                                      received_on: I18n.localize(current_message[:received]))
       when :play_numeric
         play config.messages.message_received_on
         play_time current_message[:received], format: config.datetime_format
@@ -27,7 +28,8 @@ module Voicemail
     def play_from_message
       case config.numeric_method
       when :i18n_string
-        play I18n.t("voicemail.messages.message_received_from_x", from: from_string)
+        play Voicemail::Plugin.config.i18n_provider.t("voicemail.messages.message_received_from_x",
+                                                      from: from_string)
       when :play_numeric
         play config.messages.from
         say_characters from_digits unless from_digits.empty?
@@ -46,7 +48,7 @@ private
     def from_string
       "".tap do |string|
         from_digits.each_char do |char|
-          digit_word = I18n.t "numbers.#{char}"
+          digit_word = Voicemail::Plugin.config.i18n_provider.t "numbers.#{char}"
           if digit_word =~ /missing/
             string << char
           else
