@@ -64,5 +64,5 @@ en:
       message_received_on: "Message received on "
       from: " from "
       message_received_on_x: "Message received on %{received_on}. "
-      message_received_from_x: "Message received from %{from}. "
+      message_received_from: "Message received from "
 
