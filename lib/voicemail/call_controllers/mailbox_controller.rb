@@ -27,8 +27,7 @@ module Voicemail
     def play_message_count
       case config.numeric_method
       when :i18n_string
-        play Voicemail::Plugin.config.i18n_provider.t("voicemail.mailbox.x_#{new_or_saved}_messages",
-                                                      count: @number)
+        play build_message_count_message(@number)
       when :play_numeric
         play config.mailbox.number_before
         play_numeric @number
@@ -42,6 +41,13 @@ module Voicemail
 
     def get_count
       @number = storage.send "count_#{new_or_saved}_messages", mailbox[:id]
+    end
+
+    def build_message_count_message(count)
+      pluralized_message_key = count == 1 ? "message" : "messages"
+      [Voicemail::Plugin.config.i18n_provider.t("voicemail.mailbox.message_count_prefix"),
+       count,
+       Voicemail::Plugin.config.i18n_provider.t("voicemail.mailbox.#{new_or_saved}_#{pluralized_message_key}")]
     end
   end
 end
