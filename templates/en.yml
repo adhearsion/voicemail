@@ -62,6 +62,4 @@ en:
       no_saved_messages: "There are no saved messages"
       message_received_on: "Message received on "
       from: " from "
-      message_received_on: "Message received on "
       message_received_from: "Message received from "
-
