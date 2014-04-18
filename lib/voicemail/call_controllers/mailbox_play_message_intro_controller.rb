@@ -14,8 +14,8 @@ module Voicemail
     def play_time_message
       case config.numeric_method
       when :i18n_string
-        play Voicemail::Plugin.config.i18n_provider.t("voicemail.messages.message_received_on_x",
-                                                      received_on: I18n.localize(current_message[:received]))
+        play [Voicemail::Plugin.config.i18n_provider.t("voicemail.messages.message_received_on"),
+              I18n.localize(current_message[:received])]
       when :play_numeric
         play config.messages.message_received_on
         play_time current_message[:received], format: config.datetime_format

@@ -85,6 +85,7 @@ module Voicemail
         no_saved_messages "There are no saved messages", desc: "Message to inform the user he has no saved messages"
         message_received_on "Message received on ", desc: "Prefix to menu intro"
         from " from ", desc: "Used in message intro"
+        message_received_on "Message received on ", desc: "Prefix to reading out the message timestamp"
         message_received_from "Message received from ", desc: "Prefix to reading out the message sender id"
       }
 
