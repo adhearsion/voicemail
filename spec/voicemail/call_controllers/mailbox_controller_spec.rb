@@ -65,9 +65,24 @@ describe Voicemail::MailboxController do
         context "when it's set to use I18n" do
           before { config.numeric_method = :i18n_string }
 
-          it "plays the number of messages using i18n's pluralization" do
-            flexmock(I18n).should_receive(:t).with("voicemail.mailbox.x_new_messages", count: 3).and_return "You have 3 new messages"
-            should_play "You have 3 new messages"
+          it "plays the number of messages" do
+            flexmock(I18n).should_receive(:t).with("voicemail.mailbox.message_count_prefix").and_return "You have "
+            flexmock(I18n).should_receive(:t).with("voicemail.mailbox.new_messages").and_return "new messages. "
+            should_play ["You have ", 3, "new messages. "]
+          end
+        end
+      end
+
+      context "with exactly one new message" do
+        before { storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return 1 }
+
+        context "when it's set to use I18n" do
+          before { config.numeric_method = :i18n_string }
+
+          it "plays a message saying there is one message" do
+            flexmock(I18n).should_receive(:t).with("voicemail.mailbox.message_count_prefix").and_return "You have "
+            flexmock(I18n).should_receive(:t).with("voicemail.mailbox.new_message").and_return "new message. "
+            should_play ["You have ", 1, "new message. "]
           end
         end
       end
