@@ -15,55 +15,38 @@ module Voicemail
       end
     end
 
-    def count_new_messages(mailbox_id)
+    def count_messages(mailbox_id, type)
       store.transaction true do
-        store[:recordings][mailbox_id].size
+        store[type][mailbox_id].size
       end
     end
 
-    def count_saved_messages(mailbox_id)
+    def next_message(mailbox_id, type)
       store.transaction true do
-        store[:archived][mailbox_id].size
+        store[type][mailbox_id].first
       end
     end
 
-    def next_new_message(mailbox_id)
-      store.transaction true do
-        store[:recordings][mailbox_id].first
-      end
-    end
-
-    def next_saved_message(mailbox_id)
-      store.transaction true do
-        store[:archived][mailbox_id].first
-      end
-    end
-
-    def archive_message(mailbox_id, message_id)
+    def change_message_type(mailbox_id, message_id, from, to)
       store.transaction do
-        item = store[:recordings][mailbox_id].select { |i| i[:id] == message_id }
-        rec = item.first
-        if rec
-          store[:archived][mailbox_id] << rec
-          store[:recordings][mailbox_id].delete(rec)
+        item = store[from][mailbox_id].select { |i| i[:id] == message_id }
+        recording = item.first
+        if recording
+          store[to][mailbox_id] << recording
+          store[from][mailbox_id].delete recording
         end
       end
     end
 
-    def unarchive_message(mailbox_id, message_id)
+    def delete_message(mailbox_id, message_id, type)
       store.transaction do
-        item = store[:archived][mailbox_id].select { |i| i[:id] == message_id }
-        rec  = item.first
-        if rec
-          store[:recordings][mailbox_id] << rec
-          store[:archived][mailbox_id].delete(rec)
+        item = store[type][mailbox_id].select { |i| i[:id] == message_id }
+        recording = item.first
+        if recording
+          File.unlink recording[:uri] if File.exists? recording[:uri]
+          store[type][mailbox_id].delete recording
         end
       end
-    end
-
-    def delete_message(mailbox_id, message_id)
-      File.unlink(rec[:uri]) if File.exists?(rec[:uri])
-      store[:recordings][mailbox_id].delete(rec)
     end
 
     def save_greeting_for_mailbox(mailbox_id, recording_uri)
@@ -86,7 +69,7 @@ module Voicemail
       end
     end
 
-    def save_recording(mailbox_id, from, recording_object)
+    def save_recording(mailbox_id, type, from, recording_object)
       store.transaction do
         recording = {
           id:       SecureRandom.uuid,
@@ -94,7 +77,7 @@ module Voicemail
           received: Time.now,
           uri:      recording_object.uri
         }
-        store[:recordings][mailbox_id] << recording
+        store[type][mailbox_id] << recording
         logger.info "Saving recording: #{recording.inspect}"
       end
     end
@@ -106,9 +89,9 @@ module Voicemail
 
     def setup_schema
       store.transaction do
-        store[:mailboxes]   ||= {}
-        store[:recordings]  ||= {}
-        store[:archived]    ||= {}
+        store[:mailboxes] ||= {}
+        store[:new]       ||= {}
+        store[:saved]     ||= {}
       end
     end
 

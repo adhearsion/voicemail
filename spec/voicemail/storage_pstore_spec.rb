@@ -25,9 +25,9 @@ module Voicemail
       config.storage.pstore_location = pstore_path
       StoragePstore.new.tap do |storage|
         storage.store.transaction do |store|
-          store[:recordings][100] = [message_1]
-          store[:archived][100]   = [message_2, message_3]
-          store[:mailboxes][100]  = mailbox
+          store[:new][100]       = [message_1]
+          store[:saved][100]     = [message_2, message_3]
+          store[:mailboxes][100] = mailbox
         end
         flexmock storage
       end
@@ -51,55 +51,49 @@ module Voicemail
       let(:recording_object) { flexmock 'recording_object', uri: "file://somewav.wav" }
 
       it "saves the recording" do
-        storage.save_recording(100, "foo", recording_object)
+        storage.save_recording(100, :new, "foo", recording_object)
         storage.store.transaction do |store|
-          store[:recordings][100].last[:uri].should  == "file://somewav.wav"
-          store[:recordings][100].last[:from].should == "foo"
-          store[:recordings][100].last[:id].should_not be_nil
+          store[:new][100].last[:uri].should  == "file://somewav.wav"
+          store[:new][100].last[:from].should == "foo"
+          store[:new][100].last[:id].should_not be_nil
         end
       end
     end
 
-    describe "#count_new_messages" do
+    describe "#count_messages" do
       it "returns the new message count" do
-        storage.count_new_messages(100).should == 1
+        storage.count_messages(100, :new).should == 1
       end
-    end
 
-    describe "#count_saved_messages" do
       it "returns the saved message count" do
-        storage.count_saved_messages(100).should == 2
+        storage.count_messages(100, :saved).should == 2
       end
     end
 
-    describe "#next_new_message" do
-      it "returns the next new messaged" do
-        storage.next_new_message(100).should == {id: :foo}
+    describe "#next_message" do
+      it "returns the next new message" do
+        storage.next_message(100, :new).should == {id: :foo}
+      end
+
+      it "returns the next saved message" do
+        storage.next_message(100, :saved).should == {id: :bar}
       end
     end
 
-    describe "#next_saved_message" do
-      it "returns the next saved messaged" do
-        storage.next_saved_message(100).should == {id: :bar}
-      end
-    end
-
-    describe "#archive_message" do
-      it "archives the message" do
-        storage.archive_message 100, :foo
+    describe "#change_message_type" do
+      it "changes the message type to :saved" do
+        storage.change_message_type 100, :foo, :new, :saved
         storage.store.transaction do |store|
-          store[:recordings][100].should == []
-          store[:archived][100].should   == [message_2, message_3, message_1]
+          store[:new][100].should   == []
+          store[:saved][100].should == [message_2, message_3, message_1]
         end
       end
-    end
 
-    describe "#unarchive_message" do
-      it "unarchives the message" do
-        storage.unarchive_message 100, :bar
+      it "changes the message type to :new" do
+        storage.change_message_type 100, :bar, :saved, :new
         storage.store.transaction do |store|
-          store[:recordings][100].should == [message_1, message_2]
-          store[:archived][100].should   == [message_3]
+          store[:new][100].should   == [message_1, message_2]
+          store[:saved][100].should == [message_3]
         end
       end
     end
