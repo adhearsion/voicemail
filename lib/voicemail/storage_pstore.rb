@@ -43,7 +43,7 @@ module Voicemail
         item = store[type][mailbox_id].select { |i| i[:id] == message_id }
         recording = item.first
         if recording
-          File.unlink recording[:uri] if File.exists? recording[:uri]
+          File.unlink recording[:uri] if File.exist? recording[:uri]
           store[type][mailbox_id].delete recording
         end
       end
