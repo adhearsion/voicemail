@@ -56,7 +56,7 @@ module Voicemail
     end
 
     def save_recording
-      storage.save_recording mailbox[:id], call.from, recording.complete_event.recording
+      storage.save_recording mailbox[:id], :new, call.from, recording.complete_event.recording
       @saved = true
     end
 

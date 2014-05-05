@@ -44,12 +44,12 @@ module Voicemail
         after { controller.message_loop }
 
         it "calls #next_message if there are new messages" do
-          storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(3)
+          storage_instance.should_receive(:count_messages).once.with(mailbox[:id], :new).and_return(3)
           subject.should_receive(:next_message).once
         end
 
         it "plays a message and goes to the main menu if there are no new messages" do
-          storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
+          storage_instance.should_receive(:count_messages).once.with(mailbox[:id], :new).and_return(0)
           subject.should_receive(:t).with('voicemail.messages.there_are_no').and_return 'there_are_no'
           subject.should_receive(:t).with('voicemail.new_messages').and_return 'new_messages'
           subject.should_receive(:play).with(['there_are_no', 'new_messages']).once
@@ -59,7 +59,7 @@ module Voicemail
 
       describe "#next_message" do
         it "gets the next message and calls #handle_message" do
-          storage_instance.should_receive(:next_new_message).once.with(mailbox[:id]).and_return(message)
+          storage_instance.should_receive(:next_message).once.with(mailbox[:id], :new).and_return(message)
           subject.should_receive(:handle_message).once.with(message)
           subject.should_receive(:message_loop).once
           controller.next_message
@@ -81,12 +81,12 @@ module Voicemail
         after { controller.message_loop }
 
         it "calls #next_message if there are saved messages" do
-          storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(3)
+          storage_instance.should_receive(:count_messages).once.with(mailbox[:id], :saved).and_return(3)
           subject.should_receive(:next_message).once
         end
 
         it "plays a message and goes to the main menu if there are no saved messages" do
-          storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(0)
+          storage_instance.should_receive(:count_messages).once.with(mailbox[:id], :saved).and_return(0)
           subject.should_receive(:t).with('voicemail.messages.there_are_no').and_return 'there_are_no'
           subject.should_receive(:t).with('voicemail.saved_messages').and_return 'saved_messages'
           subject.should_receive(:play).with(['there_are_no', 'saved_messages']).once
@@ -96,7 +96,7 @@ module Voicemail
 
       describe "#next_message" do
         it "gets the next message and calls #handle_message" do
-          storage_instance.should_receive(:next_saved_message).once.with(mailbox[:id]).and_return(message)
+          storage_instance.should_receive(:next_message).once.with(mailbox[:id], :saved).and_return(message)
           subject.should_receive(:handle_message).once.with(message)
           subject.should_receive(:message_loop).once
           controller.next_message

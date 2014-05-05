@@ -33,11 +33,11 @@ module Voicemail
     private
 
     def messages_remaining
-      storage.send "count_#{new_or_saved}_messages", mailbox[:id]
+      storage.count_messages mailbox[:id], new_or_saved
     end
 
     def current_message
-      storage.send "next_#{new_or_saved}_message", mailbox[:id]
+      storage.next_message mailbox[:id], new_or_saved
     end
 
     def bail_out

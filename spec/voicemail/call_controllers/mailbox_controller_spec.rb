@@ -44,7 +44,7 @@ describe Voicemail::MailboxController do
       let(:type) { :new }
 
       context "with at least one new message" do
-        before { storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return 3 }
+        before { storage_instance.should_receive(:count_messages).once.with(mailbox[:id], :new).and_return 3 }
 
         it "plays the number of new messages" do
           subject.should_receive(:t).with('voicemail.mailbox.you_have').and_return 'you_have'
@@ -78,7 +78,7 @@ describe Voicemail::MailboxController do
       end
 
       context "with no new message" do
-        before { storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return 0 }
+        before { storage_instance.should_receive(:count_messages).once.with(mailbox[:id], :new).and_return 0 }
 
         it "plays the no new messages audio" do
           subject.should_receive(:t).with('voicemail.messages.there_are_no').and_return 'there_are_no'
@@ -92,18 +92,18 @@ describe Voicemail::MailboxController do
       let(:type) { :saved }
 
       it "plays the number of saved messages if there is at least one" do
+        storage_instance.should_receive(:count_messages).once.with(mailbox[:id], :saved).and_return(3)
         subject.should_receive(:t).with('voicemail.mailbox.you_have').and_return 'you_have'
         subject.should_receive(:t).with('voicemail.saved_messages').and_return 'saved_messages'
-        storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(3)
         should_play('you_have').ordered
         subject.should_receive(:play_numeric).ordered.with(3)
         should_play('saved_messages').ordered
       end
 
       it "does play the no saved messages audio if there are none" do
+        storage_instance.should_receive(:count_messages).once.with(mailbox[:id], :saved).and_return(0)
         subject.should_receive(:t).with('voicemail.messages.there_are_no').and_return 'there_are_no'
         subject.should_receive(:t).with('voicemail.saved_messages').and_return 'saved_messages'
-        storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(0)
         should_play(['there_are_no', 'saved_messages']).ordered
       end
     end

@@ -40,7 +40,7 @@ module Voicemail
     end
 
     def get_count
-      @number = storage.send "count_#{new_or_saved}_messages", mailbox[:id]
+      @number = storage.count_messages mailbox[:id], new_or_saved
     end
   end
 end

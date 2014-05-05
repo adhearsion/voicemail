@@ -63,14 +63,14 @@ module Voicemail
 
     def archive_or_unarchive_message
       if new_or_saved == :new
-        storage.archive_message mailbox[:id], current_message[:id]
+        storage.change_message_type mailbox[:id], current_message[:id], :new, :saved
       else
-        storage.unarchive_message mailbox[:id], current_message[:id]
+        storage.change_message_type mailbox[:id], current_message[:id], :saved, :new
       end
     end
 
     def delete_message
-      storage.delete_message mailbox[:id], current_message[:id]
+      storage.delete_message mailbox[:id], current_message[:id], new_or_saved
       play t('voicemail.messages.message_deleted')
     end
 

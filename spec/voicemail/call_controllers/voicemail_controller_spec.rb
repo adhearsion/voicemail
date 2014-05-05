@@ -112,7 +112,7 @@ describe Voicemail::VoicemailController do
           call.should_receive :on_end
           recording_component.should_receive("complete_event.recording").and_return recording_object
           subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
-          storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
+          storage_instance.should_receive(:save_recording).with mailbox[:id], :new, call.from, recording_object
         end
       end
 
@@ -126,7 +126,7 @@ describe Voicemail::VoicemailController do
           subject.should_receive(:menu)
           recording_component.should_receive('complete_event.recording').and_return recording_object
           subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
-          storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
+          storage_instance.should_receive(:save_recording).with mailbox[:id], :new, call.from, recording_object
         end
       end
     end
