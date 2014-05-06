@@ -1,71 +1,164 @@
+---
 en:
   time:
     am: am
     pm: pm
     formats:
       default: '%A, %B %d at %-l:%M %p'
-  numbers:
-    '1': "one "
-    '2': "two "
-    '3': "three "
-    '4': "four "
-    '5': "five "
-    '6': "six "
-    '7': "seven "
-    '8': "eight "
-    '9': "nine "
-    '0': "zero "
+
+  from:
+    text: " from "
+
+  digits:
+    '1':
+      text: "one "
+    '2':
+      text: "two "
+    '3':
+      text: "three "
+    '4':
+      text: "four "
+    '5':
+      text: "five "
+    '6':
+      text: "six "
+    '7':
+      text: "seven "
+    '8':
+      text: "eight "
+    '9':
+      text: "nine "
+    '0':
+      text: "zero "
 
   voicemail:
-    default_greeting: "You have reached Voicemail"
-    mailbox_not_found: "Mailbox not found"
+    default_greeting:
+      text: "You have reached voicemail"
+    mailbox_not_found:
+      text: "Mailbox not found"
+    return_to_main_menu:
+      text: "Press nine to return to the main menu."
+    press_one_to_confirm:
+      text: "Press one to confirm."
+    new_messages:
+      text: " new messages"
+    saved_messages:
+      text: " saved messages"
+    after_record:
+      text: "Press one to save your voicemail. Press two to rerecord."
 
     mailbox:
-      greeting_message: "Welcome to the mailbox system."
-      please_enter_pin: "Please enter your PIN."
-      pin_wrong: "The PIN you entered does not match. Please try again."
-      could_not_auth: "We are sorry, the system could not authenticate you."
-      number_before: "You have "
-      number_after: " new messages"
-      number_after_saved: " saved messages"
-      x_new_messages:
-        one: "You have one new message. "
-        other: "You have %{count} new messages. "
-      x_saved_messages:
-        one: "You have one saved message. "
-        other: "You have %{count} saved messages. "
-      menu_greeting: "Press 1 to listen to new messages, 2 to change your greeting, 3 to change your PIN."
-      menu_timeout_message: "Please enter a digit for the menu."
-      menu_invalid_message: "Please enter valid input."
-      menu_failure_message: "Sorry, unable to understand your input."
+      menu:
+        listen_to_new:
+          text: "Press one to listen to new messages."
+        listen_to_saved:
+          text: "Press two to listen to saved messages."
+        change_greeting:
+          text: "Press three to change your greeting."
+        change_pin:
+          text: "Press four to change your PIN."
+        delete_all_new:
+          text: "Press seven to delete all new messages."
+        delete_all_saved:
+          text: "Press nine to delete all saved messages."
+        timeout:
+          text: "Please enter a digit for the menu."
+        invalid:
+          text: "Please enter a valid digit."
+        failure:
+          text: "We are sorry, we are unable to understand your input."
 
-    after_record: "Press 1 to save your voicemail.  Press 2 to rerecord."
-    recording_confirmation: "Your message has been saved. Thank you."
+      greeting_message:
+        text: "Welcome to the voicemail system."
+      enter_pin:
+        text: "Please enter your PIN."
+      invalid_pin:
+        text: "The PIN you entered does not match. Please try again."
+      auth_failed:
+        text: "We are sorry, the system could not authenticate you."
+      you_have:
+        text: "You have "
+      clear_new_messages:
+        text: "Are you sure you want to permanently erase all new messages?"
+      clear_saved_messages:
+        text: "Are you sure you want to permanently erase all saved messages?"
+      any_key_to_cancel:
+        text: "Press any other key to cancel."
+      all_of_your:
+        text: "All of your"
+      are_being_deleted:
+        text: "Are being deleted. Please wait."
+      successfully_deleted:
+        text: " have been successfully deleted."
+      x_new_messages:
+        text:
+          one: "You have one new message. "
+          other: "You have %{count} new messages. "
+      x_saved_messages:
+        text:
+          one: "You have one saved message. "
+          other: "You have %{count} saved messages. "
 
     set_greeting:
-      prompt: "Press 1 to listen to your current greeting, 2 to record a new greeting, 9 to return to the main menu."
-      before_record: "Please speak after the beep. The prompt will be played back after."
-      after_record: "Press 1 to save your new greeting, 2 to discard it, 9 to go back to the menu."
-      no_personal_greeting: "You do not currently have a personalized greeting."
+      greeting_menu:
+        listen_to_current:
+          text: "Press one to listen to your current greeting."
+        record_new:
+          text: "Press two to record a new greeting."
+        delete_greeting:
+          text: "Press three to delete your personalized greeting"
+
+      recording_menu:
+        save_greeting:
+          text: "Press one to save your new greeting."
+        discard_greeting:
+          text: "Press two to discard your new greeting."
+
+      recording_instructions:
+        text: "Please speak after the beep. The prompt will be played back after."
+      no_personal_greeting:
+        text: "You do not currently have a personalized greeting."
+      delete_confirmation:
+        text: "Your personalized greeting will be deleted."
+      greeting_deleted:
+        text: "Your personalized greeting was deleted."
 
     set_pin:
-      menu: "Press 1 to change your current PIN, or 9 to go back to the main menu."
-      prompt: "Enter your new PIN of at least four digits followed by the pound sign."
-      repeat_prompt: "Please enter your new PIN again, followed by the pound sign."
-      pin_error: "Please enter at least four digits followed by the pound sign."
-      match_error: "The two entered PINs don't match, please try again."
-      change_ok: "Your PIN has been successfully changed."
+      menu:
+        change_pin:
+          text: "Press one to change your current PIN."
+
+      enter_new_pin:
+        text: "Please enter a new PIN of at least four digits, followed by the pound sign."
+      repeat_pin:
+        text: "Please enter your new PIN again, followed by the pound sign."
+      pin_error:
+        text: "Please enter at least four digits, followed by the pound sign."
+      match_error:
+        text: "The two entered PINs don't match. Please try again."
+      pin_successfully_changed:
+        text: "Your PIN has been successfully changed."
 
     messages:
-      menu_new: "Press 1 to archive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu"
-      menu_saved: "Press 1 to unarchive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu"
-      no_new_messages: "There are no new messages."
-      no_saved_messages: "There are no saved messages."
-      message_received_on: "Message received on "
-      from: " from "
-      message_received_on_x: "Message received on %{received_on}. "
-      message_received_from_x: "Message received from %{from}. "
-      deleting_all_new_messages: "All of your new messages are being deleted. Please wait."
-      deleting_all_saved_messages: "All of your saved messages are being deleted. Please wait."
-      all_new_messages_deleted: "All new messages have been deleted."
-      all_saved_messages_deleted: "All saved messages have been deleted."
+      menu:
+        archive_new:
+          text: "Press one to archive the message and go on to the next."
+        archive_saved:
+          text: "Press one to unarchive the message and go on to the next."
+        delete:
+          text: "Press five to delete the message and go on to the next."
+        replay:
+          text: "Press seven to hear the message again."
+        skip:
+          text: "Press eight to skip the message."
+
+      there_are_no:
+        text: "There are no"
+      message_received_on:
+        text: "Message received on "
+      message_deleted:
+        text: "Message deleted."
+      message_received_on_x: 
+        text: "Message received on %{received_on}."
+      message_received_from_x: 
+        text: "Message received from %{from}."
