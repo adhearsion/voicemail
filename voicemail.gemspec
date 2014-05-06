@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency %q<adhearsion>, ["~> 2.4"]
+  s.add_runtime_dependency %q<adhearsion-i18n>, ["~> 0.0"]
 
   s.add_development_dependency %q<bundler>
   s.add_development_dependency %q<rspec>, ["~> 2.14.0"]
