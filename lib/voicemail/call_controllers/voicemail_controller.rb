@@ -17,7 +17,7 @@ module Voicemail
     end
 
     def play_greeting
-      play mailbox[:greeting_message] || config.default_greeting
+      play mailbox[:greeting_message] || t('voicemail.default_greeting')
     end
 
     def play_recording_confirmation
@@ -32,7 +32,7 @@ module Voicemail
 
     def recording_menu
       ensure_message_saved_if_hangup
-      menu recording_url, config.after_record, tries: 3, timeout: 10 do
+      menu recording_url, t('voicemail.after_record'), tries: 3, timeout: 10 do
         match('1') { save_recording }
         match('2') { record_message }
 

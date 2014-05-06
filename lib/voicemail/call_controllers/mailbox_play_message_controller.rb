@@ -47,11 +47,13 @@ module Voicemail
     end
 
     def play_message_menu
-      if new_or_saved == :new
-        config.messages.menu_new
-      else
-        config.messages.menu_saved
-      end
+      [
+        t("voicemail.messages.menu.archive_#{new_or_saved}"),
+        t('voicemail.messages.menu.delete'),
+        t('voicemail.messages.menu.replay'),
+        t('voicemail.messages.menu.skip'),
+        t('voicemail.return_to_main_menu')
+      ]
     end
 
     def rewind_message
