@@ -29,15 +29,15 @@ module Voicemail
         match(9) { main_menu }
 
         timeout do
-          play config.mailbox.menu_timeout_message
+          play t('voicemail.mailbox.menu.timeout')
         end
 
         invalid do
-          play config.mailbox.menu_invalid_message
+          play t('voicemail.mailbox.menu.invalid')
         end
 
         failure do
-          play config.mailbox.menu_failure_message
+          play t('voicemail.mailbox.menu.failure')
           main_menu
         end
       end
@@ -71,7 +71,7 @@ module Voicemail
 
     def delete_message
       storage.delete_message mailbox[:id], current_message[:id]
-      play config.messages.message_deleted
+      play t('voicemail.messages.message_deleted')
     end
 
     def current_message

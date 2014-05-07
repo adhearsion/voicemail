@@ -21,7 +21,7 @@ module Voicemail
     end
 
     def play_recording_confirmation
-      play config.recording_confirmation
+      play t('voicemail.recording_confirmation')
     end
 
     def record_message

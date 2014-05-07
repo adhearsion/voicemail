@@ -46,6 +46,8 @@ en:
       text: " saved messages"
     after_record:
       text: "Press one to save your voicemail. Press two to rerecord."
+    recording_confirmation:
+      text: "Your message has been saved."
 
     mailbox:
       menu:
@@ -90,6 +92,8 @@ en:
         text: "Are being deleted. Please wait."
       successfully_deleted:
         text: " have been successfully deleted."
+      no_messages_deleted:
+        text: "Your messages will not be deleted. Returning to the main menu."
       x_new_messages:
         text:
           one: "You have one new message. "
