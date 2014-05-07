@@ -40,6 +40,7 @@ en:
       menu_failure_message: "Sorry, unable to understand your input."
 
     after_record: "Press 1 to save your voicemail.  Press 2 to rerecord."
+    recording_confirmation: "Your message has been saved. Thank you."
 
     set_greeting:
       prompt: "Press 1 to listen to your current greeting, 2 to record a new greeting, 9 to return to the main menu."
