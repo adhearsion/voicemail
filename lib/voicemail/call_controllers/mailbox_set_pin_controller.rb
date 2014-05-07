@@ -20,16 +20,16 @@ module Voicemail
 
         failure do
           play config.mailbox.menu_failure_message
-          hangup
+          main_menu
         end
       end
     end
 
     def set_pin
-      pin = ask config.set_pin.prompt, terminator: "#"
-      repeat_pin = ask config.set_pin.repeat_prompt, terminator: "#"
+      pin = ask config.set_pin.prompt, terminator: "#", timeout: 5
+      repeat_pin = ask config.set_pin.repeat_prompt, terminator: "#", timeout: 5
 
-      if pin.to_s.size < config.set_pin.pin_minimum_digits
+      if pin.to_s.nil? || pin.to_s.size < config.set_pin.pin_minimum_digits
         play config.set_pin.pin_error
         set_pin
       elsif pin.to_s != repeat_pin.to_s

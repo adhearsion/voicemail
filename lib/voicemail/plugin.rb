@@ -28,6 +28,7 @@ module Voicemail
 
       allow_rerecording true, desc: "Allow caller to rerecord their voicemail"
       after_record "Press 1 to save your voicemail.  Press 2 to rerecord.", desc: "Message to play if allow_rerecording is set"
+      recording_confirmation "Your message has been saved. Thank you.", desc: "Message to play after the voicemail has been saved"
 
       desc "Default recording options"
       recording {
@@ -50,18 +51,27 @@ module Voicemail
         number_before "You have ", desc: "What to play before the number of new messages"
         number_after_new " new messages", desc: "What to play after the number of new messages"
         number_after_saved " saved messages", desc: "What to play after the number of saved messages"
-        menu_greeting "Press 1 to listen to new messages, 2 to listen to saved messages, 3 to change your greeting, 4 to change your PIN", desc: "What to say before the main menu"
+        menu_greeting "Press 1 to listen to new messages, 2 to listen to saved messages, 3 to change your greeting, 4 to change your PIN, 7 to delete all new messages, 9 to delete all saved messages", desc: "What to say before the main menu"
         menu_timeout_message "Please enter a digit for the menu", desc: "Message to play on main menu timeout"
         menu_invalid_message "Please enter valid input", desc: "Message to play on main menu invalid"
         menu_failure_message "Sorry, unable to understand your input.", desc: "Message to play on main menu failure"
+        clear_new_messages "Are you sure you want to permanently erase all new messages? Press 1 to delete, or any other key to cancel", desc: "New message clearing confirmation"
+        clear_saved_messages "Are you sure you want to permanently erase all saved messages? Press 1 to delete, or any other key to cancel", desc: "Saved message clearing confirmation"
+        no_messages_deleted "Your messages will not be deleted. Returning to main menu."
+        deleting_all_new_messages "All of your new messages are being deleted. Please wait."
+        deleting_all_saved_messages "All of your saved messages are being deleted. Please wait."
+        all_new_messages_deleted "All new messages have been successfully deleted."
+        all_saved_messages_deleted "All saved messages have been successfully deleted."
       }
 
       desc "Set greeting configuration"
       set_greeting {
-        prompt "Press 1 to listen to your current greeting, 2 to record a new greeting, 9 to return to the main menu", desc: "Main prompt for setting greeting"
+        prompt "Press 1 to listen to your current greeting, 2 to record a new greeting, 3 to delete your personalized greeting, 9 to return to the main menu", desc: "Main prompt for setting greeting"
         before_record "Please speak after the beep. The prompt will be played back after.", desc: "Recording instructions"
         after_record "Press 1 to save your new greeting, 2 to discard it, 9 to go back to the menu", desc: "Menu to use after recording"
         no_personal_greeting "You do not currently have a personalized greeting.", desc: "What to play if there is no specific greeting"
+        delete_confirmation "Your personlized greeting will be deleted. Press 1 to confirm, 9 to return to the main menu.", desc: "Ask the user to confirm removal of personalized greeting"
+        greeting_deleted "Your personalized greeting was deleted.", desc: "What to play after a greeting has been deleted"
       }
 
       desc "Set PIN configuration"
@@ -77,12 +87,13 @@ module Voicemail
 
       desc "Listen to messages menu configuration"
       messages {
-        menu_new "Press 1 to archive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu", desc: "Menu to use inside new messages"
-        menu_saved "Press 1 to unarchive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu", desc: "Menu to use inside saved messages"
+        menu_new "Press 1 to archive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 8 to skip the message, press 9 for the main menu", desc: "Menu to use inside new messages"
+        menu_saved "Press 1 to unarchive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 8 to skip the message, press 9 for the main menu", desc: "Menu to use inside saved messages"
         no_new_messages "There are no new messages", desc: "Message to inform the user he has no new messages"
         no_saved_messages "There are no saved messages", desc: "Message to inform the user he has no saved messages"
         message_received_on "Message received on ", desc: "Prefix to menu intro"
         from " from ", desc: "Used in message intro"
+        message_deleted "Message deleted.", desc: "Confirmation that a message has been deleted"
       }
 
       desc "Storage configuration"

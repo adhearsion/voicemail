@@ -39,27 +39,21 @@ describe Voicemail::MailboxPlayMessageController do
     it "deletes the message" do
       subject.should_receive(:current_message).once.and_return(message)
       storage_instance.should_receive(:delete_message).once.with(mailbox[:id], message[:id])
+      subject.should_receive(:play).once.with(config.messages.message_deleted)
       controller.delete_message
     end
   end
 
-  describe "#intro_message" do
-    it "plays the message introduction" do
-      subject.should_receive(:current_message).once.and_return message
-      should_invoke Voicemail::MailboxPlayMessageIntroController, message: message, mailbox: 100, storage: storage_instance
-      controller.intro_message
-    end
-  end
-
   describe "#play_message" do
+    include FlexMock::ArgumentTypes
     after { subject.play_message }
 
     context "with a new message" do
       before { subject.new_or_saved = :new }
 
       it "plays the message, followed by the new message menu" do
-        subject.should_receive(:current_message).once.and_return message
-        subject.should_receive(:menu).once.with message[:uri], config.messages.menu_new,
+        subject.should_receive(:current_message).and_return message
+        subject.should_receive(:menu).once.with any, message[:uri], config.messages.menu_new,
           { timeout: config.menu_timeout, tries: config.menu_tries }, Proc
       end
     end
@@ -68,8 +62,8 @@ describe Voicemail::MailboxPlayMessageController do
       before { subject.new_or_saved = :saved }
 
       it "plays the message, followed by the saved message menu" do
-        subject.should_receive(:current_message).once.and_return message
-        subject.should_receive(:menu).once.with message[:uri], config.messages.menu_saved,
+        subject.should_receive(:current_message).and_return message
+        subject.should_receive(:menu).once.with any, message[:uri], config.messages.menu_saved,
           { timeout: config.menu_timeout, tries: config.menu_tries }, Proc
       end
     end
