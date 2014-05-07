@@ -1,5 +1,6 @@
 module Voicemail
   class MailboxPlayMessageController < ApplicationController
+    include IntroMessageCreator
 
     attr_accessor :new_or_saved
 
@@ -14,7 +15,7 @@ module Voicemail
     end
 
     def play_message
-      menu intro_message, message_uri, play_message_menu, timeout: config.menu_timeout, tries: config.menu_tries do
+      menu intro_message(current_message), message_uri, play_message_menu, timeout: config.menu_timeout, tries: config.menu_tries do
         match 1 do
           archive_or_unarchive_message
         end
@@ -40,10 +41,6 @@ module Voicemail
           main_menu
         end
       end
-    end
-
-    def intro_message
-      IntroMessageCreator.new(current_message).intro_message
     end
 
     def play_message_menu
