@@ -1,6 +1,8 @@
 #develop
   * CHANGE - Menu intros are one message, making them skippable.
   * FEATURE - Personalized voicemail greetings can be deleted
+  * FEATURE - Add message to play after recording a voicemail is complete
+  * BUG - Resolve issue where caller presses the pound key twice in succession
 
 #v1.0.0 - 2014-01-02
   * FEATURE - Optional per-mailbox override of default recording hash
