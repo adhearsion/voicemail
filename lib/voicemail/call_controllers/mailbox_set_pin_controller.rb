@@ -26,8 +26,8 @@ module Voicemail
     end
 
     def set_pin
-      pin = ask t('voicemail.set_pin.enter_new_pin'), terminator: "#", timeout: 5
-      repeat_pin = ask t('voicemail.set_pin.repeat_pin'), terminator: "#", timeout: 5
+      pin = ask t('voicemail.set_pin.enter_new_pin'), terminator: '#', timeout: 5
+      repeat_pin = ask t('voicemail.set_pin.repeat_pin'), terminator: '#', timeout: 5
 
       if pin.to_s.nil? || pin.to_s.size < config.set_pin.pin_minimum_digits
         play t('voicemail.set_pin.pin_error')

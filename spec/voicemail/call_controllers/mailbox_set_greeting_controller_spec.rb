@@ -50,8 +50,8 @@ describe Voicemail::MailboxSetGreetingController do
       should_play 'recording_instructions'
       recording_component.should_receive('complete_event.recording.uri').and_return file_path
       subject.should_receive(:play_audio).with file_path
-      subject.should_receive(:menu).once.with ['save_greeting', 'discard_greeting', 'main_menu'], 
-          {timeout: config.menu_timeout, tries: config.menu_tries}, Proc
+      subject.should_receive(:menu).once.with ['save_greeting', 'discard_greeting', 'main_menu'],
+                                              { timeout: config.menu_timeout, tries: config.menu_tries }, Proc
     end
 
     after do

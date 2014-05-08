@@ -40,7 +40,7 @@ describe Voicemail::AuthenticationController do
   describe "#authenticate" do
     it "authenticates an user that enters the correct pin" do
       subject.should_receive(:t).with('voicemail.mailbox.enter_pin').and_return 'enter_pin'
-      should_ask('enter_pin', terminator: "#", timeout: config.prompt_timeout).once.and_return(1234)
+      should_ask('enter_pin', terminator: '#', timeout: config.prompt_timeout).once.and_return(1234)
       controller.authenticate
       controller.auth_ok.should == true
     end

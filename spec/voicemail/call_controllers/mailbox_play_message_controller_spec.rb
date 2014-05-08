@@ -82,7 +82,7 @@ describe Voicemail::MailboxPlayMessageController do
   describe '#load_message' do
 
     context 'with a message' do
-      let(:metadata) { {message: 'foo'} }
+      let(:metadata) { { message: 'foo' } }
 
       it 'loads the messge' do
         subject.load_message
@@ -91,7 +91,7 @@ describe Voicemail::MailboxPlayMessageController do
     end
 
     context 'with no message passed' do
-      let(:metadata) { {message: nil} }
+      let(:metadata) { { message: nil } }
 
       it 'raises an error' do
         expect { subject.load_message }.to raise_error ArgumentError

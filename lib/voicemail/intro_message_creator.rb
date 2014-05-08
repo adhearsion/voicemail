@@ -7,7 +7,7 @@ module Voicemail
     end
 
     def intro_message(message)
-      raise ArgumentError, "Must supply a valid message!" unless message
+      fail ArgumentError, 'Must supply a valid message!' unless message
       @current_message = message
       Array(time_message) + Array(from_message)
     end
