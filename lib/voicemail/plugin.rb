@@ -2,6 +2,7 @@ module Voicemail
   class Plugin < Adhearsion::Plugin
 
     init :voicemail, after: :i18n do
+      ::I18n.load_path.insert(1, File.expand_path("../../../templates/en.yml", __FILE__)) 
       logger.info "Voicemail has been loaded"
     end
 
