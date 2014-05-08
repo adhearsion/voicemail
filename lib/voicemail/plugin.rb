@@ -1,17 +1,11 @@
 module Voicemail
   class Plugin < Adhearsion::Plugin
 
-    init :voicemail do
-      if config.use_i18n
-        LocalizationLoader.replace_config
-        logger.info "Voicemail has been loaded with i18n support"
-      else
-        logger.info "Voicemail has been loaded"
-      end
+    init :voicemail, after: :i18n do
+      logger.info "Voicemail has been loaded"
     end
 
     config :voicemail do
-      use_i18n false, desc: "Whether to use i18n for voice prompts"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15.seconds, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
