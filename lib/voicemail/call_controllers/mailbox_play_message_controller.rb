@@ -1,5 +1,6 @@
 module Voicemail
   class MailboxPlayMessageController < ApplicationController
+    include IntroMessageCreator
 
     attr_accessor :new_or_saved
 
@@ -14,7 +15,7 @@ module Voicemail
     end
 
     def play_message
-      menu intro_message, message_uri, play_message_menu, timeout: config.menu_timeout, tries: config.menu_tries do
+      menu intro_message(current_message), message_uri, play_message_menu, timeout: config.menu_timeout, tries: config.menu_tries do
         match 1 do
           archive_or_unarchive_message
         end
@@ -28,30 +29,28 @@ module Voicemail
         match(9) { main_menu }
 
         timeout do
-          play config.mailbox.menu_timeout_message
+          play t('voicemail.mailbox.menu.timeout')
         end
 
         invalid do
-          play config.mailbox.menu_invalid_message
+          play t('voicemail.mailbox.menu.invalid')
         end
 
         failure do
-          play config.mailbox.menu_failure_message
+          play t('voicemail.mailbox.menu.failure')
           main_menu
         end
       end
     end
 
-    def intro_message
-      IntroMessageCreator.new(current_message).intro_message
-    end
-
     def play_message_menu
-      if new_or_saved == :new
-        config.messages.menu_new
-      else
-        config.messages.menu_saved
-      end
+      [
+        t("voicemail.messages.menu.archive_#{new_or_saved}"),
+        t('voicemail.messages.menu.delete'),
+        t('voicemail.messages.menu.replay'),
+        t('voicemail.messages.menu.skip'),
+        t('voicemail.return_to_main_menu')
+      ]
     end
 
     def rewind_message
@@ -72,7 +71,7 @@ module Voicemail
 
     def delete_message
       storage.delete_message mailbox[:id], current_message[:id]
-      play config.messages.message_deleted
+      play t('voicemail.messages.message_deleted')
     end
 
     def current_message

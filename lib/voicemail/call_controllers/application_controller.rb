@@ -33,7 +33,7 @@ module Voicemail
     end
 
     def mailbox_not_found
-      play config.mailbox_not_found
+      play t('voicemail.mailbox_not_found')
       hangup
     end
   end

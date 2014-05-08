@@ -3,61 +3,66 @@ require 'spec_helper'
 describe Voicemail::VoicemailController do
   include VoicemailControllerSpecHelper
 
-  describe "#run" do
-    context "with a missing mailbox parameter in metadata" do
+  describe '#run' do
+    context 'with a missing mailbox parameter in metadata' do
       let(:metadata) { Hash.new }
 
-      it "should raise an error if there is no mailbox in the metadata" do
+      it 'should raise an error if there is no mailbox in the metadata' do
         subject.should_receive(:answer).once
         expect { controller.run }.to raise_error ArgumentError
       end
     end
 
-    context "When when_to_answer is :after_greeting and there's no mailbox" do
+    context 'When when_to_answer is :after_greeting and there is no mailbox' do
       let(:mailbox) { nil }
 
       before { config.when_to_answer = :after_greeting  }
       after  { config.when_to_answer = :before_greeting }
 
-      it "should not answer" do
-        should_play config.mailbox_not_found
+      it 'should not answer' do
+        subject.should_receive(:t).with('voicemail.mailbox_not_found').and_return 'Mailbox not found'
+        should_play 'Mailbox not found'
         subject.should_receive(:hangup).once
         controller.run
       end
     end
 
-    context "with a present mailbox parameter in metadata" do
+    context 'with a present mailbox parameter in metadata' do
       before { subject.should_receive(:answer).once }
 
-      context "with an invalid mailbox" do
+      context 'with an invalid mailbox' do
         let(:mailbox) { nil }
 
-        it "plays the mailbox not found message and hangs up" do
-          should_play config.mailbox_not_found
+        it 'plays the mailbox not found message and hangs up' do
+          subject.should_receive(:t).with('voicemail.mailbox_not_found').and_return 'Mailbox not found'
+          should_play 'Mailbox not found'
           subject.should_receive(:hangup).once
           controller.run
         end
       end
 
-      context "with an existing mailbox" do
+      context 'with an existing mailbox' do
         before { subject.should_receive(:hangup).once }
 
-        context "without a greeting message" do
-          it "plays the default greeting if one is not specified" do
-            should_play config.default_greeting
+        context 'without a greeting message' do
+          it 'plays the default greeting if one is not specified' do
+            subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
+            subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
+            should_play 'Hiyas!'
             subject.should_receive :record_message
-            should_play config.recording_confirmation
+            should_play 'Recording saved'
             controller.run
           end
         end
 
-        context "with a specified greeting message" do
-          let(:greeting_message) { "Howdy!" }
+        context 'with a specified greeting message' do
+          let(:greeting_message) { 'Howdy!' }
 
-          it "plays the specific greeting message" do
+          it 'plays the specific greeting message' do
+            subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
             should_play greeting_message
             subject.should_receive :record_message
-            should_play config.recording_confirmation
+            should_play 'Recording saved'
             controller.run
           end
         end
@@ -65,31 +70,32 @@ describe Voicemail::VoicemailController do
     end
   end
 
-  describe "#record_message" do
-    context "handling a recording" do
+  describe '#record_message' do
+    context 'handling a recording' do
       let(:recording_component) { flexmock 'Record' }
-      let(:recording_object)    { flexmock 'complete_event.recording', uri: "http://some_file.wav" }
+      let(:recording_object)    { flexmock 'complete_event.recording', uri: 'http://some_file.wav' }
 
       after { subject.record_message }
 
-      context "without allow_rerecording" do
+      context 'without allow_rerecording' do
         before { config.allow_rerecording = false }
 
-        it "saves the recording" do
-          recording_component.should_receive("complete_event.recording").and_return recording_object
+        it 'saves the recording' do
+          recording_component.should_receive('complete_event.recording').and_return recording_object
           subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
           storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
         end
       end
 
-      context "without allow_rerecording" do
+      context 'with allow_rerecording' do
         before { config.allow_rerecording = true }
 
-        it "sets up a callback, plays a menu, and eventually saves the message" do
+        it 'sets up a callback, plays a menu, and eventually saves the message' do
           call.should_receive :on_end
           recording_object.should_receive :uri
+          subject.should_receive(:t).with('voicemail.after_record').and_return 'after_record'
           subject.should_receive(:menu)
-          recording_component.should_receive("complete_event.recording").and_return recording_object
+          recording_component.should_receive('complete_event.recording').and_return recording_object
           subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
           storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
         end

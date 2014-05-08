@@ -28,7 +28,7 @@ module Voicemail
         if matches?
           @auth_ok = true
         else
-          play config.mailbox.pin_wrong
+          play t('voicemail.mailbox.invalid_pin')
         end
       end
     end
@@ -45,15 +45,15 @@ module Voicemail
     end
 
     def get_input
-      @input = ask config.mailbox.please_enter_pin, terminator: "#", timeout: config.prompt_timeout
+      @input = ask t('voicemail.mailbox.enter_pin'), terminator: '#', timeout: config.prompt_timeout
     end
 
     def play_greeting
-      play config.mailbox.greeting_message
+      play t('voicemail.mailbox.greeting_message')
     end
 
     def fail_auth
-      play config.mailbox.could_not_auth
+      play t('voicemail.mailbox.auth_failed')
       hangup
     end
   end

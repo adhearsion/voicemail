@@ -41,7 +41,7 @@ module Voicemail
     end
 
     def bail_out
-      play config.messages["no_#{new_or_saved}_messages"]
+      play [t('voicemail.messages.there_are_no'), t("voicemail.#{new_or_saved}_messages")]
       main_menu
     end
   end

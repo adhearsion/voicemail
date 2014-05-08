@@ -5,7 +5,11 @@ describe Voicemail::MailboxMainMenuController do
 
   describe "#main_menu" do
     it "calls #menu with the proper parameters" do
-      subject.should_receive(:menu).once.with(config.mailbox.menu_greeting,
+      prompts = ['listen_to_new', 'listen_to_saved', 'change_greeting', 'change_pin', 'delete_all_new', 'delete_all_saved']
+      prompts.each do |prompt|
+        subject.should_receive(:t).with("voicemail.mailbox.menu.#{prompt}").and_return prompt
+      end
+      subject.should_receive(:menu).once.with(prompts,
           { timeout: config.menu_timeout,
             tries: config.menu_tries }, Proc)
       controller.main_menu

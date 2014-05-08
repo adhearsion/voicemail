@@ -5,7 +5,15 @@ module Voicemail
     end
 
     def main_menu
-      menu config.mailbox.menu_greeting,
+      menu_prompt = [
+        t('voicemail.mailbox.menu.listen_to_new'),
+        t('voicemail.mailbox.menu.listen_to_saved'),
+        t('voicemail.mailbox.menu.change_greeting'),
+        t('voicemail.mailbox.menu.change_pin'),
+        t('voicemail.mailbox.menu.delete_all_new'),
+        t('voicemail.mailbox.menu.delete_all_saved')
+      ]
+      menu menu_prompt,
          timeout: config.menu_timeout, tries: config.menu_tries do
         match(1) { listen_to_new_messages }
         match(2) { listen_to_saved_messages }
@@ -15,15 +23,15 @@ module Voicemail
         match(9) { clear_saved_messages }
 
         timeout do
-          play config.mailbox.menu_timeout_message
+          play t('voicemail.mailbox.menu.timeout')
         end
 
         invalid do
-          play config.mailbox.menu_invalid_message
+          play t('voicemail.mailbox.menu.invalid')
         end
 
         failure do
-          play config.mailbox.menu_failure_message
+          play t('voicemail.mailbox.menu.failure')
           hangup
         end
       end

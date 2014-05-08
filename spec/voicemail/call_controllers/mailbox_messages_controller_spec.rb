@@ -50,7 +50,9 @@ module Voicemail
 
         it "plays a message and goes to the main menu if there are no new messages" do
           storage_instance.should_receive(:count_new_messages).once.with(mailbox[:id]).and_return(0)
-          subject.should_receive(:play).with(config.messages.no_new_messages).once
+          subject.should_receive(:t).with('voicemail.messages.there_are_no').and_return 'there_are_no'
+          subject.should_receive(:t).with('voicemail.new_messages').and_return 'new_messages'
+          subject.should_receive(:play).with(['there_are_no', 'new_messages']).once
           subject.should_receive(:main_menu).once
         end
       end
@@ -85,7 +87,9 @@ module Voicemail
 
         it "plays a message and goes to the main menu if there are no saved messages" do
           storage_instance.should_receive(:count_saved_messages).once.with(mailbox[:id]).and_return(0)
-          subject.should_receive(:play).with(config.messages.no_saved_messages).once
+          subject.should_receive(:t).with('voicemail.messages.there_are_no').and_return 'there_are_no'
+          subject.should_receive(:t).with('voicemail.saved_messages').and_return 'saved_messages'
+          subject.should_receive(:play).with(['there_are_no', 'saved_messages']).once
           subject.should_receive(:main_menu).once
         end
       end

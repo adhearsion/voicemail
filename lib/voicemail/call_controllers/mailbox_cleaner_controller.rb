@@ -3,7 +3,7 @@
 module Voicemail 
   class MailboxCleanerController < ApplicationController
     def run
-      menu_prompt = metadata[:new_or_saved].to_s == "new" ? config.mailbox.clear_new_messages : config.mailbox.clear_saved_messages
+      menu_prompt = [t("voicemail.mailbox.clear_#{metadata[:new_or_saved]}_messages"), t('voicemail.press_one_to_confirm'), t('voicemail.mailbox.any_key_to_cancel')]
       menu menu_prompt, timeout: config.menu_timeout, tries: config.menu_tries do
         match(1) { erase_all metadata[:new_or_saved] }
    
@@ -14,7 +14,7 @@ module Voicemail
     end
    
     def confirm_no_action_taken
-      play config.mailbox.no_messages_deleted
+      play t('voicemail.mailbox.no_messages_deleted')
       main_menu
     end
    
@@ -23,7 +23,7 @@ module Voicemail
 
       messages_count = storage.send "count_#{type}_messages", mailbox[:id]   
 
-      deleting_all_messages = metadata[:new_or_saved].to_s == "new" ? config.mailbox.deleting_all_new_messages : config.mailbox.deleting_all_saved_messages
+      deleting_all_messages = [t('voicemail.mailbox.all_of_your'), t("voicemail.#{metadata[:new_or_saved]}_messages"), t('voicemail.mailbox.are_being_deleted')]
       play deleting_all_messages
 
       messages_count.times do
@@ -31,7 +31,7 @@ module Voicemail
         storage.delete_message mailbox[:id], message[:id]
       end
         
-      all_messages_deleted = metadata[:new_or_saved].to_s == "new" ? config.mailbox.all_new_messages_deleted : config.mailbox.all_saved_messages_deleted
+      all_messages_deleted = [t('voicemail.mailbox.all_of_your'), t("voicemail.#{metadata[:new_or_saved]}_messages"), t('voicemail.mailbox.successfully_deleted')]
       play all_messages_deleted
 
       main_menu
