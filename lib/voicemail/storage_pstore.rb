@@ -21,9 +21,9 @@ module Voicemail
       end
     end
 
-    def next_message(mailbox_id, type)
+    def get_messages(mailbox_id, type)
       store.transaction true do
-        store[type][mailbox_id].first
+        store[type][mailbox_id]
       end
     end
 

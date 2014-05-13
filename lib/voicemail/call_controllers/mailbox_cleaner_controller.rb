@@ -19,13 +19,12 @@ module Voicemail
     end
    
     def erase_all(type)
-      messages_count = storage.count_messages mailbox[:id], type
+      messages = storage.get_messages mailbox[:id], type
 
       deleting_all_messages = [t('voicemail.mailbox.all_of_your'), t("voicemail.#{metadata[:new_or_saved]}_messages"), t('voicemail.mailbox.are_being_deleted')]
       play deleting_all_messages
 
-      messages_count.times do
-        message = storage.next_message mailbox[:id], type
+      messages.each do |message|
         storage.delete_message mailbox[:id], message[:id], type
       end
         

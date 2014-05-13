@@ -70,13 +70,13 @@ module Voicemail
       end
     end
 
-    describe "#next_message" do
-      it "returns the next new message" do
-        storage.next_message(100, :new).should == {id: :foo}
+    describe '#get_messages' do
+      it 'returns all new messages' do
+        storage.get_messages(100, :new).should == [{ id: :foo }]
       end
 
-      it "returns the next saved message" do
-        storage.next_message(100, :saved).should == {id: :bar}
+      it 'returns all saved messages' do
+        storage.get_messages(100, :saved).should == [{ id: :bar }, { id: :biz }]
       end
     end
 

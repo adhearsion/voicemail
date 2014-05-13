@@ -28,9 +28,9 @@ module Voicemail
     # @param mailbox_id The mailbox's ID
     # @param type[Symbol] The type of message to get (see #count_messages)
     #
-    # @return [Hash] The message hash
+    # @return [Array<Hash>] An array of messages
     #
-    def next_message(mailbox_id, type)
+    def get_messages(mailbox_id, type)
     end
 
     #
