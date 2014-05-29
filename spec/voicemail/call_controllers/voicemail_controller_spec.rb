@@ -52,6 +52,7 @@ describe Voicemail::VoicemailController do
           should_play 'Recording saved'
         end
 
+<<<<<<< HEAD
         context 'with a message that is not interrupted' do
           before { subject.should_receive(:hangup).once }
 
@@ -63,11 +64,11 @@ describe Voicemail::VoicemailController do
           end
 
           context 'with a specified greeting message' do
-            let(:greeting_message) { 'Howdy!' }
+            let(:greeting) { 'Howdy!' }
 
             it 'plays the specific greeting message' do
               subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
-              should_ask(greeting_message, limit: 1).and_return ask_result
+              should_ask(greeting, limit: 1).and_return ask_result
               subject.should_receive :record_message
               should_play 'Recording saved'
               controller.run

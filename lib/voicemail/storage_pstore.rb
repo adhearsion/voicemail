@@ -51,15 +51,15 @@ module Voicemail
 
     def save_greeting_for_mailbox(mailbox_id, recording_uri)
       store.transaction do
-        store[:mailboxes][mailbox_id][:greeting_message] = recording_uri
+        store[:mailboxes][mailbox_id][:greeting] = recording_uri
       end
     end
 
     def delete_greeting_from_mailbox(mailbox_id)
       store.transaction do
-        rec = store[:mailboxes][mailbox_id][:greeting_message]
+        rec = store[:mailboxes][mailbox_id][:greeting]
         File.unlink rec if File.exists? rec
-        store[:mailboxes][mailbox_id][:greeting_message] = nil
+        store[:mailboxes][mailbox_id][:greeting] = nil
       end
     end
 

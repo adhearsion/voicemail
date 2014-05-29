@@ -9,8 +9,8 @@ module Voicemail
       {
         id: 123,
         from: '+39-335135335',
-        received: => Time.local(2012, 5, 1, 9, 0, 0),
-        uri: => 'file:///path/to/file.mp3'
+        received: Time.local(2012, 5, 1, 9, 0, 0),
+        uri: 'file:///path/to/file.mp3'
       }
     end
 

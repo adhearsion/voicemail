@@ -4,11 +4,11 @@ module Voicemail
   describe StoragePstore do
     let(:mailbox) do
       {
-        id:               100,
-        pin:              1234,
-        greeting_message: nil,
-        send_email:       true,
-        email_address:    'lpradovera@mojolingo.com'
+        id:            100,
+        pin:           1234,
+        greeting:      nil,
+        send_email:    true,
+        email_address: 'lpradovera@mojolingo.com'
       }
     end
 
@@ -101,14 +101,14 @@ module Voicemail
     describe "#delete_greeting_from_mailbox" do
       before do
         storage.store.transaction do |store|
-          store[:mailboxes][100][:greeting_message] = "/some/path"
+          store[:mailboxes][100][:greeting] = "/some/path"
         end
       end
 
       it "deletes the greeting message" do
         storage.delete_greeting_from_mailbox 100
         storage.store.transaction do |store|
-          store[:mailboxes][100][:greeting_message].should be_nil
+          store[:mailboxes][100][:greeting].should be_nil
         end
       end
     end

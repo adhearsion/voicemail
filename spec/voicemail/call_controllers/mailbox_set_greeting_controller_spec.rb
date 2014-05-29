@@ -27,10 +27,10 @@ describe Voicemail::MailboxSetGreetingController do
     end
 
     context 'with a specified greeting message' do
-      let(:greeting_message) { 'Howdy!' }
+      let(:greeting) { 'Howdy!' }
 
       it 'plays the specific greeting message' do
-        should_play greeting_message
+        should_play greeting
         subject.should_receive(:section_menu).once.and_return(true)
         controller.listen_to_current_greeting
       end

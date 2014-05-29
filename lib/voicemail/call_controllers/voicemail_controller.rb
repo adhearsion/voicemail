@@ -21,7 +21,7 @@ module Voicemail
     end
 
     def play_greeting
-      ask (mailbox[:greeting_message] || t('voicemail.default_greeting')), limit: 1
+      ask (mailbox[:greeting] || t('voicemail.default_greeting')), limit: 1
     end
 
     def play_recording_confirmation
