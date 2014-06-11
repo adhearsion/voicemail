@@ -1,6 +1,9 @@
 # develop
   * FEATURE - Refactor voicemail storage (backward incompatible change)
 
+# v1.1.1 - 2014-06-10
+  * BUG - Remove implicit dependency on loading activesupport
+
 # v1.1.0 - 2014-05-07
   * CHANGE - Menu intros are one message, making them skippable.
   * FEATURE - Personalized voicemail greetings can be deleted
