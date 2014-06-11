@@ -13,7 +13,7 @@ module Voicemail
     config :voicemail do
       use_i18n false, desc: "Whether to use i18n for voice prompts"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
-      menu_timeout 15.seconds, desc: "Timeout for all menus"
+      menu_timeout 15, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
       datetime_format "Q 'digits/at' IMp", desc: "Format to use for message date and time formatting"
 
