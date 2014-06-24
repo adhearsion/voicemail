@@ -25,13 +25,14 @@ module Voicemail
     end
 
     def record_message
+      ensure_message_saved_if_hangup
+
       @recording = record record_options
 
       config.allow_rerecording ? recording_menu : save_recording
     end
 
     def recording_menu
-      ensure_message_saved_if_hangup
       menu recording_url, config.after_record, tries: 3, timeout: 10 do
         match('1') { save_recording }
         match('2') { record_message }
@@ -46,7 +47,7 @@ module Voicemail
 
     def ensure_message_saved_if_hangup
       call.on_end do
-        save_recording unless @saved
+        save_recording if recording && !@saved
       end
     end
 
