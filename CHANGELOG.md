@@ -1,6 +1,9 @@
 # develop
   * FEATURE - Refactor voicemail storage (backward incompatible change)
 
+# v1.1.2 - 2014-06-23
+  * BUG - Re-arrange on_end callback so that recordings are saved if hangup occurs during a recording
+
 # v1.1.1 - 2014-06-10
   * BUG - Remove implicit dependency on loading activesupport
 

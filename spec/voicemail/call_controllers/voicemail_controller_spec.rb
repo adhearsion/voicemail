@@ -80,8 +80,9 @@ describe Voicemail::VoicemailController do
       context 'without allow_rerecording' do
         before { config.allow_rerecording = false }
 
-        it 'saves the recording' do
-          recording_component.should_receive('complete_event.recording').and_return recording_object
+        it "saves the recording" do
+          call.should_receive :on_end
+          recording_component.should_receive("complete_event.recording").and_return recording_object
           subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
           storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
         end
