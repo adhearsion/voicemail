@@ -17,7 +17,10 @@ module Voicemail
     end
 
     def play_greeting
-      play mailbox[:greeting_message] || t('voicemail.default_greeting')
+      result = ask (mailbox[:greeting_message] || t('voicemail.default_greeting')), limit: 1
+      # if result.status == :match && result.response == config.go_to_menu_digit
+      #   pass Voicemail::AuthenticationController, mailbox: mailbox
+      # end
     end
 
     def play_recording_confirmation
