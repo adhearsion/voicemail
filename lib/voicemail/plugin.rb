@@ -30,6 +30,8 @@ module Voicemail
       after_record "Press 1 to save your voicemail.  Press 2 to rerecord.", desc: "Message to play if allow_rerecording is set"
       recording_confirmation "Your message has been saved. Thank you.", desc: "Message to play after the voicemail has been saved"
 
+      go_to_menu_digit '#', desc: "Digit to press during mailbox greeting to go to the mailbox owner menu"
+
       desc "Default recording options"
       recording {
         interruptible true, desc: "Whether you can stop the recording with a DTMF input"

@@ -39,12 +39,15 @@ describe Voicemail::VoicemailController do
         end
       end
 
-      context "with an existing mailbox" do
+      context 'with an existing mailbox' do
+        let(:ask_result) { flexmock 'Result', status: :noinput, response: nil }
         before { subject.should_receive(:hangup).once }
 
-        context "without a greeting message" do
-          it "plays the default greeting if one is not specified" do
-            should_play config.default_greeting
+        context 'without a greeting message' do
+          it 'plays the default greeting if one is not specified' do
+            subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
+            subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
+            should_ask('Hiyas!', limit: 1).and_return ask_result
             subject.should_receive :record_message
             should_play config.recording_confirmation
             controller.run
@@ -59,6 +62,15 @@ describe Voicemail::VoicemailController do
             subject.should_receive :record_message
             should_play config.recording_confirmation
             controller.run
+          end
+        end
+
+        context 'when the greeting message is interrupted' do
+          context 'with the correct digit' do
+            let(:ask_result) { flexmock 'Result', status: :match, response: '#' }
+          end
+          context 'with an incorrect digit' do
+            let(:ask_result) { flexmock 'Result', status: :match, response: '1' }
           end
         end
       end
