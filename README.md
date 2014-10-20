@@ -26,6 +26,8 @@ If you want the users to go through pin-based authentication first, pass to the 
   invoke Voicemail::AuthenticationController, mailbox: mailbox_id
 ```
 
+Users can also press the `go_to_menu_digit` (default is `#`) digit as configured to be taken to the `AuthenticationController` during the normal mailbox greeting.
+
 ## Storage
 
 Mailbox metadata is stored in a PStore hash on disk for easy drop-in functionality.

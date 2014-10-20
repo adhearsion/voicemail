@@ -20,6 +20,8 @@ module Voicemail
 
       allow_rerecording true, desc: "Allow caller to rerecord their voicemail"
 
+      go_to_menu_digit '#', desc: "Digit to press during mailbox greeting to go to the mailbox owner menu"
+
       desc "Default recording options"
       recording {
         interruptible true, desc: "Whether you can stop the recording with a DTMF input"

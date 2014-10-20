@@ -42,28 +42,56 @@ describe Voicemail::VoicemailController do
       end
 
       context 'with an existing mailbox' do
-        before { subject.should_receive(:hangup).once }
+        let(:ask_result) { flexmock 'Result', status: :noinput, response: nil }
 
-        context 'without a greeting message' do
-          it 'plays the default greeting if one is not specified' do
-            subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
-            subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
-            should_play 'Hiyas!'
-            subject.should_receive :record_message
-            should_play 'Recording saved'
-            controller.run
+        def default_output_expectations
+          subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
+          subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
+          should_ask('Hiyas!', limit: 1).and_return ask_result
+          subject.should_receive :record_message
+          should_play 'Recording saved'
+        end
+
+        context 'with a message that is not interrupted' do
+          before { subject.should_receive(:hangup).once }
+
+          context 'without a greeting message' do
+            it 'plays the default greeting if one is not specified' do
+              default_output_expectations
+              controller.run
+            end
+          end
+
+          context 'with a specified greeting message' do
+            let(:greeting_message) { 'Howdy!' }
+
+            it 'plays the specific greeting message' do
+              subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
+              should_ask(greeting_message, limit: 1).and_return ask_result
+              subject.should_receive :record_message
+              should_play 'Recording saved'
+              controller.run
+            end
           end
         end
 
-        context 'with a specified greeting message' do
-          let(:greeting_message) { 'Howdy!' }
-
-          it 'plays the specific greeting message' do
-            subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
-            should_play greeting_message
-            subject.should_receive :record_message
-            should_play 'Recording saved'
-            controller.run
+        context 'when the greeting message is interrupted' do
+          context 'with the correct digit' do
+            let(:ask_result) { flexmock 'Result', status: :match, response: '#' }
+            it 'should pass control to the AuthenticationController' do
+              subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
+              should_ask('Hiyas!', limit: 1).and_return ask_result
+              subject.should_receive(:pass).with(Voicemail::AuthenticationController, { mailbox: mailbox })
+              controller.run
+            end
+          end
+          context 'with an incorrect digit' do
+            let(:ask_result) { flexmock 'Result', status: :match, response: '1' }
+            it 'executes the normal output, recording and hangup' do
+              default_output_expectations
+              subject.should_receive(:hangup).once
+              controller.run
+            end
           end
         end
       end

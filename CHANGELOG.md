@@ -1,5 +1,6 @@
 # develop
   * FEATURE - Refactor voicemail storage (backward incompatible change)
+  * FEATURE - It is now possible to interrupt the mailbox greeting using a digit. If the configured digit is used, the user is taken to the AuthenticationController.
 
 # v1.1.2 - 2014-06-23
   * BUG - Re-arrange on_end callback so that recordings are saved if hangup occurs during a recording
