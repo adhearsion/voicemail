@@ -61,7 +61,7 @@ describe Voicemail::VoicemailController do
 
           it 'plays the specific greeting message' do
             subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
-            should_play greeting_message
+            should_ask(greeting_message, limit: 1).and_return ask_result
             subject.should_receive :record_message
             should_play 'Recording saved'
             controller.run
