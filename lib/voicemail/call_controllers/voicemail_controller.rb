@@ -6,21 +6,22 @@ module Voicemail
     def run
       answer if config.when_to_answer == :before_greeting
       if mailbox
-        play_greeting
+        result = play_greeting
         answer if config.when_to_answer == :after_greeting
-        record_message
-        play_recording_confirmation
-        hangup
+        if result.status == :match && result.response == config.go_to_menu_digit
+          pass Voicemail::AuthenticationController, mailbox: mailbox
+        else
+          record_message
+          play_recording_confirmation
+          hangup
+        end
       else
         mailbox_not_found
       end
     end
 
     def play_greeting
-      result = ask (mailbox[:greeting_message] || t('voicemail.default_greeting')), limit: 1
-      # if result.status == :match && result.response == config.go_to_menu_digit
-      #   pass Voicemail::AuthenticationController, mailbox: mailbox
-      # end
+      ask (mailbox[:greeting_message] || t('voicemail.default_greeting')), limit: 1
     end
 
     def play_recording_confirmation
