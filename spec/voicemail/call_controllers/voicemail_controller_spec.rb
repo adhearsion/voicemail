@@ -57,8 +57,9 @@ describe Voicemail::VoicemailController do
         context "with a specified greeting message" do
           let(:greeting_message) { "Howdy!" }
 
-          it "plays the specific greeting message" do
-            should_play greeting_message
+          it 'plays the specific greeting message' do
+            subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
+            should_ask(greeting_message, limit: 1).and_return ask_result
             subject.should_receive :record_message
             should_play config.recording_confirmation
             controller.run
