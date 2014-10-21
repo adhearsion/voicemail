@@ -49,7 +49,7 @@ Alternatively, you can pass in a storage layer dynamically when invoking the con
 
 ## Customizing Voicemail
 
-The easiest way to customize the main menu is by subclassing (MailboxMainMenuController](https://github.com/adhearsion/voicemail/blob/develop/lib/voicemail/call_controllers/mailbox_main_menu_controller.rb) and replacing the `#main_menu` method with one of your own.
+The easiest way to customize the main menu is by subclassing [MailboxMainMenuController](https://github.com/adhearsion/voicemail/blob/develop/lib/voicemail/call_controllers/mailbox_main_menu_controller.rb) and replacing the `#main_menu` method with one of your own.
 
 Within `#main_menu` you have several options that can be invoked, each by simply calling the method:
 
