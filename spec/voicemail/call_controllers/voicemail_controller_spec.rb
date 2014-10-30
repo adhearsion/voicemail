@@ -52,7 +52,6 @@ describe Voicemail::VoicemailController do
           should_play 'Recording saved'
         end
 
-<<<<<<< HEAD
         context 'with a message that is not interrupted' do
           before { subject.should_receive(:hangup).once }
 
