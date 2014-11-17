@@ -8,7 +8,18 @@ module Voicemail
       if mailbox
         result = play_greeting
         answer if config.when_to_answer == :after_greeting
-        if result.status == :match && result.response == config.go_to_menu_digit
+
+        if result.status == :match
+          response = if result.respond_to? :utterance
+            # Using the adhearsion-asr plugin
+            result.utterance
+          else
+            # Using the built-in Adhearsion #ask
+            result.response
+          end
+        end
+
+        if result.status == :match && response == config.go_to_menu_digit
           pass Voicemail::AuthenticationController, mailbox: mailbox
         else
           record_message
