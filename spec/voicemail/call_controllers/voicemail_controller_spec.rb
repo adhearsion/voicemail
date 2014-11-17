@@ -79,7 +79,7 @@ describe Voicemail::VoicemailController do
             it 'should pass control to the AuthenticationController' do
               subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
               should_ask('Hiyas!', limit: 1).and_return ask_result
-              subject.should_receive(:pass).with(Voicemail::AuthenticationController, { mailbox: mailbox })
+              subject.should_receive(:pass).with(Voicemail::AuthenticationController, { mailbox: mailbox[:id] })
               controller.run
             end
           end

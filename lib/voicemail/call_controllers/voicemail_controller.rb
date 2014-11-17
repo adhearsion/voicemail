@@ -20,7 +20,7 @@ module Voicemail
         end
 
         if result.status == :match && response == config.go_to_menu_digit
-          pass Voicemail::AuthenticationController, mailbox: mailbox
+          pass Voicemail::AuthenticationController, mailbox: mailbox[:id]
         else
           record_message
           play_recording_confirmation
