@@ -23,12 +23,28 @@ describe Voicemail::IntroMessageCreator do
 
     describe '#intro_message' do
       context 'in :i18n_string mode' do
-        before { config.numeric_method = :i18n_string }
+        before do
+          config.numeric_method = :i18n_string
+          flexmock(I18n).should_receive('localize').with(message[:received]).and_return '9pm'
+          subject.should_receive(:t).with('voicemail.messages.message_received_on_x', received_on: '9pm').and_return 'Message received at 9pm'
+        end
 
         it 'returns the translation' do
-          flexmock(I18n).should_receive('localize').with(Time.local(2012, 5, 1, 9, 0, 0)).and_return '9pm'
-          subject.should_receive(:t).with('voicemail.messages.message_received_on_x', received_on: '9pm').and_return 'Message received at 9pm'
-          subject.should_receive(:t).with('voicemail.messages.message_received_from_x', from: '1234').and_return 'Message received from 1234'
+          subject.should_receive(:t).with('voicemail.messages.message_received_from_x', from: message[:from]).and_return 'Message received from 1234'
+          subject.intro_message(message).should == ['Message received at 9pm', 'Message received from 1234']
+        end
+
+        it 'handles an unknown caller' do
+          unk_caller_msg = message.dup
+          unk_caller_msg[:from] = ''
+          subject.should_receive(:t).with('voicemail.unknown_caller').and_return 'an unknown caller'
+          subject.should_receive(:t).with('voicemail.messages.message_received_from_x', from: 'an unknown caller').and_return 'Message received from an unknown caller'
+          subject.intro_message(unk_caller_msg).should == ['Message received at 9pm', 'Message received from an unknown caller']
+        end
+
+        it 'handles stringified keys' do
+          message = { 'from' => '1234', 'received' => Time.local(2012, 5, 1, 9, 0, 0) }
+          subject.should_receive(:t).with('voicemail.messages.message_received_from_x', from: message['from']).and_return 'Message received from 1234'
           subject.intro_message(message).should == ['Message received at 9pm', 'Message received from 1234']
         end
       end

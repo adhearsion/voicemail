@@ -8,7 +8,7 @@ module Voicemail
 
     def intro_message(message)
       fail ArgumentError, 'Must supply a valid message!' unless message
-      @current_message = message
+      @current_message = HashWithIndifferentAccess.new message
       Array(time_message) + Array(from_message)
     end
 
@@ -44,13 +44,17 @@ private
     end
 
     def from_string
-      "".tap do |string|
-        from_digits.each_char do |char|
-          digit_word = I18n.t "digits.#{char}.text"
-          if digit_word =~ /missing/
-            string << char
-          else
-            string << digit_word
+      if @current_message[:from].nil? || @current_message[:from].empty?
+        t 'voicemail.unknown_caller'
+      else
+        "".tap do |string|
+          from_digits.each_char do |char|
+            digit_word = I18n.t "digits.#{char}.text"
+            if digit_word =~ /missing/
+              string << char
+            else
+              string << digit_word
+            end
           end
         end
       end

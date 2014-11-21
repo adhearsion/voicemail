@@ -48,6 +48,8 @@ en:
       text: "Press one to save your voicemail. Press two to rerecord."
     recording_confirmation:
       text: "Your message has been saved."
+    unknown_caller:
+      text: "an unknown caller."
 
     mailbox:
       menu:
