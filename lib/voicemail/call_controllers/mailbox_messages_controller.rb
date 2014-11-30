@@ -28,7 +28,7 @@ module Voicemail
     end
 
     def handle_message(message)
-      invoke MailboxPlayMessageController, message: message, mailbox: mailbox[:id], new_or_saved: new_or_saved, storage: storage
+      invoke MailboxPlayMessageController, metadata.merge(message: message, new_or_saved: new_or_saved)
     end
 
     private
