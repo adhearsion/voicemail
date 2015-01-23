@@ -1,5 +1,14 @@
 # develop
   * FEATURE - Refactor voicemail storage (backward incompatible change)
+    * Pass storage instance in metadata to all controllers
+    * Move message status tags from method names to arguments
+      * `#count_new_messages(mailbox_id)` becomes `#count_messages(mailbox_id, :new)`
+      * `#count_saved_messages(mailbox_id)` becomes `#count_messages(mailbox_id, :saved)`
+      * `#archive_message(mailbox_id, message_id)` becomes `#change_message_type(mailbox_id, message_id, :new, :saved)
+      * `#unarchive_message(mailbox_id, message_id)` becomes `#change_message_type(mailbox_id, message_id, :saved, :new)
+    * `#save_recording(mailbox_id, from, recording_object)` becomes `save_recording(mailbox_id, :new, from, recording_object)`. Can add a recording directly as saved, bypassing the `:new` stage.
+    * `#next_saved_message` and `#next_new_message` are removed
+    * Mailbox `:greeting_message` property becomes `:greeting`.
   * FEATURE - It is now possible to interrupt the mailbox greeting using a digit. If the configured digit is used, the user is taken to the AuthenticationController.
 
 # v1.1.2 - 2014-06-23

@@ -7,6 +7,7 @@ module Voicemail
       @new_or_saved = metadata[:new_or_saved] || :new
 
       super call, metadata
+      @messages = storage.get_messages mailbox[:id], new_or_saved
     end
 
     def run
@@ -27,17 +28,17 @@ module Voicemail
     end
 
     def handle_message(message)
-      invoke MailboxPlayMessageController, message: message, mailbox: mailbox[:id], new_or_saved: new_or_saved, storage: storage
+      invoke MailboxPlayMessageController, metadata.merge(message: message, new_or_saved: new_or_saved)
     end
 
     private
 
     def messages_remaining
-      storage.send "count_#{new_or_saved}_messages", mailbox[:id]
+      @messages.size
     end
 
     def current_message
-      storage.send "next_#{new_or_saved}_message", mailbox[:id]
+      @messages.shift
     end
 
     def bail_out

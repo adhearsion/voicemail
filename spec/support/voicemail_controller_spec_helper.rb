@@ -3,19 +3,19 @@ module VoicemailControllerSpecHelper
     test_case.let(:from)    { "sip:user@server.com" }
     test_case.let(:call)    { flexmock 'Call', from: from }
     test_case.let(:config)  { Voicemail::Plugin.config }
-    test_case.let(:greeting_message) { nil }
+    test_case.let(:greeting) { nil }
     test_case.let(:mailbox) do
       {
-        id:               100,
-        pin:              1234,
-        greeting_message: greeting_message,
-        send_email:       true,
-        email_address:    'lpradovera@mojolingo.com'
+        id:            100,
+        pin:           1234,
+        greeting:      greeting,
+        send_email:    true,
+        email_address: 'lpradovera@mojolingo.com'
       }
     end
     test_case.let(:storage_instance) { flexmock 'StorageInstance' }
     test_case.let(:metadata) do
-      { :mailbox => '100', :storage => storage_instance }
+      { :mailbox => 100, :storage => storage_instance }
     end
 
     test_case.subject(:controller) { flexmock test_case.described_class.new(call, metadata) }

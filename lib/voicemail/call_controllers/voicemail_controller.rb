@@ -20,7 +20,7 @@ module Voicemail
         end
 
         if result.status == :match && response == config.go_to_menu_digit
-          pass Voicemail::AuthenticationController, mailbox: mailbox[:id]
+          pass Voicemail::AuthenticationController, metadata
         else
           record_message
           play_recording_confirmation
@@ -32,7 +32,7 @@ module Voicemail
     end
 
     def play_greeting
-      ask (mailbox[:greeting_message] || t('voicemail.default_greeting')), limit: 1
+      ask (mailbox[:greeting] || t('voicemail.default_greeting')), limit: 1
     end
 
     def play_recording_confirmation
@@ -67,7 +67,7 @@ module Voicemail
     end
 
     def save_recording
-      storage.save_recording mailbox[:id], call.from, recording.complete_event.recording
+      storage.save_recording mailbox[:id], :new, call.from, recording.complete_event.recording
       @saved = true
     end
 

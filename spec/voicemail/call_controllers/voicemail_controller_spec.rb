@@ -63,11 +63,11 @@ describe Voicemail::VoicemailController do
           end
 
           context 'with a specified greeting message' do
-            let(:greeting_message) { 'Howdy!' }
+            let(:greeting) { 'Howdy!' }
 
             it 'plays the specific greeting message' do
               subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
-              should_ask(greeting_message, limit: 1).and_return ask_result
+              should_ask(greeting, limit: 1).and_return ask_result
               subject.should_receive :record_message
               should_play 'Recording saved'
               controller.run
@@ -81,7 +81,7 @@ describe Voicemail::VoicemailController do
             it 'should pass control to the AuthenticationController' do
               subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
               should_ask('Hiyas!', limit: 1).and_return ask_result
-              subject.should_receive(:pass).with(Voicemail::AuthenticationController, { mailbox: mailbox[:id] })
+              subject.should_receive(:pass).with(Voicemail::AuthenticationController, { mailbox: mailbox[:id], storage: storage_instance })
               controller.run
             end
           end
@@ -112,7 +112,7 @@ describe Voicemail::VoicemailController do
           call.should_receive :on_end
           recording_component.should_receive("complete_event.recording").and_return recording_object
           subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
-          storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
+          storage_instance.should_receive(:save_recording).with mailbox[:id], :new, call.from, recording_object
         end
       end
 
@@ -126,7 +126,7 @@ describe Voicemail::VoicemailController do
           subject.should_receive(:menu)
           recording_component.should_receive('complete_event.recording').and_return recording_object
           subject.should_receive(:record).with(config.recording.to_hash).and_return recording_component
-          storage_instance.should_receive(:save_recording).with mailbox[:id], call.from, recording_object
+          storage_instance.should_receive(:save_recording).with mailbox[:id], :new, call.from, recording_object
         end
       end
     end

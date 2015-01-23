@@ -36,7 +36,7 @@ module Voicemail
     end
 
     def listen_to_current_greeting
-      play mailbox[:greeting_message] || t('voicemail.set_greeting.no_personal_greeting')
+      play mailbox[:greeting] || t('voicemail.set_greeting.no_personal_greeting')
       section_menu
     end
 

@@ -21,7 +21,7 @@ describe Voicemail::MailboxPlayMessageController do
 
       it 'archives the message' do
         subject.should_receive(:current_message).once.and_return message
-        storage_instance.should_receive(:archive_message).once.with mailbox[:id], message[:id]
+        storage_instance.should_receive(:change_message_type).once.with mailbox[:id], message[:id], :new, :saved
       end
     end
 
@@ -30,7 +30,7 @@ describe Voicemail::MailboxPlayMessageController do
 
       it 'unarchives the message' do
         subject.should_receive(:current_message).once.and_return message
-        storage_instance.should_receive(:unarchive_message).once.with mailbox[:id], message[:id]
+        storage_instance.should_receive(:change_message_type).once.with mailbox[:id], message[:id], :saved, :new
       end
     end
   end
@@ -39,7 +39,7 @@ describe Voicemail::MailboxPlayMessageController do
     it 'deletes the message' do
       subject.should_receive(:t).with('voicemail.messages.message_deleted').and_return 'message_deleted'
       subject.should_receive(:current_message).once.and_return(message)
-      storage_instance.should_receive(:delete_message).once.with(mailbox[:id], message[:id])
+      storage_instance.should_receive(:delete_message).once.with(mailbox[:id], message[:id], :new)
       subject.should_receive(:play).once.with('message_deleted')
       controller.delete_message
     end

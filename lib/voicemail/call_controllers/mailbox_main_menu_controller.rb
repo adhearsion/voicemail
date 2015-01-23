@@ -38,27 +38,27 @@ module Voicemail
     end
 
     def set_greeting
-      invoke MailboxSetGreetingController, mailbox: mailbox[:id]
+      invoke MailboxSetGreetingController, metadata
     end
 
     def set_pin
-      invoke MailboxSetPinController, mailbox: mailbox[:id]
+      invoke MailboxSetPinController, metadata
     end
 
     def listen_to_new_messages
-      invoke MailboxMessagesController, mailbox: mailbox[:id]
+      invoke MailboxMessagesController, metadata
     end
 
     def listen_to_saved_messages
-      invoke MailboxMessagesController, mailbox: mailbox[:id], new_or_saved: :saved
+      invoke MailboxMessagesController, metadata.merge(new_or_saved: :saved)
     end
 
     def clear_new_messages
-      invoke MailboxCleanerController, mailbox: mailbox[:id], new_or_saved: :new
+      invoke MailboxCleanerController, metadata.merge(new_or_saved: :new)
     end
 
     def clear_saved_messages
-      invoke MailboxCleanerController, mailbox: mailbox[:id], new_or_saved: :saved
+      invoke MailboxCleanerController, metadata.merge(new_or_saved: :saved)
     end
   end
 end

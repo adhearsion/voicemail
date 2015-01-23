@@ -15,7 +15,7 @@ module Voicemail
         play_greeting
         authenticate
         fail_auth unless auth_ok
-        pass MailboxController, mailbox: mailbox[:id]
+        pass MailboxController, metadata
       else
         mailbox_not_found
       end

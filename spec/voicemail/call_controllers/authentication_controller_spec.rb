@@ -30,7 +30,7 @@ describe Voicemail::AuthenticationController do
           should_play 'greeting'
           subject.should_receive(:authenticate)
           subject.should_receive(:auth_ok).and_return true
-          subject.should_receive(:pass).with Voicemail::MailboxController, mailbox: 100
+          subject.should_receive(:pass).with Voicemail::MailboxController, mailbox: 100, storage: storage_instance
           controller.run
         end
       end
