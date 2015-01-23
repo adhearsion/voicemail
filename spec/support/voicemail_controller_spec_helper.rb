@@ -15,7 +15,7 @@ module VoicemailControllerSpecHelper
     end
     test_case.let(:storage_instance) { flexmock 'StorageInstance' }
     test_case.let(:metadata) do
-      { :mailbox => '100', :storage => storage_instance }
+      { :mailbox => 100, :storage => storage_instance }
     end
 
     test_case.subject(:controller) { flexmock test_case.described_class.new(call, metadata) }

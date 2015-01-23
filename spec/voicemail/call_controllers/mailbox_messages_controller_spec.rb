@@ -16,7 +16,7 @@ module Voicemail
 
     let(:messages) { [] }
 
-    let(:metadata) { { mailbox: '100', new_or_saved: message_type, storage: storage_instance } }
+    let(:metadata) { { mailbox: 100, new_or_saved: message_type, storage: storage_instance } }
 
     before(:each) do
       storage_instance.should_receive(:get_messages).and_return messages
