@@ -16,6 +16,7 @@ require "voicemail/call_controllers/mailbox_play_message_intro_controller"
 require "voicemail/call_controllers/mailbox_play_message_controller"
 require "voicemail/call_controllers/mailbox_set_greeting_controller"
 require "voicemail/call_controllers/mailbox_set_pin_controller"
+require "voicemail/call_controllers/mailbox_cleaner_controller"
 
 
 require "voicemail/plugin"

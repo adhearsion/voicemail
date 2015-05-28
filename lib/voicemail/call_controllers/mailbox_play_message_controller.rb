@@ -5,7 +5,6 @@ module Voicemail
 
     def initialize(call, metadata={})
       @new_or_saved = metadata[:new_or_saved] || :new
-
       super call, metadata
     end
 
@@ -26,6 +25,7 @@ module Voicemail
         end
 
         match(7) { rewind_message }
+        match(8) { skip_message }
         match(9) { main_menu }
 
         timeout do
@@ -38,7 +38,7 @@ module Voicemail
 
         failure do
           play config.mailbox.menu_failure_message
-          hangup
+          main_menu
         end
       end
     end
@@ -59,6 +59,10 @@ module Voicemail
       play_message
     end
 
+    def skip_message
+      # This method intentionally left blank
+    end
+
     def archive_or_unarchive_message
       if new_or_saved == :new
         storage.archive_message mailbox[:id], current_message[:id]
@@ -69,6 +73,7 @@ module Voicemail
 
     def delete_message
       storage.delete_message mailbox[:id], current_message[:id]
+      play config.messages.message_deleted
     end
 
     def current_message

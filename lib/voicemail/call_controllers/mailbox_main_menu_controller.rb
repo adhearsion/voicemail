@@ -11,6 +11,8 @@ module Voicemail
         match(2) { listen_to_saved_messages }
         match(3) { set_greeting }
         match(4) { set_pin }
+        match(7) { clear_new_messages }
+        match(9) { clear_saved_messages }
 
         timeout do
           play config.mailbox.menu_timeout_message
@@ -41,6 +43,14 @@ module Voicemail
 
     def listen_to_saved_messages
       invoke MailboxMessagesController, mailbox: mailbox[:id], new_or_saved: :saved
+    end
+
+    def clear_new_messages
+      invoke MailboxCleanerController, mailbox: mailbox[:id], new_or_saved: :new
+    end
+
+    def clear_saved_messages
+      invoke MailboxCleanerController, mailbox: mailbox[:id], new_or_saved: :saved
     end
   end
 end

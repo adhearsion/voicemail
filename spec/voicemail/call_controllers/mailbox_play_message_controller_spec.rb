@@ -39,6 +39,7 @@ describe Voicemail::MailboxPlayMessageController do
     it "deletes the message" do
       subject.should_receive(:current_message).once.and_return(message)
       storage_instance.should_receive(:delete_message).once.with(mailbox[:id], message[:id])
+      subject.should_receive(:play).once.with(config.messages.message_deleted)
       controller.delete_message
     end
   end

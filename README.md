@@ -45,9 +45,19 @@ Alternatively, you can pass in a storage layer dynamically when invoking the con
   # etc.
 ```
 
-## Method Overrides
+## Customizing Voicemail
 
-If you prefer to use your own main menu instead of the [one provided](https://github.com/adhearsion/voicemail/blob/develop/lib/voicemail/call_controllers/mailbox_main_menu_controller.rb#L10-L13), you can set the class to use like so:
+The easiest way to customize the main menu is by subclassing (MailboxMainMenuController](https://github.com/adhearsion/voicemail/blob/develop/lib/voicemail/call_controllers/mailbox_main_menu_controller.rb) and replacing the `#main_menu` method with one of your own.
+
+Within `#main_menu` you have several options that can be invoked, each by simply calling the method:
+
+* listen_to_new_messages - self-explanatory
+* listen_to_saved_messages - self-explanatory
+* set_greeting - prompt to set the mailbox greeting
+* set_pin - prompt to set the mailbox PIN
+* empty_mailbox(:new or :saved or :all) - removes all (new or saved) messages from a given mailbox. Includes confirmation for safety
+
+Then tell Adhearsion to use your new voicemail menu class:
 ```ruby
 config.voicemail.main_menu_class = MyMenuController
 ```
@@ -95,8 +105,14 @@ Using I18n for the numeric method will nicely handle pluralizing message counts 
 
 ## Authors
 
-* Original author: [Luca Pradovera](https://github.com/polysics)
-* Also contributed: [Justin Aiken](https://github.com/JustinAiken)
+Original author: [Luca Pradovera](https://github.com/polysics)
+
+Contributors:
+* [Luca Pradovera](https://github.com/polysics)
+* [Justin Aiken](https://github.com/JustinAiken)
+* [Ben Klang](https://github.com/bklang)
+* [Evan McGee](https://github.com/emcgee)
+* [Will Drexler](https://github.com/wdrexler)
 
 ## Links
 
@@ -114,4 +130,4 @@ Using I18n for the numeric method will nicely handle pluralizing message counts 
 
 ## Copyright
 
-Copyright (c) 2012 Adhearsion Foundation Inc. MIT license (see LICENSE for details).
+Copyright (c) 2012-2014 Adhearsion Foundation Inc. MIT license (see LICENSE for details).

@@ -17,14 +17,14 @@ en:
     '0': "zero "
 
   voicemail:
-    default_greeting: "You have reached voicemail"
+    default_greeting: "You have reached Voicemail"
     mailbox_not_found: "Mailbox not found"
 
     mailbox:
       greeting_message: "Welcome to the mailbox system."
       please_enter_pin: "Please enter your PIN."
       pin_wrong: "The PIN you entered does not match. Please try again."
-      could_not_auth: "We are sorry, the system could not authenticate you"
+      could_not_auth: "We are sorry, the system could not authenticate you."
       number_before: "You have "
       number_after: " new messages"
       number_after_saved: " saved messages"
@@ -42,24 +42,28 @@ en:
     recording_confirmation: "Your message has been saved. Thank you."
 
     set_greeting:
-      prompt: "Press 1 to listen to your current greeting, 2 to record a new greeting, 9 to return to the main menu"
+      prompt: "Press 1 to listen to your current greeting, 2 to record a new greeting, 9 to return to the main menu."
       before_record: "Please speak after the beep. The prompt will be played back after."
-      after_record: "Press 1 to save your new greeting, 2 to discard it, 9 to go back to the menu"
+      after_record: "Press 1 to save your new greeting, 2 to discard it, 9 to go back to the menu."
       no_personal_greeting: "You do not currently have a personalized greeting."
 
     set_pin:
-      menu: "Press 1 to change your current PIN, or 9 to go back to the main menu"
-      prompt: "Enter your new PIN of at least four digits followed by the pound sign"
-      repeat_prompt: "Please enter your new PIN again, followed by the pound sign"
+      menu: "Press 1 to change your current PIN, or 9 to go back to the main menu."
+      prompt: "Enter your new PIN of at least four digits followed by the pound sign."
+      repeat_prompt: "Please enter your new PIN again, followed by the pound sign."
       pin_error: "Please enter at least four digits followed by the pound sign."
       match_error: "The two entered PINs don't match, please try again."
-      change_ok: "Your PIN has been successfully changed"
+      change_ok: "Your PIN has been successfully changed."
 
     messages:
       menu_new: "Press 1 to archive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu"
       menu_saved: "Press 1 to unarchive the message and go to the next, press 5 to delete the message and go to the next, press 7 to hear the message again, press 9 for the main menu"
-      no_new_messages: "There are no new messages"
-      no_saved_messages: "There are no saved messages"
+      no_new_messages: "There are no new messages."
+      no_saved_messages: "There are no saved messages."
       message_received_on: "Message received on "
       from: " from "
       message_received_from: "Message received from "
+      deleting_all_new_messages: "All of your new messages are being deleted. Please wait."
+      deleting_all_saved_messages: "All of your saved messages are being deleted. Please wait."
+      all_new_messages_deleted: "All new messages have been deleted."
+      all_saved_messages_deleted: "All saved messages have been deleted."
