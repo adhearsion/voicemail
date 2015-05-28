@@ -9,6 +9,8 @@ module Voicemail
     end
 
     def matches?
+      logger.info "input : #{@entered}"
+      logger.info "actual: #{@actual}"
       @entered == @actual
     end
   end

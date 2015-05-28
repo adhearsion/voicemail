@@ -53,14 +53,14 @@ describe Voicemail::MailboxPlayMessageIntroController do
 
       it "plays the message introduction" do
         flexmock(I18n).should_receive(:localize).with(some_time).and_return "some time"
-        flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_on_x", received_on: "some time").and_return "Message received on some time. "
-        flexmock(I18n).should_receive(:t).with("numbers.1").and_return "one "
-        flexmock(I18n).should_receive(:t).with("numbers.2").and_return "two "
+        flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_on").and_return "Message received on"
+        flexmock(I18n).should_receive(:t).with("numbers.1").and_return "one"
+        flexmock(I18n).should_receive(:t).with("numbers.2").and_return "two"
         flexmock(I18n).should_receive(:t).with("numbers.3").and_return "three"
-        flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_from_x", from: "one two three").and_return "Message received from one two three"
+        flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_from").and_return "Message received from"
 
-        should_play "Message received on some time. "
-        should_play "Message received from one two three"
+        should_play ["Message received on", "some time"]
+        should_play ["Message received from", "one", "two", "three"]
       end
     end
   end
@@ -74,8 +74,8 @@ describe Voicemail::MailboxPlayMessageIntroController do
       flexmock(I18n).should_receive(:t).with("numbers.1").and_return "translation missing"
       flexmock(I18n).should_receive(:t).with("numbers.2").and_return "translation missing"
       flexmock(I18n).should_receive(:t).with("numbers.3").and_return "translation missing"
-      flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_from_x", from: "123").and_return "Message received from 123."
-      should_play "Message received from 123."
+      flexmock(I18n).should_receive(:t).with("voicemail.messages.message_received_from").and_return "Message received from"
+      should_play ["Message received from", "1", "2", "3"]
     end
   end
 end

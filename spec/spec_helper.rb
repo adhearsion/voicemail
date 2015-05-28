@@ -1,4 +1,5 @@
 require 'adhearsion'
+require 'minitest/autorun'
 require 'flexmock'
 require 'voicemail'
 

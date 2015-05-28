@@ -12,6 +12,7 @@ module Voicemail
 
     config :voicemail do
       use_i18n false, desc: "Whether to use i18n for voice prompts"
+      i18n_provider I18n, desc: "I18n provider"
       prompt_timeout 5, desc: "Timeout for the various prompts, in seconds"
       menu_timeout 15, desc: "Timeout for all menus"
       menu_tries 3, desc: "Tries to get matching input for all menus"
@@ -51,6 +52,11 @@ module Voicemail
         number_before "You have ", desc: "What to play before the number of new messages"
         number_after_new " new messages", desc: "What to play after the number of new messages"
         number_after_saved " saved messages", desc: "What to play after the number of saved messages"
+        message_count_prefix "You have ", desc: "Prefix to reading out new or saved message count"
+        new_message "new message. ", desc: "Suffix to reading out the message count, when there is exactly one new message"
+        new_messages "new messages. ", desc: "Suffix to reading out the message count, when there is more than one new messages"
+        saved_message "saved message. ", desc: "Suffix to reading out the message count, when there is exactly one saved message"
+        saved_messages "saved messages. ", desc: "Suffix to reading out the message count, when there is more than one saved messages"
         menu_greeting "Press 1 to listen to new messages, 2 to listen to saved messages, 3 to change your greeting, 4 to change your PIN, 7 to delete all new messages, 9 to delete all saved messages", desc: "What to say before the main menu"
         menu_timeout_message "Please enter a digit for the menu", desc: "Message to play on main menu timeout"
         menu_invalid_message "Please enter valid input", desc: "Message to play on main menu invalid"
@@ -93,6 +99,7 @@ module Voicemail
         no_saved_messages "There are no saved messages", desc: "Message to inform the user he has no saved messages"
         message_received_on "Message received on ", desc: "Prefix to menu intro"
         from " from ", desc: "Used in message intro"
+        message_received_from "Message received from ", desc: "Prefix to reading out the message sender id"
         message_deleted "Message deleted.", desc: "Confirmation that a message has been deleted"
       }
 

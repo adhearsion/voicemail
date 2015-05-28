@@ -10,11 +10,12 @@ module Voicemail
 
     def run
       load_message
+      intro_message
       play_message
     end
 
     def play_message
-      menu intro_message, message_uri, play_message_menu, timeout: config.menu_timeout, tries: config.menu_tries do
+      menu message_uri, play_message_menu, timeout: config.menu_timeout, tries: config.menu_tries do
         match 1 do
           archive_or_unarchive_message
         end
@@ -43,7 +44,7 @@ module Voicemail
     end
 
     def intro_message
-      IntroMessageCreator.new(current_message).intro_message
+      invoke MailboxPlayMessageIntroController, message: current_message, mailbox: mailbox[:id], storage: storage
     end
 
     def play_message_menu
