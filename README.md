@@ -31,7 +31,7 @@ Users can also press the `go_to_menu_digit` (default is `#`) digit as configured
 ## Storage
 
 Mailbox metadata is stored in a PStore hash on disk for easy drop-in functionality.
-To implement your own storage layer, look at the StorageMain class for method signatures.
+To implement your own storage layer, look at the StorageGeneric class for method signatures.
 
 You can set the storage layer globally in configuration.
 ```ruby
