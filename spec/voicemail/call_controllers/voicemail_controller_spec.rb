@@ -42,7 +42,7 @@ describe Voicemail::VoicemailController do
       end
 
       context 'with an existing mailbox' do
-        let(:ask_result) { flexmock 'Result', status: :noinput, response: nil }
+        let(:ask_result) { Adhearsion::CallController::Input::Result.new status: :noinput, utterance: nil }
 
         def default_output_expectations
           subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
@@ -77,7 +77,7 @@ describe Voicemail::VoicemailController do
 
         context 'when the greeting message is interrupted' do
           context 'with the correct digit' do
-            let(:ask_result) { flexmock 'Result', status: :match, response: '#' }
+            let(:ask_result) { Adhearsion::CallController::Input::Result.new status: :match, utterance: '#' }
             it 'should pass control to the AuthenticationController' do
               subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
               should_ask('Hiyas!', limit: 1).and_return ask_result
@@ -86,7 +86,7 @@ describe Voicemail::VoicemailController do
             end
           end
           context 'with an incorrect digit' do
-            let(:ask_result) { flexmock 'Result', status: :match, response: '1' }
+            let(:ask_result) { Adhearsion::CallController::Input::Result.new status: :match, utterance: '1' }
             it 'executes the normal output, recording and hangup' do
               default_output_expectations
               subject.should_receive(:hangup).once
