@@ -26,14 +26,14 @@ module VoicemailControllerSpecHelper
   end
 
   def should_play(*args)
-    subject.should_receive(:play).once.tap { |exp| exp.with(*args) if args.count > 0 }
+    expect(subject).to_receive(:play).once.tap { |exp| exp.with(*args) if args.count > 0 }
   end
 
   def should_ask(*args)
-    subject.should_receive(:ask).with(*args).once
+    expect(subject).to_receive(:ask).with(*args).once
   end
 
   def should_invoke(*args)
-    subject.should_receive(:invoke).once.with(*args)
+    expect(subject).to_receive(:invoke).once.with(*args)
   end
 end

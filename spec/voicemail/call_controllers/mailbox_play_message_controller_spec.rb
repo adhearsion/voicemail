@@ -46,7 +46,6 @@ describe Voicemail::MailboxPlayMessageController do
   end
 
   describe '#play_message' do
-    include FlexMock::ArgumentTypes
     before do
       ['delete', 'replay', 'skip'].each do |prompt|
         subject.should_receive(:t).with("voicemail.messages.menu.#{prompt}").and_return prompt

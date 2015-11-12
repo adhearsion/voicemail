@@ -29,7 +29,6 @@ module Voicemail
           store[:saved][100]     = [message_2, message_3]
           store[:mailboxes][100] = mailbox
         end
-        flexmock storage
       end
     end
 
@@ -48,35 +47,35 @@ module Voicemail
     end
 
     describe "#save_recording" do
-      let(:recording_object) { flexmock 'recording_object', uri: "file://somewav.wav" }
+      let(:recording_object) { double 'recording_object', uri: "file://somewav.wav" }
 
       it "saves the recording" do
         storage.save_recording(100, :new, "foo", recording_object)
         storage.store.transaction do |store|
-          store[:new][100].last[:uri].should  == "file://somewav.wav"
-          store[:new][100].last[:from].should == "foo"
-          store[:new][100].last[:id].should_not be_nil
+          expect(store[:new][100].last[:uri]).to  eq "file://somewav.wav"
+          expect(store[:new][100].last[:from]).to eq "foo"
+          expect(store[:new][100].last[:id]).to_not be_nil
         end
       end
     end
 
     describe "#count_messages" do
       it "returns the new message count" do
-        storage.count_messages(100, :new).should == 1
+        expect(storage.count_messages(100, :new)).to eq 1
       end
 
       it "returns the saved message count" do
-        storage.count_messages(100, :saved).should == 2
+        expect(storage.count_messages(100, :saved)).to eq 2
       end
     end
 
     describe '#get_messages' do
       it 'returns all new messages' do
-        storage.get_messages(100, :new).should == [{ id: :foo }]
+        expect(storage.get_messages(100, :new)).to eq [{ id: :foo }]
       end
 
       it 'returns all saved messages' do
-        storage.get_messages(100, :saved).should == [{ id: :bar }, { id: :biz }]
+        expect(storage.get_messages(100, :saved)).to eq [{ id: :bar }, { id: :biz }]
       end
     end
 
@@ -84,16 +83,16 @@ module Voicemail
       it "changes the message type to :saved" do
         storage.change_message_type 100, :foo, :new, :saved
         storage.store.transaction do |store|
-          store[:new][100].should   == []
-          store[:saved][100].should == [message_2, message_3, message_1]
+          expect(store[:new][100]).to eq []
+          expect(store[:saved][100]).to eq [message_2, message_3, message_1]
         end
       end
 
       it "changes the message type to :new" do
         storage.change_message_type 100, :bar, :saved, :new
         storage.store.transaction do |store|
-          store[:new][100].should   == [message_1, message_2]
-          store[:saved][100].should == [message_3]
+          expect(store[:new][100]).to   eq [message_1, message_2]
+          expect(store[:saved][100]).to eq [message_3]
         end
       end
     end
@@ -108,7 +107,7 @@ module Voicemail
       it "deletes the greeting message" do
         storage.delete_greeting_from_mailbox 100
         storage.store.transaction do |store|
-          store[:mailboxes][100][:greeting].should be_nil
+          expect(store[:mailboxes][100][:greeting]).to be_nil
         end
       end
     end
