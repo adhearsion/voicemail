@@ -13,7 +13,7 @@ module Voicemail
       datetime_format "Q 'digits/at' IMp", desc: "Format to use for message date and time formatting"
 
       when_to_answer :before_greeting, desc: "#answer :before_greeting or :after_greeting"
-      numeric_method :play_numeric, desc: "Whether to use #play_numeric type methods, AhnSay, or a single I18n string"
+      numeric_method :play_numeric, desc: "Whether to use #play_numeric type methods, AhnSay, or a single I18n string", transform: ->(v) { v.to_sym }
 
       matcher_class   Voicemail::Matcher, desc: "Class that checks for a match in pin authentication"
       main_menu_class Voicemail::MailboxMainMenuController, desc: "Class runs the main menu prompts"
