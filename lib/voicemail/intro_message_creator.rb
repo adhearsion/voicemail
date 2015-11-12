@@ -15,13 +15,13 @@ module Voicemail
     def time_message
       case config.numeric_method
       when :i18n_string
-        t 'voicemail.messages.message_received_on_x', received_on: I18n.localize(@current_message[:received])
+        t 'voicemail.messages.message_received_on_x', received_on: I18n.localize(message_timestamp)
       when :play_numeric
         [t('voicemail.messages.message_received_on'), time_ssml]
       when :ahn_say
         [
           t('voicemail.messages.message_received_on'),
-          Ahnsay.sounds_for_time(@current_message[:received], format: config.datetime_format)
+          Ahnsay.sounds_for_time(message_timestamp, format: config.datetime_format)
         ]
       end
     end
@@ -61,7 +61,11 @@ private
     end
 
     def time_ssml
-      output_formatter.ssml_for_time @current_message[:received], format: config.datetime_format
+      output_formatter.ssml_for_time message_timestamp, format: config.datetime_format
+    end
+
+    def message_timestamp
+      DateTime.parse @current_message[:received]
     end
 
     def from_ssml
