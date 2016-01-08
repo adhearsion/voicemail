@@ -65,7 +65,12 @@ private
     end
 
     def message_timestamp
-      DateTime.parse @current_message[:received]
+      case @current_message[:received]
+      when DateTime, Time
+        @current_message[:received]
+      else
+        DateTime.parse @current_message[:received]
+      end
     end
 
     def from_ssml
