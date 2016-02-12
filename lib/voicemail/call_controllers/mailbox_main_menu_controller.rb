@@ -46,7 +46,7 @@ module Voicemail
     end
 
     def listen_to_new_messages
-      invoke MailboxMessagesController, metadata
+      invoke MailboxMessagesController, metadata.merge(new_or_saved: :new)
     end
 
     def listen_to_saved_messages
