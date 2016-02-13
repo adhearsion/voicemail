@@ -32,7 +32,7 @@ describe Voicemail::MailboxMainMenuController do
 
   describe "#listen_to_new_messages" do
     it "invokes MailboxMessagesController" do
-      should_invoke Voicemail::MailboxMessagesController, mailbox: mailbox[:id], storage: storage_instance
+      should_invoke Voicemail::MailboxMessagesController, mailbox: mailbox[:id], new_or_saved: :new, storage: storage_instance
       controller.listen_to_new_messages
     end
   end

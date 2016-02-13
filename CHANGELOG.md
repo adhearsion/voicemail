@@ -1,4 +1,5 @@
 # develop
+  * BUG - Listening to new messages needs to set the `new_or_saved` metadata. Otherwise, after visiting saved messages, the status is always `:saved`
   * FEATURE - Refactor voicemail storage (backward incompatible change)
     * Pass storage instance in metadata to all controllers
     * Move message status tags from method names to arguments
