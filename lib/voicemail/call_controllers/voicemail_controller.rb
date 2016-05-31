@@ -1,7 +1,7 @@
 module Voicemail
   class VoicemailController < ApplicationController
 
-    attr_accessor :recording
+    attr_accessor :recording, :recording_saved
 
     def run
       answer if config.when_to_answer == :before_greeting
@@ -40,7 +40,7 @@ module Voicemail
     end
 
     def record_message
-      ensure_message_saved_if_hangup
+      ensure_message_saved_on_hangup
 
       @recording = record record_options
 
@@ -53,22 +53,22 @@ module Voicemail
         match('2') { record_message }
 
         invalid {  }
-        timeout { save_recording }
-        failure { save_recording }
+        timeout {  }
+        failure {  }
       end
     end
 
   private
 
-    def ensure_message_saved_if_hangup
+    def ensure_message_saved_on_hangup
       call.on_end do
-        save_recording if recording && !@saved
+        save_recording if recording && !recording_saved
       end
     end
 
     def save_recording
       storage.save_recording mailbox[:id], :new, call.from, recording.complete_event.recording
-      @saved = true
+      @recording_saved = true
     end
 
     def recording_url
