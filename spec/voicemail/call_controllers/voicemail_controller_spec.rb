@@ -47,7 +47,7 @@ describe Voicemail::VoicemailController do
         def default_output_expectations
           subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
           subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
-          should_ask('Hiyas!', limit: 1).and_return ask_result
+          should_ask('Hiyas!', limit: 1, timeout: config.go_to_menu_timeout).and_return ask_result
           subject.should_receive :record_message
           should_play 'Recording saved'
         end
@@ -67,7 +67,7 @@ describe Voicemail::VoicemailController do
 
             it 'plays the specific greeting message' do
               subject.should_receive(:t).with('voicemail.recording_confirmation').and_return 'Recording saved'
-              should_ask(greeting, limit: 1).and_return ask_result
+              should_ask(greeting, limit: 1, timeout: config.go_to_menu_timeout).and_return ask_result
               subject.should_receive :record_message
               should_play 'Recording saved'
               controller.run
@@ -80,7 +80,7 @@ describe Voicemail::VoicemailController do
             let(:ask_result) { flexmock 'Result', status: :match, response: '#' }
             it 'should pass control to the AuthenticationController' do
               subject.should_receive(:t).with('voicemail.default_greeting').and_return 'Hiyas!'
-              should_ask('Hiyas!', limit: 1).and_return ask_result
+              should_ask('Hiyas!', limit: 1, timeout: config.go_to_menu_timeout).and_return ask_result
               subject.should_receive(:pass).with(Voicemail::AuthenticationController, { mailbox: mailbox[:id], storage: storage_instance })
               controller.run
             end

@@ -32,7 +32,7 @@ module Voicemail
     end
 
     def play_greeting
-      ask (mailbox[:greeting] || t('voicemail.default_greeting')), limit: 1
+      ask (mailbox[:greeting] || t('voicemail.default_greeting')), limit: 1, timeout: config.go_to_menu_timeout
     end
 
     def play_recording_confirmation

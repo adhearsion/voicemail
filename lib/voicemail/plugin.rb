@@ -12,6 +12,8 @@ module Voicemail
       menu_tries 3, desc: "Tries to get matching input for all menus"
       datetime_format "Q 'digits/at' IMp", desc: "Format to use for message date and time formatting"
 
+      go_to_menu_timeout 5, desc: "Timeout for the mailbox greeting input, after which it will proceed to the menu"
+
       when_to_answer :before_greeting, desc: "#answer :before_greeting or :after_greeting"
       numeric_method :play_numeric, desc: "Whether to use #play_numeric type methods, AhnSay, or a single I18n string", transform: ->(v) { v.to_sym }
 
