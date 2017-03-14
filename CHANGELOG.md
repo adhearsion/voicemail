@@ -1,4 +1,5 @@
 # develop
+  * CHANGE: Drop support for Ruby < 2.2, which is required by Adhearsion 3
   * BUG - Listening to new messages needs to set the `new_or_saved` metadata. Otherwise, after visiting saved messages, the status is always `:saved`
   * FEATURE - Refactor voicemail storage (backward incompatible change)
     * Pass storage instance in metadata to all controllers

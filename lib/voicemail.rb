@@ -1,5 +1,4 @@
 require 'adhearsion'
-require 'adhearsion-i18n'
 
 module Voicemail; end
 require "voicemail/version"

@@ -86,7 +86,7 @@ module Voicemail
     # @param mailbox_id The mailbox's ID
     # @param type[Symbol] The type of message to be created (e.g. :new or :saved)
     # @param from[String] The phone number of the message's sender
-    # @param recording_object[Punchblock::Component::Record] The recording result from Adhearsion
+    # @param recording_object[Adhearsion::Rayo::Component::Record] The recording result from Adhearsion
     #
     def save_recording(mailbox_id, type, from, recording_object)
     end

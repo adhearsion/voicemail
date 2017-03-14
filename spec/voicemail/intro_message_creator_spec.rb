@@ -50,7 +50,7 @@ describe Voicemail::IntroMessageCreator do
       end
 
       context 'in :ahn_say mode' do
-        let!(:ahn_config) { flexmock(Adhearsion.config, punchblock: OpenStruct.new, ahnsay: OpenStruct.new(sounds_dir: '/')) }
+        let!(:ahn_config) { flexmock(Adhearsion.config, core: OpenStruct.new, ahnsay: OpenStruct.new(sounds_dir: '/')) }
 
         before do
           config.numeric_method  = :ahn_say
