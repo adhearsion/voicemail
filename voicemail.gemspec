@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency %q<yard>, ["~> 0.6.0"]
   s.add_development_dependency %q<rake>, [">= 0"]
   s.add_development_dependency %q<guard-rspec>
-  s.add_development_dependency %q<flexmock>
   s.add_development_dependency %q<test-unit>
   s.add_development_dependency %q<ahnsay>
  end
